@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+	<PreferenceCategory android:title="Notification signals">
+		<CheckBoxPreference android:key="cbp1"
+			android:title="Sound" android:summary="The notification will produce a sound" />
+		<CheckBoxPreference android:key="cbp2"
+			android:title="Vibration" android:summary="The notification will produce a small vibration" />
+		<RingtonePreference android:key="ring1"
+			android:title="Ringtone Preference" android:showDefault="true"
+			android:showSilent="true" android:summary="Pick a ringtone for sound" />
+		<CheckBoxPreference android:key="cbp3"
+			android:title="Screen" android:summary="The notification will produce a wake your screen" />
+	</PreferenceCategory>
+	<PreferenceCategory android:title="Notification time setup">
+		<TimePickerPreference android:key="time1"
+			android:title="Notification time" android:summary="Time to notify before event" />
+	</PreferenceCategory>
+
+	<PreferenceCategory android:title="Calendars setup">
+		<ListPreferenceMultiSelect android:key="list1"
+			android:title="Calendars"
+			android:summary="Click here to choose the google calendar NotMe will work from"
+			android:entries="@array/placeholder" android:entryValues="@array/placeholder" />
+	</PreferenceCategory>
+
+</PreferenceScreen>

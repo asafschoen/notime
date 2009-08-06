@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_name">NotiMe!</string>
+	<string name="ok">OK</string>
+	<string name="welcome">Please enter your Google account information
+	</string>
+	<string name="username">User Name</string>
+	<string name="password">Password</string>
+	<string name="google_suffix">'@'google.com</string>
+	<string name="remember_me">remember me</string>
+	<string name="about_title">About NotiMe</string>
+	<string name="about_text">
+
+		NotiMe is Location based Notification
+		Service for your Google Calendar!\n\n
+
+		Brought to you by:
+		Danny, Slava and Asaf
+	</string>
+	<string name="exit">EXIT</string>
+</resources>
