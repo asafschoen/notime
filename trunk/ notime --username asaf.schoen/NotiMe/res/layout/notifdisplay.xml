@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_height="fill_parent" android:layout_width="fill_parent"
+	android:orientation="horizontal">
+
+	<LinearLayout android:orientation="vertical"
+		android:layout_height="wrap_content" android:layout_width="fill_parent"
+		android:layout_gravity="center">
+
+		<TextView android:id="@+id/notifytxt" android:layout_width="fill_parent"
+			android:layout_height="wrap_content" android:layout_weight="0"
+			android:paddingBottom="40dip" />
+
+		<RelativeLayout android:id="@+id/widget76"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"
+			android:layout_centerVertical="true" android:layout_centerHorizontal="true">
+
+			<Button android:id="@+id/Map" android:layout_width="wrap_content"
+				android:layout_height="wrap_content" android:text="Show Directions">
+			</Button>
+
+			<Button android:id="@+id/notifyok" android:layout_width="wrap_content"
+				android:layout_height="wrap_content" android:text="Dismiss"
+				android:layout_below="@+id/Map">
+			</Button>
+
+			<Button android:id="@+id/Snooze" android:layout_width="wrap_content"
+				android:layout_height="wrap_content" android:text="Snooze"
+				android:layout_below="@+id/notifyok"></Button>
+
+			<EditText android:id="@+id/Minutes" android:layout_height="wrap_content"
+				android:width="25pt" android:layout_width="25pt" android:text=" 10"
+				android:layout_below="@+id/notifyok" android:layout_toRightOf="@+id/Snooze"></EditText>
+			<Button android:id="@+id/Plus" android:layout_width="wrap_content"
+				android:layout_height="wrap_content" android:text="+" android:width="30pt"
+				android:layout_toRightOf="@+id/Minutes" android:layout_below="@+id/notifyok"></Button>
+			<Button android:id="@+id/Minus" android:layout_width="wrap_content"
+				android:layout_height="wrap_content" android:text="-" android:width="30pt"
+				android:layout_toRightOf="@+id/Plus" android:layout_below="@+id/notifyok"></Button>
+
+		</RelativeLayout>
+	</LinearLayout>
+</LinearLayout>
+

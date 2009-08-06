@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <string-array name="list_emulation_modes">
+        <item>screen</item>
+        <item>vt100</item>
+        <item>xterm</item>
+    </string-array>
+    
+    <string-array name="list_rotation">
+        <item>@string/name1</item>
+        <item>@string/name2</item>
+    </string-array>
+</resources>
