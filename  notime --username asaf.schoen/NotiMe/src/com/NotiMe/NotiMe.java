@@ -58,7 +58,7 @@ public class NotiMe extends Activity {
 		rememberCheckBox
 				.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
-					@Override
+					//@Override
 					public void onCheckedChanged(
 							final CompoundButton buttonView,
 							final boolean isChecked) {
@@ -72,7 +72,7 @@ public class NotiMe extends Activity {
 
 		userText.setOnKeyListener(new OnKeyListener() {
 
-			@Override
+			//@Override
 			public boolean onKey(final View v, final int keyCode,
 					final KeyEvent event) {
 				saveString("pref.user", userText.getText().toString());
@@ -82,7 +82,7 @@ public class NotiMe extends Activity {
 
 		passText.setOnKeyListener(new OnKeyListener() {
 
-			@Override
+			//@Override
 			public boolean onKey(final View v, final int keyCode,
 					final KeyEvent event) {
 				saveString("pref.pass", passText.getText().toString());
@@ -100,7 +100,7 @@ public class NotiMe extends Activity {
 		tb.setChecked(pr.isRunning());
 		tb.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
-			@Override
+			//@Override
 			public void onCheckedChanged(final CompoundButton buttonView,
 					final boolean isChecked) {
 				saveBoolean("pref.running", isChecked);
