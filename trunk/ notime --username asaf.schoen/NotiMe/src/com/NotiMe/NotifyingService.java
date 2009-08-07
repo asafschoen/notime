@@ -195,7 +195,6 @@ public class NotifyingService extends Service implements LocationListener {
 	public IBinder onBind(final Intent intent) {
 		return nBinder;
 	}
-
 	@Override
 	public void onCreate() {
 		final PreferenceReader pr = new PreferenceReader(
@@ -272,7 +271,7 @@ public class NotifyingService extends Service implements LocationListener {
 	/**********************************************************************
 	 * LocationListener overrides below
 	 **********************************************************************/
-	@Override
+	//@Override
 	public void onLocationChanged(final Location location) {
 		// this code tricks the emulator to work...
 		// stopListening();
@@ -294,15 +293,15 @@ public class NotifyingService extends Service implements LocationListener {
 		// nCondition.open();
 	}
 
-	@Override
+	//@Override
 	public void onProviderDisabled(final String provider) {
 	}
 
-	@Override
+	//@Override
 	public void onProviderEnabled(final String provider) {
 	}
 
-	@Override
+	//@Override
 	public void onStatusChanged(final String provider, final int status,
 			final Bundle extras) {
 	}
