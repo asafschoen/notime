@@ -8,7 +8,7 @@
 	<string name="password">Password</string>
 	<string name="google_suffix">'@'google.com</string>
 	<string name="remember_me">remember me</string>
-	<string name="about_title">About NotiMe</string>
+	<string name="about_title">NotiMe!</string>
 	<string name="about_text">
 
 		NotiMe is Location based Notification
@@ -18,4 +18,8 @@
 		Danny, Slava and Asaf
 	</string>
 	<string name="exit">EXIT</string>
+	
+	<string name="error_login_details">Please fill in your login information</string>
+	<string name="error_login">I could not log you in!\nCheck your login information</string>
+	<string name="error_connection">I could not connect to the Internet :(</string>
 </resources>

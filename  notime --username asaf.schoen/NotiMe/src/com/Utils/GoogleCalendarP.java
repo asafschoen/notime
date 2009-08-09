@@ -51,7 +51,7 @@ public final class GoogleCalendarP {
 	 *            - if true, it forces a re-authentication, even if the present
 	 *            session isn't timeout
 	 * 
-	 * @return true if authentication succeeds
+	 * @return authentication token if succeeds or null otherwise
 	 * 
 	 * @throws IOException
 	 *             Signals that an I/O exception has occurred.
@@ -112,6 +112,9 @@ public final class GoogleCalendarP {
 	 *             the exception
 	 */
 	public final static LinkedList<NotiCalendar> getAllCals() throws Exception {
+		if (mAuthToken == null) {
+			throw new Exception("User not Authenticated!");
+		}
 
 		final String sessionUrl = "http://www.google.com/calendar/feeds/default/owncalendars/full";
 
@@ -155,6 +158,10 @@ public final class GoogleCalendarP {
 	 */
 	public final static LinkedList<NotiEvent> getEvents(
 			final LinkedList<NotiCalendar> cals) throws Exception {
+
+		if (mAuthToken == null) {
+			throw new Exception("User not Authenticated!");
+		}
 
 		final LinkedList<NotiEvent> events = new LinkedList<NotiEvent>();
 		final Iterator<NotiCalendar> it = cals.listIterator();
