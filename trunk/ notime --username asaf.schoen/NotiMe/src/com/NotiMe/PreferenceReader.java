@@ -22,6 +22,12 @@ public class PreferenceReader {
 	public String getSelectedCalendarList() {
 		return loadString("calendar.selection");
 	}
+	public void setCalendarList(String list){
+		saveString("calendar.list", list);
+	}
+	public String getCalenderList(){
+		return loadString("calendar.list");
+	}
 
 	public String getUser() {
 		return loadString("pref.user");
@@ -58,6 +64,12 @@ public class PreferenceReader {
 		final SharedPreferences prefFile = _activity.getSharedPreferences(
 				"notiMePref", 0);
 		return prefFile.getString(field, "");
+	}
+	private void saveString(final String field, final String data) {
+		final SharedPreferences prefFile = _activity.getSharedPreferences("notiMePref", 0);
+		final SharedPreferences.Editor editor = prefFile.edit();
+		editor.putString(field, data);
+		editor.commit();2
 	}
 
 }
