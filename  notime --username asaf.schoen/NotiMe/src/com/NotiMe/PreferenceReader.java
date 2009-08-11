@@ -69,7 +69,7 @@ public class PreferenceReader {
 		final SharedPreferences prefFile = _activity.getSharedPreferences("notiMePref", 0);
 		final SharedPreferences.Editor editor = prefFile.edit();
 		editor.putString(field, data);
-		editor.commit();2
+		editor.commit();
 	}
 
 }
