@@ -1,9 +1,12 @@
 package com.NotiMe;
 
+import java.util.StringTokenizer;
+
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
+import android.preference.ListPreferenceMultiSelect;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.RingtonePreference;
@@ -89,19 +92,22 @@ public class Preferences extends PreferenceActivity {
 
 				});
 
-		// // ------------------------------calendars feed example:
-		// final String[] cTest = new String[2];
-		// cTest[0] = "Calendar1";
-		// cTest[1] = "Calendar2";
-		// // get the list preference object
-		// final ListPreferenceMultiSelect calendars =
-		// (ListPreferenceMultiSelect) findPreference("list1");
-		// // set them into the system xml file- therefore no saving/loading
-		// ever
-		// // needed
-		// calendars.setEntries(cTest);
-		// calendars.setEntryValues(cTest);
-		// // --------------------------------end of example
+		 //the preference gets the string containing the calendars
+		 PreferenceReader pReader=new PreferenceReader(this);
+		 String calendarList=pReader.getCalenderList();
+		 //splits it from the ,
+		 StringTokenizer tokenizer=new StringTokenizer(calendarList,",");
+		 final String[] cTest = new String[tokenizer.countTokens()];
+		 int size=tokenizer.countTokens();
+		 //put each calendar in a seperate string in cTest[] array
+		 for (int i=0; i<size; i++)
+			 cTest[i]=tokenizer.nextToken();		
+		 
+		 final ListPreferenceMultiSelect calendars =
+		 (ListPreferenceMultiSelect) findPreference("list1");
+
+		 calendars.setEntries(cTest);
+		 calendars.setEntryValues(cTest);
 
 	}
 

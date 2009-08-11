@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.LinkedList;
 
 import android.app.Notification;
@@ -213,30 +214,24 @@ public class NotifyingService extends Service implements LocationListener {
 			e.printStackTrace();
 		}
 
-		// LinkedList<NotiCalendar> calendarList = null;
-		// try {
-		// calendarList = GoogleCalendarP.getAllCals();
-		// } catch (Exception e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// }
-		//
+		 LinkedList<NotiCalendar> calendarList = null;
+		 try {
+		 calendarList = GoogleCalendarP.getAllCals();
+		 } catch (Exception e) {
+		 // TODO Auto-generated catch block
+		 e.printStackTrace();
+		 }
+		
 		// String[] cNames = new String[calendarList.size()], cValues = new
-		// String[calendarList
-		// .size()];
-		// int i = 0;
-		// for (Iterator<NotiCalendar> iterator = calendarList.iterator();
-		// iterator
-		// .hasNext();) {
-		// NotiCalendar notiCalendar = (NotiCalendar) iterator.next();
-		// System.out.println("???????????????????"+notiCalendar.get_title());
-		// cNames[i] = notiCalendar.get_title();
-		// cValues[i] = notiCalendar.get_id();
-		// }
-		//
-		// final ListPreferenceMultiSelect calendars = new Preferences().l;
-		// calendars.setEntries(cNames);
-		// calendars.setEntryValues(cValues);
+		// String[calendarList.size()];
+		 String cNames="";
+		 for (Iterator<NotiCalendar> iterator = calendarList.iterator();iterator .hasNext();) {
+		 NotiCalendar notiCalendar = (NotiCalendar) iterator.next();
+		 System.out.println("???????????????????"+notiCalendar.get_title());
+		 cNames= cNames+notiCalendar.get_title()+ ",";
+		 }
+		 System.out.println("?????????????/"+cNames);
+		 pr.setCalendarList(cNames);
 
 		nNM = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
