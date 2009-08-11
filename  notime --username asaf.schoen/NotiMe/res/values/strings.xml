@@ -20,6 +20,6 @@
 	<string name="exit">EXIT</string>
 	
 	<string name="error_login_details">Please fill in your login information</string>
-	<string name="error_login">I could not log you in!\nCheck your login information</string>
+	<string name="error_login">I could not log you in!\nCheck your login information and your connection status</string>
 	<string name="error_connection">I could not connect to the Internet :(</string>
 </resources>
