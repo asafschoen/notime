@@ -1,8 +1,13 @@
 package com.NotiMe;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -13,8 +18,11 @@ import android.view.View.OnKeyListener;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
+
+import com.Utils.GoogleCalendarP;
 
 public class NotiMe extends Activity {
 	private static final int PREFERENCES_ID = Menu.FIRST;
@@ -34,7 +42,64 @@ public class NotiMe extends Activity {
 				// Perform action on clicks
 				if (togglebutton.isChecked()) {
 					System.out.println("CHECKED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-					startService(new Intent(NotiMe.this, NotifyingService.class));
+
+					final PreferenceReader pr = new PreferenceReader(
+							PreferenceReader._activity);
+
+					ConnectivityManager connec = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+					if (connec.getNetworkInfo(0).isConnectedOrConnecting()
+							|| connec.getNetworkInfo(1)
+									.isConnectedOrConnecting()) {
+
+						String user = pr.getUser().trim();
+						String pass = pr.getPass().trim();
+						System.out.println("!!!!!!!!!!!!!1" + user);
+						System.out.println("!!!!!!!!!!!!!1" + pass);
+						if (user != null && pass != null && !user.equals("")
+								&& !pass.equals("")) {
+							System.out.println("HI2222222222");
+							GoogleCalendarP.setLogin(user, pass);
+							try {
+								if (GoogleCalendarP.authenticate(true) != null) {
+									startService(new Intent(NotiMe.this,
+											NotifyingService.class));
+								} else {
+									Toast.makeText(NotiMe.this,
+											R.string.error_login,
+											Toast.LENGTH_SHORT).show();
+									togglebutton.setChecked(false);
+								}
+							} catch (final MalformedURLException e) {
+								Toast.makeText(NotiMe.this,
+										R.string.error_login,
+										Toast.LENGTH_SHORT).show();
+								togglebutton.setChecked(false);
+								e.printStackTrace();
+							} catch (final IOException e) {
+								Toast.makeText(NotiMe.this,
+										R.string.error_login,
+										Toast.LENGTH_SHORT).show();
+								togglebutton.setChecked(false);
+								e.printStackTrace();
+							}
+
+						} else {
+							System.out.println("HI111111111");
+							Toast.makeText(NotiMe.this,
+									R.string.error_login_details,
+									Toast.LENGTH_SHORT).show();
+							togglebutton.setChecked(false);
+						}
+
+					} else {
+						Toast.makeText(NotiMe.this,
+								R.string.error_connection,
+								Toast.LENGTH_SHORT).show();
+						togglebutton.setChecked(false);
+
+					}
+
 				} else {
 					System.out
 							.println("UNCHECKED???????????????????????????????");
@@ -93,12 +158,13 @@ public class NotiMe extends Activity {
 		if (isRemember) {
 			userText.setText(pr.getUser());
 			passText.setText(pr.getPass());
+		} else {
+			saveString("pref.pass", "");
+			saveString("pref.user", "");
 		}
 
-		final ToggleButton tb = (ToggleButton) findViewById(R.id.toggle_button);
-
-		tb.setChecked(pr.isRunning());
-		tb.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+		togglebutton.setChecked(pr.isRunning());
+		togglebutton.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
 			//@Override
 			public void onCheckedChanged(final CompoundButton buttonView,
