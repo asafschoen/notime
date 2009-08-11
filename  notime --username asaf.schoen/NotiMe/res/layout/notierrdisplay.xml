@@ -35,7 +35,7 @@
 
 				<EditText android:id="@+id/Minutes" android:layout_height="wrap_content"
 					android:width="25pt" android:layout_width="25pt" android:text=" 10"
-					android:layout_toRightOf="@+id/Snooze"></EditText>
+					android:layout_toRightOf="@+id/Snooze" android:inputType="number"></EditText>
 				<Button android:id="@+id/errPlus" android:layout_width="wrap_content"
 					android:layout_height="wrap_content" android:text="+"
 					android:width="30pt" android:layout_toRightOf="@+id/Minutes"></Button>
