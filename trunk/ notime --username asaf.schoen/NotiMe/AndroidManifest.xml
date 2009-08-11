@@ -6,6 +6,7 @@
 	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 	<uses-permission android:name="android.permission.INTERNET" />
 	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
 	<uses-permission android:name="android.permission.VIBRATE" />
 
@@ -30,6 +31,10 @@
 			to press back to return.
 		-->
 		<activity android:name=".NotificationDisplay"
+			android:taskAffinity="" android:excludeFromRecents="true"
+			android:noHistory="true">
+		</activity>
+		<activity android:name=".NotiErrDisplay"
 			android:taskAffinity="" android:excludeFromRecents="true"
 			android:noHistory="true">
 		</activity>
