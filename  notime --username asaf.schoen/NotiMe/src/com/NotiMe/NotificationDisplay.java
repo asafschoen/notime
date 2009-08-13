@@ -9,6 +9,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+//a text added by Danny Dahan to check SVN commit
+
 /**
  * Activity used by to show the notification to the user.
  */
