@@ -71,17 +71,17 @@ public class GMap {
 	 * @param placeB
 	 *            the second place
 	 * 
-	 * @return the time in minutes
+	 * @return the time in minutes or null if no route was found
 	 * 
 	 * @throws IOException
 	 *             Signals that an I/O exception has occurred.
 	 */
-	public int getTime(final String placeA, final String placeB)
+	public Integer getTime(final String placeA, final String placeB)
 			throws IOException {
 		final URL url = new URL("http://maps.google.com/maps?saddr="
 				+ URLEncoder.encode(placeA, "UTF-8") + "&daddr="
 				+ URLEncoder.encode(placeB, "UTF-8"));
-		// System.out.println(url);
+		System.out.println("URL: " + url);
 		final URLConnection uc = url.openConnection();
 
 		final InputStreamReader input = new InputStreamReader(uc
@@ -116,10 +116,11 @@ public class GMap {
 			}
 		}
 		in.close();
-		return -1;
+		return null;
 	}
-	
-	public URL getURL(final String placeA, final String placeB) throws MalformedURLException, UnsupportedEncodingException{
+
+	public URL getURL(final String placeA, final String placeB)
+			throws MalformedURLException, UnsupportedEncodingException {
 		return new URL("http://maps.google.com/maps?saddr="
 				+ URLEncoder.encode(placeA, "UTF-8") + "&daddr="
 				+ URLEncoder.encode(placeB, "UTF-8"));

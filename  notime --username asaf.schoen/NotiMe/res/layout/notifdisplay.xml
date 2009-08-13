@@ -7,7 +7,7 @@
 		android:layout_height="wrap_content" android:layout_width="fill_parent"
 		android:layout_gravity="center">
 
-		<TextView android:id="@+id/notifytxt" android:layout_width="fill_parent"
+		<TextView android:id="@+id/notify_txt" android:layout_width="fill_parent"
 			android:layout_height="wrap_content" android:layout_weight="0"
 			android:paddingBottom="40dip" />
 
@@ -15,30 +15,23 @@
 			android:layout_width="wrap_content" android:layout_height="wrap_content"
 			android:layout_centerVertical="true" android:layout_centerHorizontal="true">
 
-			<Button android:id="@+id/Map" android:layout_width="wrap_content"
-				android:layout_height="wrap_content" android:text="Show Directions">
+			<Button android:id="@+id/event" android:layout_width="wrap_content"
+				android:layout_height="wrap_content" android:text="Show Event">
 			</Button>
 
-			<Button android:id="@+id/notifyok" android:layout_width="wrap_content"
-				android:layout_height="wrap_content" android:text="Dismiss"
-				android:layout_below="@+id/Map">
-			</Button>
-
-			<Button android:id="@+id/Snooze" android:layout_width="wrap_content"
-				android:layout_height="wrap_content" android:text="Snooze"
-				android:layout_below="@+id/notifyok"></Button>
-
-			<EditText android:id="@+id/Minutes" android:layout_height="wrap_content"
-				android:width="25pt" android:layout_width="25pt" android:text=" 10"
-				android:layout_below="@+id/notifyok" android:layout_toRightOf="@+id/Snooze"></EditText>
-			<Button android:id="@+id/Plus" android:layout_width="wrap_content"
-				android:layout_height="wrap_content" android:text="+" android:width="30pt"
-				android:layout_toRightOf="@+id/Minutes" android:layout_below="@+id/notifyok"></Button>
-			<Button android:id="@+id/Minus" android:layout_width="wrap_content"
-				android:layout_height="wrap_content" android:text="-" android:width="30pt"
-				android:layout_toRightOf="@+id/Plus" android:layout_below="@+id/notifyok"></Button>
 
 		</RelativeLayout>
+		<Button android:id="@+id/map" android:layout_width="wrap_content"
+			android:layout_height="wrap_content" android:text="Show Directions"
+			android:layout_below="@+id/event">
+		</Button>
+		<Button android:id="@+id/snooze" android:layout_width="wrap_content"
+			android:layout_height="wrap_content" android:text="Snooze"
+			android:layout_below="@+id/notify_ok"></Button>
+		<Button android:id="@+id/dismiss" android:layout_width="wrap_content"
+			android:layout_height="wrap_content" android:text="Dismiss"
+			android:layout_below="@+id/map">
+		</Button>
 	</LinearLayout>
 </LinearLayout>
 
