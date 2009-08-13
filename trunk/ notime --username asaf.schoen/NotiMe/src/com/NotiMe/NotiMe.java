@@ -41,7 +41,7 @@ public class NotiMe extends Activity {
 			public void onClick(final View v) {
 				// Perform action on clicks
 				if (togglebutton.isChecked()) {
-					System.out.println("CHECKED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+					System.out.println("TOGGLE BUTTON CHECKED");
 
 					final PreferenceReader pr = new PreferenceReader(
 							PreferenceReader._activity);
@@ -54,11 +54,11 @@ public class NotiMe extends Activity {
 
 						String user = pr.getUser().trim();
 						String pass = pr.getPass().trim();
-						System.out.println("!!!!!!!!!!!!!1" + user);
-						System.out.println("!!!!!!!!!!!!!1" + pass);
+						System.out.println("!!!!!!!!!!!!!" + user);
+						System.out.println("!!!!!!!!!!!!!" + pass);
 						if (user != null && pass != null && !user.equals("")
 								&& !pass.equals("")) {
-							System.out.println("HI2222222222");
+							
 							GoogleCalendarP.setLogin(user, pass);
 							try {
 								if (GoogleCalendarP.authenticate(true) != null) {
@@ -85,7 +85,7 @@ public class NotiMe extends Activity {
 							}
 
 						} else {
-							System.out.println("HI111111111");
+							System.out.println("MISSING USER/PASSWORD");
 							Toast.makeText(NotiMe.this,
 									R.string.error_login_details,
 									Toast.LENGTH_SHORT).show();
@@ -102,7 +102,7 @@ public class NotiMe extends Activity {
 
 				} else {
 					System.out
-							.println("UNCHECKED???????????????????????????????");
+							.println("TOGGLE BUTTON UNCHECKED");
 					stopService(new Intent(NotiMe.this, NotifyingService.class));
 				}
 			}

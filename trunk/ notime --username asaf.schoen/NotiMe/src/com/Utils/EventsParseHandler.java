@@ -109,7 +109,7 @@ public class EventsParseHandler extends DefaultHandler {
 					myEventsList.add(curEvent);
 				}
 			} else {
-				System.out.println("not valid event - missing time/location");
+				// System.out.println("not valid event - missing time/location");
 			}
 			// has_location = true;
 			// has_time = true;

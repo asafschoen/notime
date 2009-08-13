@@ -25,7 +25,7 @@
 
 			<RadioButton android:checked="false" android:id="@+id/option1" />
 			<RadioButton android:checked="false" android:id="@+id/option2" />
-			
+
 			<RadioButton android:checked="false" android:text="NotiMe"
 				android:id="@+id/timebefore" />
 			<RelativeLayout android:id="@+id/widget76"
@@ -47,9 +47,7 @@
 					android:layout_toRightOf="@+id/errMinus"
 					android:layout_alignBottom="@+id/errMinus" />
 			</RelativeLayout>
-			<RadioButton android:checked="false"
-				android:text="NotiMe according to Google Calendar pop-up reminder"
-				android:id="@+id/calendar" />
+			
 			<RadioButton android:checked="false"
 				android:text="Dismiss NotiMe for this event" android:id="@+id/dismiss" />
 		</RadioGroup>

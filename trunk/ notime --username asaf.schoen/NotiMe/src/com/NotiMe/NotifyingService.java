@@ -1,9 +1,9 @@
 package com.NotiMe;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 
@@ -25,6 +25,7 @@ import android.os.RemoteException;
 
 import com.Utils.GMap;
 import com.Utils.GoogleCalendarP;
+import com.Utils.JavaCalendarUtils;
 import com.Utils.NotiCalendar;
 import com.Utils.NotiEvent;
 
@@ -41,7 +42,7 @@ public class NotifyingService extends Service implements LocationListener {
 	private int notificationTime;
 
 	// Use a layout id for a unique identifier
-	private static int NOTIME_NOTIFICATIONS = R.layout.preferences;
+	static int NOTIME_NOTIFICATIONS = R.layout.preferences;
 
 	// private ConditionVariable nCondition;
 	private ConditionVariable nMaxTimeCondition;
@@ -54,7 +55,12 @@ public class NotifyingService extends Service implements LocationListener {
 			// wait the 30 seconds.
 			// here we should enter the logic of notification (time and place)
 			while (run) {
-				checkEvents();
+				try {
+					checkEvents();
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				if ((nMaxTimeCondition.block(3 * 10000))) {
 					break;
 				}
@@ -81,63 +87,168 @@ public class NotifyingService extends Service implements LocationListener {
 			return super.onTransact(code, data, reply, flags);
 		}
 	};
-	private NotificationManager nNM;
+	static NotificationManager nNM;
 
 	NotiEvent firstEvent;
 
-	private void checkEvents() {
+	static HashMap<String, NotiDetails> eventsDetails = new HashMap<String, NotiDetails>();
 
-		try {
-			final LinkedList<NotiCalendar> parsedCalendarsList = GoogleCalendarP
-					.getAllCals();
-			final LinkedList<NotiEvent> parsedEventsList = GoogleCalendarP
-					.getEvents(parsedCalendarsList);
+	GMap gMap = new GMap();
 
-			firstEvent = parsedEventsList.getFirst();
+	private void printEvent(int drivingTimeInMin, Calendar getInCarTime) {// temp
+		// -
+		// for
+		// debug
+		final Calendar currentTime = Calendar.getInstance();
 
-			System.out.println("************" + latitude + " " + longitude);
+		System.out.println("Event Title: " + firstEvent.get_title());
+		System.out.println("Event Location: " + firstEvent.get_where());
+		if (getInCarTime != null)
+			System.out.println("Driving Time: hours: "
+					+ Math.abs(drivingTimeInMin / 60) + " mins: "
+					+ drivingTimeInMin % 60);
+		System.out.println("event time: " + firstEvent.get_when());
+		if (getInCarTime != null)
+			System.out.println("get in car time: "
+					+ new Date(getInCarTime.getTimeInMillis()));
+		System.out.println("current time: "
+				+ new Date(currentTime.getTimeInMillis()));
+	}
 
-			final GMap gm = new GMap();
-			final int d = gm.getTime(latitude + "," + longitude, firstEvent
-					.get_latitude()
-					+ "," + firstEvent.get_longitude());
+	private void checkEvents() throws Exception {
+		notificationTime = Integer.parseInt(pr.getNotificationTime());
+		final LinkedList<NotiCalendar> parsedCalendarsList = GoogleCalendarP
+				.getAllCals();// remove unneeded calendars
+		final LinkedList<NotiEvent> parsedEventsList = GoogleCalendarP
+				.getEvents(parsedCalendarsList);
 
-			// int notificationTime = 0; // get From Preferences (in minutes)
-			final Calendar timeToLeave = Calendar.getInstance();
-			if (d > -1) {
-				timeToLeave.setTime(firstEvent.get_when());
-				timeToLeave.add(Calendar.MINUTE, notificationTime * (-1));
-				timeToLeave.add(Calendar.MINUTE, d * (-1));
-			} else {
-				notificationTime = -1;
+		firstEvent = parsedEventsList.getFirst();
+		printEvent(0, null);
+		if (!eventsDetails.containsKey(firstEvent.get_id())) {// new event
+			System.out.println("NEW EVENT");
+			if (firstEvent.get_latitude() != null) {// event location is known
+				handleKnownLocation(firstEvent.get_latitude(), firstEvent
+						.get_longitude());
+				// System.out.println("EVENT LOCATION IS KNOWN");
+				// final Integer drivingTimeInMin = gMap.getTime(latitude + ","
+				// + longitude, firstEvent.get_latitude() + ","
+				// + firstEvent.get_longitude());
+				//
+				// final Calendar notificationPublishTime =
+				// Calendar.getInstance();
+				// final Calendar getInCarTime = Calendar.getInstance();
+				// if (drivingTimeInMin != null) {// there is a route
+				// System.out.println("THERE IS A ROUTE");
+				// notificationPublishTime.setTime(firstEvent.get_when());//
+				// event
+				// // time
+				// notificationPublishTime.add(Calendar.MINUTE,
+				// notificationTime * (-1));// minus notification time
+				// notificationPublishTime.add(Calendar.MINUTE,
+				// drivingTimeInMin * (-1));// minus driving time
+				//
+				// getInCarTime.setTime(firstEvent.get_when());// event time
+				// getInCarTime.add(Calendar.MINUTE, drivingTimeInMin * (-1));//
+				// minus
+				// // driving
+				// // time
+				//
+				// final Calendar currentTime = Calendar.getInstance();
+				//
+				// printEvent(drivingTimeInMin, getInCarTime);
+				//
+				// if (currentTime.after(notificationPublishTime)) {
+				// NotiDetails nd = new NotiDetails();
+				// nd.set_published(true);
+				// nd.set_origEvent(firstEvent);
+				//
+				// nd
+				// .set_directionsURL("http://maps.google.com/maps?f=d&saddr="
+				// + latitude
+				// + ","
+				// + longitude
+				// + "&daddr="
+				// + firstEvent.get_latitude()
+				// + "," + firstEvent.get_longitude() + "");
+				//
+				// eventsDetails.put(firstEvent.get_id(), nd);
+				// showNotification(firstEvent.get_id(), getInCarTime);
+				// }
+				//
+				// } else {// no route was found
+				// System.out.println("TODO - NO ROUTE WAS FOUND");
+				// }
+
+			} else {// event location is unclear
+				System.out.println("EVENT LOCATION IS UNCLEAR");
+				NotiDetails nd = new NotiDetails();
+				nd.set_published(false);
+				nd.set_origEvent(firstEvent);
+				showNotification(firstEvent.get_id(), null);
 			}
-			final Calendar currentTime = Calendar.getInstance();
-			currentTime.setTime(new Date());
 
-			System.out.println("Event Title: " + firstEvent.get_title());
-			System.out.println("Event Location: " + firstEvent.get_where());
-			System.out.println("Driving Time: hours: " + Math.abs(d / 60)
-					+ " mins: " + d % 60);
-			System.out.println("event time: " + firstEvent.get_when());
-			System.out.println("leave time: "
-					+ new Date(timeToLeave.getTimeInMillis()));
-			System.out.println("current time: "
-					+ new Date(currentTime.getTimeInMillis()));
+		} else {// not new
+			System.out.println("THE EVENT IS NOT NEW");
 
-			if (currentTime.after(timeToLeave)) {
-				showNotification(firstEvent.get_title(), notificationTime,
-						firstEvent.get_where());
+			NotiDetails eventDet = eventsDetails.get(firstEvent.get_id());
+			if (eventDet.is_locationFixed() && !eventDet.is_dissmissed()
+					&& !eventDet.is_published()) {// only location fixed
+				handleKnownLocation(Double.toString(eventDet.get_address()
+						.getLatitude()), Double.toString(eventDet.get_address()
+						.getLongitude()));
 			}
-		} catch (final Exception e) {
-			e.printStackTrace();
+
 		}
 	}
 
-	private CharSequence getTimeText(final int timeInMinutes,
-			final String what, final String where) {
-		if (timeInMinutes > 0) {
-			final int hours = Math.abs(timeInMinutes / 60);
-			final int mins = timeInMinutes % 60;
+	private void handleKnownLocation(String eventLatitude,
+			String eventLongtitude) throws IOException {
+		System.out.println("EVENT LOCATION IS KNOWN");
+		final Integer drivingTimeInMin = gMap.getTime(latitude + ","
+				+ longitude, eventLatitude + "," + eventLongtitude);
+
+		final Calendar notificationPublishTime = Calendar.getInstance();
+		final Calendar getInCarTime = Calendar.getInstance();
+		if (drivingTimeInMin != null) {// there is a route
+			System.out.println("THERE IS A ROUTE");
+			notificationPublishTime.setTime(firstEvent.get_when());// event
+			// time
+			notificationPublishTime.add(Calendar.MINUTE, notificationTime
+					* (-1));// minus notification time
+			notificationPublishTime.add(Calendar.MINUTE, drivingTimeInMin
+					* (-1));// minus driving time
+
+			getInCarTime.setTime(firstEvent.get_when());// event time
+			getInCarTime.add(Calendar.MINUTE, drivingTimeInMin * (-1));// minus
+			// driving
+			// time
+
+			final Calendar currentTime = Calendar.getInstance();
+
+			printEvent(drivingTimeInMin, getInCarTime);
+
+			if (currentTime.after(notificationPublishTime)) {
+				NotiDetails nd = new NotiDetails();
+				nd.set_published(true);
+				nd.set_origEvent(firstEvent);
+
+				nd.set_directionsURL("http://maps.google.com/maps?f=d&saddr="
+						+ latitude + "," + longitude + "&daddr="
+						+ eventLatitude + "," + eventLongtitude + "");
+
+				eventsDetails.put(firstEvent.get_id(), nd);
+				showNotification(firstEvent.get_id(), getInCarTime);
+			}
+
+		} else {// no route was found
+			System.out.println("TODO - NO ROUTE WAS FOUND");
+		}
+	}
+
+	static CharSequence getTimeText(final int time) {
+		if (time > 0) {
+			final int hours = Math.abs(time / 60);
+			final int mins = time % 60;
 			CharSequence h = null, m = null, t = null;
 			if (hours > 1) {
 				h = hours + " hours";
@@ -156,38 +267,34 @@ public class NotifyingService extends Service implements LocationListener {
 			} else if (h != null) {
 				t = h;
 			}
-			NotificationDisplay.text = "You should get on your way for " + what
-					+ " at " + where + " in " + t;
-			return what + " - " + t + " to go!";
+			return t;
 		} else {
-			return "notiMe can't locate your next appointment!";
+			// return "notiMe can't locate your next appointment!";
+			return "You should have been on your way already!" + time;
 		}
 	}
 
-	private PendingIntent makeNotiMeIntent(final int iconId) {
+	private PendingIntent makeNotiMeIntent(final String id,
+			Calendar getInCarTime) {
 		// The PendingIntent to launch our activity if the user selects this
 		// notification. Note the use of FLAG_UPDATE_CURRENT so that if there
 		// is already an active matching pending intent, we will update its
 		// extras to be the ones passed in here.
-		final PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
-				new Intent(this, NotificationDisplay.class).setFlags(
-						Intent.FLAG_ACTIVITY_NEW_TASK).putExtra("iconimg",
-						iconId), PendingIntent.FLAG_UPDATE_CURRENT);
-
-		// //TEST
-		NotificationDisplay.url = "http://maps.google.com/maps?f=d&saddr="
-				+ latitude + "," + longitude + "&daddr="
-				+ firstEvent.get_latitude() + "," + firstEvent.get_longitude()
-				+ "";
-
-		// Intent mapIntent = new Intent(Intent.ACTION_VIEW, Uri
-		// .parse("http://maps.google.com/maps?f=d&saddr=" + latitude
-		// + "," + longitude + "&daddr="
-		// + firstEvent.get_latitude() + ","
-		// + firstEvent.get_longitude() + ""));
-		// mapIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-		// startActivity(mapIntent);
-		// ///
+		final PendingIntent contentIntent;
+		if (getInCarTime != null) { // NotificationDisplay
+			contentIntent = PendingIntent.getActivity(this, 0, new Intent(this,
+					NotificationDisplay.class).setFlags(
+					Intent.FLAG_ACTIVITY_NEW_TASK)
+					.putExtra("com.NotiMe.ID", id).putExtra(
+							"com.NotiMe.GetInCarTime", getInCarTime),
+					PendingIntent.FLAG_UPDATE_CURRENT);
+		} else {// Error Display
+			contentIntent = PendingIntent.getActivity(this, 0, new Intent(this,
+					NotiErrDisplay.class).setFlags(
+					Intent.FLAG_ACTIVITY_NEW_TASK)
+					.putExtra("com.NotiMe.ID", id),
+					PendingIntent.FLAG_UPDATE_CURRENT);
+		}
 
 		return contentIntent;
 	}
@@ -196,42 +303,46 @@ public class NotifyingService extends Service implements LocationListener {
 	public IBinder onBind(final Intent intent) {
 		return nBinder;
 	}
+
+	PreferenceReader pr = new PreferenceReader(PreferenceReader._activity);
+
 	@Override
 	public void onCreate() {
-		final PreferenceReader pr = new PreferenceReader(
-				PreferenceReader._activity);
-		System.out.println("!!!!!!!!!!!!!1" + pr.getUser());
-		System.out.println("!!!!!!!!!!!!!1" + pr.getPass());
-		GoogleCalendarP.setLogin(pr.getUser(), pr.getPass());
-		notificationTime = Integer.parseInt(pr.getNotificationTime());
+
+		// System.out.println("!!!!!!!!!!!!!" + pr.getUser());
+		// System.out.println("!!!!!!!!!!!!!" + pr.getPass());
+		// GoogleCalendarP.setLogin(pr.getUser(), pr.getPass());
+		// notificationTime = Integer.parseInt(pr.getNotificationTime());
+		// try {
+		// GoogleCalendarP.authenticate(false);
+		// } catch (final MalformedURLException e) {
+		// // TODO Auto-generated catch block
+		// e.printStackTrace();
+		// } catch (final IOException e) {
+		// // TODO Auto-generated catch block
+		// e.printStackTrace();
+		// }
+
+		LinkedList<NotiCalendar> calendarList = null;
 		try {
-			GoogleCalendarP.authenticate(false);
-		} catch (final MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (final IOException e) {
+			calendarList = GoogleCalendarP.getAllCals();
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
-		 LinkedList<NotiCalendar> calendarList = null;
-		 try {
-		 calendarList = GoogleCalendarP.getAllCals();
-		 } catch (Exception e) {
-		 // TODO Auto-generated catch block
-		 e.printStackTrace();
-		 }
-		
 		// String[] cNames = new String[calendarList.size()], cValues = new
 		// String[calendarList.size()];
-		 String cNames="";
-		 for (Iterator<NotiCalendar> iterator = calendarList.iterator();iterator .hasNext();) {
-		 NotiCalendar notiCalendar = (NotiCalendar) iterator.next();
-		 System.out.println("???????????????????"+notiCalendar.get_title());
-		 cNames= cNames+notiCalendar.get_title()+ ",";
-		 }
-		 System.out.println("?????????????/"+cNames);
-		 pr.setCalendarList(cNames);
+		String cNames = "";
+		for (Iterator<NotiCalendar> iterator = calendarList.iterator(); iterator
+				.hasNext();) {
+			NotiCalendar notiCalendar = (NotiCalendar) iterator.next();
+			System.out
+					.println("???????????????????" + notiCalendar.get_title());
+			cNames = cNames + notiCalendar.get_title() + ",";
+		}
+		System.out.println("?????????????/" + cNames);
+		pr.setCalendarList(cNames);
 
 		nNM = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
@@ -266,7 +377,7 @@ public class NotifyingService extends Service implements LocationListener {
 	/**********************************************************************
 	 * LocationListener overrides below
 	 **********************************************************************/
-	//@Override
+	// @Override
 	public void onLocationChanged(final Location location) {
 		// this code tricks the emulator to work...
 		// stopListening();
@@ -288,31 +399,39 @@ public class NotifyingService extends Service implements LocationListener {
 		// nCondition.open();
 	}
 
-	//@Override
+	// @Override
 	public void onProviderDisabled(final String provider) {
 	}
 
-	//@Override
+	// @Override
 	public void onProviderEnabled(final String provider) {
 	}
 
-	//@Override
+	// @Override
 	public void onStatusChanged(final String provider, final int status,
 			final Bundle extras) {
 	}
 
-	private void showNotification(final String what, final int time,
-			final String where) {
+	static int getMinutesToGo(Calendar getInCarTime) {
+		final Calendar currentTime = Calendar.getInstance();
+		return (int) JavaCalendarUtils.difference(currentTime, getInCarTime,
+				JavaCalendarUtils.Unit.MINUTE);
+	}
+
+	private void showNotification(final String eventID,
+			final Calendar getInCarTime) {
 
 		// we'll use the same text for the ticker and the expanded notification
-		final CharSequence text = getTimeText(time, what, where);
+		final CharSequence text = firstEvent.get_title() + " - "
+				+ getTimeText(getMinutesToGo(getInCarTime)) + " to go!";
 
 		// Set the icon, scrolling text and timestamp.
 		// Note that we pass null for tickerText.
 		final Notification notification = new Notification(R.drawable.noticon,
 				text, System.currentTimeMillis());
 
-		final PendingIntent contentIntent = makeNotiMeIntent(R.drawable.noticon);
+		final PendingIntent contentIntent = makeNotiMeIntent(firstEvent
+				.get_id(), getInCarTime);
 
 		// Set the info for the views that show in the notification panel.
 		notification.setLatestEventInfo(this, getText(R.string.app_name), text,
