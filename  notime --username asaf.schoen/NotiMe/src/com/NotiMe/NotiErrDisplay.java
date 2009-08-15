@@ -1,7 +1,6 @@
 package com.NotiMe;
 
 import java.io.IOException;
-import java.util.Iterator;
 import java.util.List;
 
 import android.app.Activity;
@@ -29,7 +28,7 @@ public class NotiErrDisplay extends Activity {
 		super.onCreate(icicle);
 		setContentView(R.layout.notierrdisplay);
 
-		Bundle extras = getIntent().getExtras();
+		final Bundle extras = getIntent().getExtras();
 
 		final String id = extras.getString("com.NotiMe.ID");
 		final NotiDetails event = NotifyingService.eventsDetails.get(id);
@@ -49,12 +48,11 @@ public class NotiErrDisplay extends Activity {
 				int index = 1;
 				final List<Address> addressList = g.getFromLocationName(
 						origLocation, 2);
-				for (Iterator<Address> iterator = addressList.iterator(); iterator
-						.hasNext();) {
-					address = (Address) iterator.next();
+				for (final Address address2 : addressList) {
+					address = address2;
 					// latt1 = Double.toString(address.getLatitude());
 					// longt1 = Double.toString(address.getLongitude());
-					int max = address.getMaxAddressLineIndex();
+					final int max = address.getMaxAddressLineIndex();
 					for (int i = 0; i < max; i++) {
 						System.out.println(address.getAddressLine(i));
 						if (index == 1) {
@@ -66,7 +64,7 @@ public class NotiErrDisplay extends Activity {
 					index++;
 
 				}
-			} catch (IOException e) {
+			} catch (final IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
@@ -81,14 +79,14 @@ public class NotiErrDisplay extends Activity {
 
 		final RadioButton option1RBtn = (RadioButton) findViewById(R.id.option1);
 		if (l1Str.equals("")) {
-			option1RBtn.setVisibility(RadioButton.INVISIBLE);
+			option1RBtn.setVisibility(View.INVISIBLE);
 		} else {
 			option1RBtn.setText(l1Str);
 		}
 
 		final RadioButton option2RBtn = (RadioButton) findViewById(R.id.option2);
 		if (l2Str.equals("")) {
-			option2RBtn.setVisibility(RadioButton.INVISIBLE);
+			option2RBtn.setVisibility(View.INVISIBLE);
 		} else {
 			option2RBtn.setText(l2Str);
 		}
@@ -140,19 +138,20 @@ public class NotiErrDisplay extends Activity {
 						event.set_locationFixed(true);
 					} else if (timeAlertRBtn.isChecked()) {
 						event.set_timeAlert(true);
-						int t = Integer
-								.parseInt(et.getText().toString().trim());
+						final int t = Integer.parseInt(et.getText().toString()
+								.trim());
 						event.set_timeAlertInMin(t);
 					} else if (dismissRBtn.isChecked()) {
 						event.set_dissmissed(true);
 
 					}
 					NotifyingService.eventsDetails.put(id, event);
-					NotifyingService.nNM.cancel(R.layout.notifdisplay);
+					NotifyingService.nNM
+							.cancel(NotifyingService.NOTIME_NOTIFICATIONS);
 					finish();
 				}
 			});
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

@@ -92,22 +92,22 @@ public class Preferences extends PreferenceActivity {
 
 				});
 
-		 //the preference gets the string containing the calendars
-		 PreferenceReader pReader=new PreferenceReader(this);
-		 String calendarList=pReader.getCalenderList();
-		 //splits it from the ,
-		 StringTokenizer tokenizer=new StringTokenizer(calendarList,",");
-		 final String[] cTest = new String[tokenizer.countTokens()];
-		 int size=tokenizer.countTokens();
-		 //put each calendar in a seperate string in cTest[] array
-		 for (int i=0; i<size; i++)
-			 cTest[i]=tokenizer.nextToken();		
-		 
-		 final ListPreferenceMultiSelect calendars =
-		 (ListPreferenceMultiSelect) findPreference("list1");
+		// the preference gets the string containing the calendars
+		final PreferenceReader pReader = new PreferenceReader(this);
+		final String calendarList = pReader.getCalenderList();
+		// splits it from the ,
+		final StringTokenizer tokenizer = new StringTokenizer(calendarList, ",");
+		final String[] cTest = new String[tokenizer.countTokens()];
+		final int size = tokenizer.countTokens();
+		// put each calendar in a seperate string in cTest[] array
+		for (int i = 0; i < size; i++) {
+			cTest[i] = tokenizer.nextToken();
+		}
 
-		 calendars.setEntries(cTest);
-		 calendars.setEntryValues(cTest);
+		final ListPreferenceMultiSelect calendars = (ListPreferenceMultiSelect) findPreference("list1");
+
+		calendars.setEntries(cTest);
+		calendars.setEntryValues(cTest);
 
 	}
 
