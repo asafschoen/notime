@@ -51,7 +51,7 @@ public class JavaCalendarUtils {
 		private final int calendarUnit;
 		private final long estimate;
 
-		Unit(int calendarUnit, long estimate) {
+		Unit(final int calendarUnit, final long estimate) {
 			this.calendarUnit = calendarUnit;
 			this.estimate = estimate;
 		}
@@ -70,7 +70,7 @@ public class JavaCalendarUtils {
 	 * @param increment
 	 *            the amount to increment
 	 */
-	public static void add(Calendar c, int unit, long increment) {
+	public static void add(final Calendar c, final int unit, long increment) {
 		while (increment > Integer.MAX_VALUE) {
 			c.add(unit, Integer.MAX_VALUE);
 			increment -= Integer.MAX_VALUE;
@@ -92,12 +92,13 @@ public class JavaCalendarUtils {
 	 * 
 	 * @return the number of units passed
 	 */
-	public static long difference(Calendar c1, Calendar c2, Unit unit) {
+	public static long difference(final Calendar c1, final Calendar c2,
+			final Unit unit) {
 
-		Calendar first = (Calendar) c1.clone();
-		Calendar last = (Calendar) c2.clone();
+		final Calendar first = (Calendar) c1.clone();
+		final Calendar last = (Calendar) c2.clone();
 
-		long difference = c2.getTimeInMillis() - c1.getTimeInMillis();
+		final long difference = c2.getTimeInMillis() - c1.getTimeInMillis();
 
 		long increment = (long) Math.floor((double) difference
 				/ (double) unit.estimate);
@@ -132,11 +133,11 @@ public class JavaCalendarUtils {
 	 * 
 	 * @return the number of units passed
 	 */
-	public static long difference(Date d1, Date d2, Unit unit) {
-		Calendar c1 = Calendar.getInstance();
+	public static long difference(final Date d1, final Date d2, final Unit unit) {
+		final Calendar c1 = Calendar.getInstance();
 		c1.setTime(d1);
 
-		Calendar c2 = Calendar.getInstance();
+		final Calendar c2 = Calendar.getInstance();
 		c2.setTime(d2);
 
 		return difference(c1, c2, unit);
@@ -157,18 +158,21 @@ public class JavaCalendarUtils {
 	 * 
 	 * @return the number of units passed
 	 */
-	public static double exactDifference(Calendar c1, Calendar c2, Unit unit) {
-		long unitDifference = difference(c1, c2, unit);
-		Calendar mid = (Calendar) c1.clone();
+	public static double exactDifference(final Calendar c1, final Calendar c2,
+			final Unit unit) {
+		final long unitDifference = difference(c1, c2, unit);
+		final Calendar mid = (Calendar) c1.clone();
 		JavaCalendarUtils.add(mid, unit.calendarUnit, unitDifference);
 
-		Calendar end = (Calendar) mid.clone();
+		final Calendar end = (Calendar) mid.clone();
 		end.add(unit.calendarUnit, 1);
 
-		long millisPassed = JavaCalendarUtils.difference(mid, c2, Unit.MILLISECOND);
-		long millisTotal = JavaCalendarUtils.difference(mid, end, Unit.MILLISECOND);
+		final long millisPassed = JavaCalendarUtils.difference(mid, c2,
+				Unit.MILLISECOND);
+		final long millisTotal = JavaCalendarUtils.difference(mid, end,
+				Unit.MILLISECOND);
 
-		double remainder = (double) millisPassed / (double) millisTotal;
+		final double remainder = (double) millisPassed / (double) millisTotal;
 
 		return unitDifference + remainder;
 	}
@@ -188,7 +192,8 @@ public class JavaCalendarUtils {
 	 * 
 	 * @return the number of units passed without overlap
 	 */
-	public static Map<Unit, Long> tieredDifference(Calendar c1, Calendar c2) {
+	public static Map<Unit, Long> tieredDifference(final Calendar c1,
+			final Calendar c2) {
 		return tieredDifference(c1, c2, Arrays.asList(Unit.values()));
 	}
 
@@ -207,14 +212,14 @@ public class JavaCalendarUtils {
 	 * 
 	 * @return the number of units passed without overlap
 	 */
-	public static Map<Unit, Long> tieredDifference(Calendar c1, Calendar c2,
-			List<Unit> units) {
-		Calendar first = (Calendar) c1.clone();
-		Calendar last = (Calendar) c2.clone();
+	public static Map<Unit, Long> tieredDifference(final Calendar c1,
+			final Calendar c2, final List<Unit> units) {
+		final Calendar first = (Calendar) c1.clone();
+		final Calendar last = (Calendar) c2.clone();
 
-		Map<Unit, Long> differences = new HashMap<Unit, Long>();
+		final Map<Unit, Long> differences = new HashMap<Unit, Long>();
 
-		List<Unit> allUnits = new ArrayList<Unit>();
+		final List<Unit> allUnits = new ArrayList<Unit>();
 		allUnits.add(Unit.YEAR);
 		allUnits.add(Unit.MONTH);
 		allUnits.add(Unit.DAY);
@@ -223,9 +228,9 @@ public class JavaCalendarUtils {
 		allUnits.add(Unit.SECOND);
 		allUnits.add(Unit.MILLISECOND);
 
-		for (Unit unit : allUnits) {
+		for (final Unit unit : allUnits) {
 			if (units.contains(unit)) {
-				long difference = difference(first, last, unit);
+				final long difference = difference(first, last, unit);
 				differences.put(unit, difference);
 				JavaCalendarUtils.add(first, unit.calendarUnit, difference);
 			}

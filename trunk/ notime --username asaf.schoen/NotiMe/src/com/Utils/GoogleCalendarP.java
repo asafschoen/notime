@@ -29,7 +29,7 @@ import org.xml.sax.XMLReader;
 public final class GoogleCalendarP {
 
 	/** The authentication token. */
-	private static String mAuthToken = null;// "DQAAAHUAAAA4FdYPFHGBAnCXT_-6UlZswMlrOWhdf9X0GeVIxWi5Cmxm-9Z2Hl7eVFNQ6coRTFbv63Rzxe45gPARaqeHpyEsrOyJA3_fWkwSUzzQ_q6Tp9rs2oiX-4YlOTf7Kkl7XLzhdrXdWcHLJEMqj9c8kPvhzzQs_QrTWAMBvecqBU4yTw";;
+	public static String mAuthToken = null;// "DQAAAHUAAAA4FdYPFHGBAnCXT_-6UlZswMlrOWhdf9X0GeVIxWi5Cmxm-9Z2Hl7eVFNQ6coRTFbv63Rzxe45gPARaqeHpyEsrOyJA3_fWkwSUzzQ_q6Tp9rs2oiX-4YlOTf7Kkl7XLzhdrXdWcHLJEMqj9c8kPvhzzQs_QrTWAMBvecqBU4yTw";;
 
 	/** The user & the password. */
 	private static String mUsername = "", mPassword = "";

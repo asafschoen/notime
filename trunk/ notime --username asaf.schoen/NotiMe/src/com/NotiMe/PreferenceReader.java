@@ -11,6 +11,10 @@ public class PreferenceReader {
 		_activity = activity;
 	}
 
+	public String getCalenderList() {
+		return loadString("calendar.list");
+	}
+
 	public String getNotificationTime() {
 		return loadString("pref.time");
 	}
@@ -21,12 +25,6 @@ public class PreferenceReader {
 
 	public String getSelectedCalendarList() {
 		return loadString("calendar.selection");
-	}
-	public void setCalendarList(String list){
-		saveString("calendar.list", list);
-	}
-	public String getCalenderList(){
-		return loadString("calendar.list");
 	}
 
 	public String getUser() {
@@ -65,11 +63,17 @@ public class PreferenceReader {
 				"notiMePref", 0);
 		return prefFile.getString(field, "");
 	}
+
 	private void saveString(final String field, final String data) {
-		final SharedPreferences prefFile = _activity.getSharedPreferences("notiMePref", 0);
+		final SharedPreferences prefFile = _activity.getSharedPreferences(
+				"notiMePref", 0);
 		final SharedPreferences.Editor editor = prefFile.edit();
 		editor.putString(field, data);
 		editor.commit();
+	}
+
+	public void setCalendarList(final String list) {
+		saveString("calendar.list", list);
 	}
 
 }

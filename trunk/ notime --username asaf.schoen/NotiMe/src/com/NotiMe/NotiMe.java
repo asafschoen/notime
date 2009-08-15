@@ -46,19 +46,19 @@ public class NotiMe extends Activity {
 					final PreferenceReader pr = new PreferenceReader(
 							PreferenceReader._activity);
 
-					ConnectivityManager connec = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+					final ConnectivityManager connec = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 
 					if (connec.getNetworkInfo(0).isConnectedOrConnecting()
 							|| connec.getNetworkInfo(1)
 									.isConnectedOrConnecting()) {
 
-						String user = pr.getUser().trim();
-						String pass = pr.getPass().trim();
+						final String user = pr.getUser().trim();
+						final String pass = pr.getPass().trim();
 						System.out.println("!!!!!!!!!!!!!" + user);
 						System.out.println("!!!!!!!!!!!!!" + pass);
-						if (user != null && pass != null && !user.equals("")
-								&& !pass.equals("")) {
-							
+						if ((user != null) && (pass != null)
+								&& !user.equals("") && !pass.equals("")) {
+
 							GoogleCalendarP.setLogin(user, pass);
 							try {
 								if (GoogleCalendarP.authenticate(true) != null) {
@@ -93,16 +93,14 @@ public class NotiMe extends Activity {
 						}
 
 					} else {
-						Toast.makeText(NotiMe.this,
-								R.string.error_connection,
+						Toast.makeText(NotiMe.this, R.string.error_connection,
 								Toast.LENGTH_SHORT).show();
 						togglebutton.setChecked(false);
 
 					}
 
 				} else {
-					System.out
-							.println("TOGGLE BUTTON UNCHECKED");
+					System.out.println("TOGGLE BUTTON UNCHECKED");
 					stopService(new Intent(NotiMe.this, NotifyingService.class));
 				}
 			}
@@ -123,7 +121,7 @@ public class NotiMe extends Activity {
 		rememberCheckBox
 				.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
-					//@Override
+					// @Override
 					public void onCheckedChanged(
 							final CompoundButton buttonView,
 							final boolean isChecked) {
@@ -137,7 +135,7 @@ public class NotiMe extends Activity {
 
 		userText.setOnKeyListener(new OnKeyListener() {
 
-			//@Override
+			// @Override
 			public boolean onKey(final View v, final int keyCode,
 					final KeyEvent event) {
 				saveString("pref.user", userText.getText().toString());
@@ -147,7 +145,7 @@ public class NotiMe extends Activity {
 
 		passText.setOnKeyListener(new OnKeyListener() {
 
-			//@Override
+			// @Override
 			public boolean onKey(final View v, final int keyCode,
 					final KeyEvent event) {
 				saveString("pref.pass", passText.getText().toString());
@@ -166,7 +164,7 @@ public class NotiMe extends Activity {
 		togglebutton.setChecked(pr.isRunning());
 		togglebutton.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
-			//@Override
+			// @Override
 			public void onCheckedChanged(final CompoundButton buttonView,
 					final boolean isChecked) {
 				saveBoolean("pref.running", isChecked);
