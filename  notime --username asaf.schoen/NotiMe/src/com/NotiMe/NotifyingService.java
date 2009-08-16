@@ -2,6 +2,7 @@ package com.NotiMe;
 
 import java.io.IOException;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -35,6 +36,8 @@ import com.Utils.NotiEvent;
  */
 public class NotifyingService extends Service implements LocationListener {
 
+	private static int notificationID = 1;
+
 	static int getMinutesToGo(final Calendar getInCarTime) {
 		final Calendar currentTime = Calendar.getInstance();
 		return (int) JavaCalendarUtils.difference(currentTime, getInCarTime,
@@ -66,7 +69,7 @@ public class NotifyingService extends Service implements LocationListener {
 			return t;
 		} else {
 			// return "notiMe can't locate your next appointment!";
-			return "You should have been on your way already!" + time;
+			return "You should have been on your way already!";
 		}
 	}
 
@@ -168,29 +171,79 @@ public class NotifyingService extends Service implements LocationListener {
 			}
 
 		}
+
+		final Collection<NotiDetails> e = eventsDetails.values();
+		for (final NotiDetails notiDetails : e) {
+			final NotiDetails eventDet = notiDetails;
+
+			final Calendar currentTime = Calendar.getInstance();
+			final NotiEvent origEvent = eventDet.get_origEvent();
+			if (eventDet.is_dissmissed()
+					&& currentTime.before(origEvent.get_when())) {
+				System.out.println("EVENT REMOVED FROM HASHMAP");
+				eventsDetails.remove(origEvent.get_id());
+			} else if (!eventDet.is_dissmissed() && eventDet.is_snooze()
+					&& !eventDet.is_snoozePublished()) {// Snooze
+				if (eventDet.get_snoozeTime().before(currentTime)) {
+					System.out.println("SNOOZE ALERT");
+					System.out.println("SNOOZE TIME: "
+							+ eventDet.get_snoozeTime().getTime());
+					eventDet.set_snoozePublished(true);
+					handleSnoozeOrTimeAlert(eventDet);
+				}
+			} else if (!eventDet.is_dissmissed() && eventDet.is_timeAlert()
+					&& !eventDet.is_timeAlertPublished()) { // Time
+				// Alert
+				final Calendar alertTime = Calendar.getInstance();
+				alertTime.setTime(eventDet.get_origEvent().get_when());
+				alertTime.add(Calendar.MINUTE, (-1)
+						* eventDet.get_timeAlertInMin());
+				if (alertTime.before(currentTime)) {
+					System.out.println("TIME ALERT");
+					eventDet.set_timeAlertPublished(true);
+					handleSnoozeOrTimeAlert(eventDet);
+				}
+			}
+		}
+
+	}
+
+	private Integer getDrivingTimeInMin(final String eventLatitude,
+			final String eventLongitude) throws IOException {
+		return gMap.getTime(latitude + "," + longitude, eventLatitude + ","
+				+ eventLongitude);
+	}
+
+	private Calendar getGetInCarTime(final NotiEvent event,
+			final Integer drivingTimeInMin) {
+		final Calendar getInCarTime = Calendar.getInstance();
+		getInCarTime.setTime(event.get_when());// event time
+		getInCarTime.add(Calendar.MINUTE, drivingTimeInMin * (-1));// minus
+		// driving
+		// time
+
+		return getInCarTime;
 	}
 
 	private void handleKnownLocation(final String eventLatitude,
 			final String eventLongitude) throws IOException {
 		System.out.println("EVENT LOCATION IS KNOWN");
-		final Integer drivingTimeInMin = gMap.getTime(latitude + ","
-				+ longitude, eventLatitude + "," + eventLongitude);
+		final Integer drivingTimeInMin = getDrivingTimeInMin(eventLatitude,
+				eventLongitude);
 
 		final Calendar notificationPublishTime = Calendar.getInstance();
-		final Calendar getInCarTime = Calendar.getInstance();
+
 		if (drivingTimeInMin != null) {// there is a route
 			System.out.println("THERE IS A ROUTE");
+			final Calendar getInCarTime = getGetInCarTime(firstEvent,
+					drivingTimeInMin);
+
 			notificationPublishTime.setTime(firstEvent.get_when());// event
 			// time
 			notificationPublishTime.add(Calendar.MINUTE, notificationTime
 					* (-1));// minus notification time
 			notificationPublishTime.add(Calendar.MINUTE, drivingTimeInMin
 					* (-1));// minus driving time
-
-			getInCarTime.setTime(firstEvent.get_when());// event time
-			getInCarTime.add(Calendar.MINUTE, drivingTimeInMin * (-1));// minus
-			// driving
-			// time
 
 			final Calendar currentTime = Calendar.getInstance();
 
@@ -212,6 +265,28 @@ public class NotifyingService extends Service implements LocationListener {
 		} else {// no route was found
 			System.out.println("TODO - NO ROUTE WAS FOUND");
 		}
+	}
+
+	private void handleSnoozeOrTimeAlert(final NotiDetails eventDet)
+			throws IOException {
+		final NotiEvent origEvent = eventDet.get_origEvent();
+		if (eventDet.get_notificationID() == 0) {
+			eventDet.set_notificationID(notificationID);
+			notificationID++;
+			eventsDetails.put(origEvent.get_id(), eventDet);
+		}
+		String eventLatitude, eventLongitude;
+		if (eventDet.is_locationFixed()) {
+			eventLatitude = Double.toString(eventDet.get_address()
+					.getLatitude());
+			eventLongitude = Double.toString(eventDet.get_address()
+					.getLongitude());
+		} else {
+			eventLatitude = origEvent.get_latitude();
+			eventLongitude = origEvent.get_longitude();
+		}
+		showNotification(origEvent.get_id(), getGetInCarTime(origEvent,
+				getDrivingTimeInMin(eventLatitude, eventLongitude)));
 	}
 
 	private PendingIntent makeNotiMeIntent(final String id,
@@ -376,12 +451,18 @@ public class NotifyingService extends Service implements LocationListener {
 			final Calendar getInCarTime) {
 
 		// we'll use the same text for the ticker and the expanded notification
-		final CharSequence text;
+		CharSequence text = "";
+		final NotiDetails eventDet = eventsDetails.get(eventID);
 		if (getInCarTime != null) {
-			text = firstEvent.get_title() + " - "
-					+ getTimeText(getMinutesToGo(getInCarTime)) + " to go!";
+			final int minToGo = getMinutesToGo(getInCarTime);
+			if (minToGo > 0) {
+				text = eventDet.get_origEvent().get_title() + " - "
+						+ getTimeText(minToGo) + " to go!";
+			} else {
+				text = getTimeText(minToGo);
+			}
 		} else {
-			text = "problema!";
+			text = "Problema!";
 		}
 
 		// Set the icon, scrolling text and timestamp.
@@ -389,8 +470,8 @@ public class NotifyingService extends Service implements LocationListener {
 		final Notification notification = new Notification(R.drawable.noticon,
 				text, System.currentTimeMillis());
 
-		final PendingIntent contentIntent = makeNotiMeIntent(firstEvent
-				.get_id(), getInCarTime);
+		final PendingIntent contentIntent = makeNotiMeIntent(eventDet
+				.get_origEvent().get_id(), getInCarTime);
 
 		// Set the info for the views that show in the notification panel.
 		notification.setLatestEventInfo(this, getText(R.string.app_name), text,
@@ -399,7 +480,11 @@ public class NotifyingService extends Service implements LocationListener {
 		// Send the notification.
 		// We use a layout id because it is a unique number. We use it later to
 		// cancel.
-		nNM.notify(NOTIME_NOTIFICATIONS, notification);
+		if (eventDet.get_notificationID() == 0) {
+			nNM.notify(NOTIME_NOTIFICATIONS, notification);
+		} else {
+			nNM.notify(eventDet.get_notificationID(), notification);
+		}
 	}
 
 	/**********************************************************************

@@ -22,6 +22,15 @@ public class NotificationDisplay extends Activity {
 	// static String text = "";
 	// static String url = "";
 
+	private void cancelNotification(final NotiDetails event) {
+		if (event.get_notificationID() == 0) {
+			NotifyingService.nNM.cancel(NotifyingService.NOTIME_NOTIFICATIONS);
+		} else {
+			NotifyingService.nNM.cancel(event.get_notificationID());
+			System.out.println("CANCEL ID: " + event.get_notificationID());
+		}
+	}
+
 	@Override
 	protected void onCreate(final Bundle icicle) {
 		// Be sure to call the super class.
@@ -38,13 +47,21 @@ public class NotificationDisplay extends Activity {
 
 		final TextView tv = (TextView) findViewById(R.id.notify_txt);
 
+		String timeStr = "";
+		int minToGo;
+		if (getInCarTime != null) {
+			minToGo = NotifyingService.getMinutesToGo(getInCarTime);
+			if (minToGo > 0) {
+				timeStr = " in "
+						+ NotifyingService.getMinutesToGo(getInCarTime);
+			} else {
+				timeStr = " now!";
+			}
+		}
+
 		event.set_notificationText("You should get on your way for "
-				+ event.get_origEvent().get_title()
-				+ " at "
-				+ event.get_origEvent().get_where()
-				+ " in "
-				+ NotifyingService.getTimeText(NotifyingService
-						.getMinutesToGo(getInCarTime)));// REAL
+				+ event.get_origEvent().get_title() + " at "
+				+ event.get_origEvent().get_where() + timeStr);
 
 		// tv
 		// .setText("You should get on your way for <getWhat()> in <getTimeToDrive()> at <getWhere>");
@@ -58,8 +75,7 @@ public class NotificationDisplay extends Activity {
 				System.out.println(event.get_directionsURL());
 				mapIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				startActivity(mapIntent);
-				NotifyingService.nNM
-						.cancel(NotifyingService.NOTIME_NOTIFICATIONS);
+				cancelNotification(event);
 				finish();
 			}
 		});
@@ -72,8 +88,7 @@ public class NotificationDisplay extends Activity {
 						.parse(event.get_origEvent().get_link()));
 				mapIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				startActivity(mapIntent);
-				NotifyingService.nNM
-						.cancel(NotifyingService.NOTIME_NOTIFICATIONS);
+				cancelNotification(event);
 				finish();
 			}
 		});
@@ -84,23 +99,22 @@ public class NotificationDisplay extends Activity {
 			public void onClick(final View v) {
 				event.set_dissmissed(true);
 				NotifyingService.eventsDetails.put(id, event);
-				NotifyingService.nNM
-						.cancel(NotifyingService.NOTIME_NOTIFICATIONS);
+				cancelNotification(event);
 				finish();
 			}
 		});
 		;
 
-		final Button snoozeBtn = (Button) findViewById(R.id.dismiss);
+		final Button snoozeBtn = (Button) findViewById(R.id.snooze);
 		snoozeBtn.setOnClickListener(new Button.OnClickListener() {
 			public void onClick(final View v) {
 				event.set_snooze(true);
 				final Calendar nextTime = Calendar.getInstance();
 				nextTime.add(Calendar.MINUTE, SNOOZE_TIME);
 				event.set_snoozeTime(nextTime);
+				event.set_snoozePublished(false);
 				NotifyingService.eventsDetails.put(id, event);
-				NotifyingService.nNM
-						.cancel(NotifyingService.NOTIME_NOTIFICATIONS);
+				cancelNotification(event);
 				finish();
 			}
 		});
