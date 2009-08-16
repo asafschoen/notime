@@ -141,6 +141,7 @@ public class NotiErrDisplay extends Activity {
 						final int t = Integer.parseInt(et.getText().toString()
 								.trim());
 						event.set_timeAlertInMin(t);
+						event.set_timeAlertPublished(false);
 					} else if (dismissRBtn.isChecked()) {
 						event.set_dissmissed(true);
 

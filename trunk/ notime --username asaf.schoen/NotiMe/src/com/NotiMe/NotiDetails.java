@@ -17,7 +17,9 @@ public class NotiDetails {
 	private boolean _dissmissed = false;
 	private String _notificationText;
 	private String _directionsURL;
-
+	private int _notificationID = 0; // for snooze or time alert
+	private boolean _snoozePublished = false;
+	private boolean _timeAlertPublished = false;
 	private NotiEvent _origEvent;
 
 	/**
@@ -32,6 +34,13 @@ public class NotiDetails {
 	 */
 	protected String get_directionsURL() {
 		return _directionsURL;
+	}
+
+	/**
+	 * @return the _notificationID
+	 */
+	protected int get_notificationID() {
+		return _notificationID;
 	}
 
 	/**
@@ -91,10 +100,24 @@ public class NotiDetails {
 	}
 
 	/**
+	 * @return the _snoozePublished
+	 */
+	protected boolean is_snoozePublished() {
+		return _snoozePublished;
+	}
+
+	/**
 	 * @return the _timeAlert
 	 */
 	protected boolean is_timeAlert() {
 		return _timeAlert;
+	}
+
+	/**
+	 * @return the _timeAlertPublished
+	 */
+	protected boolean is_timeAlertPublished() {
+		return _timeAlertPublished;
 	}
 
 	/**
@@ -130,6 +153,14 @@ public class NotiDetails {
 	}
 
 	/**
+	 * @param notificationID
+	 *            the _notificationID to set
+	 */
+	protected void set_notificationID(final int notificationID) {
+		_notificationID = notificationID;
+	}
+
+	/**
 	 * @param notificationText
 	 *            the _notificationText to set
 	 */
@@ -162,6 +193,14 @@ public class NotiDetails {
 	}
 
 	/**
+	 * @param snoozePublished
+	 *            the _snoozePublished to set
+	 */
+	protected void set_snoozePublished(final boolean snoozePublished) {
+		_snoozePublished = snoozePublished;
+	}
+
+	/**
 	 * @param snoozeTime
 	 *            the _snoozeTime to set
 	 */
@@ -183,6 +222,14 @@ public class NotiDetails {
 	 */
 	protected void set_timeAlertInMin(final int timeAlertInMin) {
 		_timeAlertInMin = timeAlertInMin;
+	}
+
+	/**
+	 * @param timeAlertPublished
+	 *            the _timeAlertPublished to set
+	 */
+	protected void set_timeAlertPublished(final boolean timeAlertPublished) {
+		_timeAlertPublished = timeAlertPublished;
 	}
 
 }
