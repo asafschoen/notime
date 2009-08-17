@@ -18,6 +18,8 @@ import android.widget.TimePicker;
 public class TimePickerPreference extends DialogPreference implements
 		TimePicker.OnTimeChangedListener {
 
+	public static final int NOTI_TIME = 10;
+
 	private Integer minutes;
 	private TextView notiMeCaption;
 	private TextView minutesAdvanceCaption;
@@ -54,7 +56,7 @@ public class TimePickerPreference extends DialogPreference implements
 
 	private int getTime() {
 		final SharedPreferences timePref = getSharedPreferences();
-		return timePref.getInt("A", 10);
+		return timePref.getInt("A", NOTI_TIME);
 	}
 
 	/**

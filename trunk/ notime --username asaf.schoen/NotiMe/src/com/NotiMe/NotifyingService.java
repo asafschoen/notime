@@ -13,6 +13,7 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -322,6 +323,8 @@ public class NotifyingService extends Service implements LocationListener {
 	@Override
 	public void onCreate() {
 
+		saveBoolean("pref.running", true);
+
 		// System.out.println("!!!!!!!!!!!!!" + pr.getUser());
 		// System.out.println("!!!!!!!!!!!!!" + pr.getPass());
 		// GoogleCalendarP.setLogin(pr.getUser(), pr.getPass());
@@ -374,6 +377,7 @@ public class NotifyingService extends Service implements LocationListener {
 
 	@Override
 	public void onDestroy() {
+		saveBoolean("pref.running", false);
 		System.out.println("ON DESTROY!!!!!!!!!!!!!!!!!!!!!!!");
 		// Cancel the persistent notification.
 		nNM.cancel(NOTIME_NOTIFICATIONS);
@@ -447,6 +451,13 @@ public class NotifyingService extends Service implements LocationListener {
 				+ new Date(currentTime.getTimeInMillis()));
 	}
 
+	private void saveBoolean(final String field, final boolean value) {
+		final SharedPreferences prefFile = getSharedPreferences("notiMePref", 0);
+		final SharedPreferences.Editor editor = prefFile.edit();
+		editor.putBoolean(field, value);
+		editor.commit();
+	}
+
 	private void showNotification(final String eventID,
 			final Calendar getInCarTime) {
 
@@ -469,6 +480,23 @@ public class NotifyingService extends Service implements LocationListener {
 		// Note that we pass null for tickerText.
 		final Notification notification = new Notification(R.drawable.noticon,
 				text, System.currentTimeMillis());
+
+		int effects = 0;
+		if (pr.isVibrationNotification()) {
+			effects |= Notification.DEFAULT_VIBRATE;
+		}
+		if (pr.isSoundNotification()) {
+			effects |= Notification.DEFAULT_SOUND;
+		}
+		if (pr.isScreenNotification()) {
+			// effects |= Notification.DEFAULT_LIGHTS;
+			notification.flags = Notification.FLAG_SHOW_LIGHTS;
+			notification.ledOnMS = 500;
+			notification.ledOffMS = 500;
+			notification.ledARGB = 123;
+		}
+
+		notification.defaults = effects;
 
 		final PendingIntent contentIntent = makeNotiMeIntent(eventDet
 				.get_origEvent().get_id(), getInCarTime);

@@ -62,8 +62,10 @@ public class NotiMe extends Activity {
 							GoogleCalendarP.setLogin(user, pass);
 							try {
 								if (GoogleCalendarP.authenticate(true) != null) {
+
 									startService(new Intent(NotiMe.this,
 											NotifyingService.class));
+									saveBoolean("pref.running", true);
 								} else {
 									Toast.makeText(NotiMe.this,
 											R.string.error_login,
@@ -101,6 +103,7 @@ public class NotiMe extends Activity {
 
 				} else {
 					System.out.println("TOGGLE BUTTON UNCHECKED");
+					saveBoolean("pref.running", false);
 					stopService(new Intent(NotiMe.this, NotifyingService.class));
 				}
 			}
@@ -162,14 +165,15 @@ public class NotiMe extends Activity {
 		}
 
 		togglebutton.setChecked(pr.isRunning());
-		togglebutton.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-
-			// @Override
-			public void onCheckedChanged(final CompoundButton buttonView,
-					final boolean isChecked) {
-				saveBoolean("pref.running", isChecked);
-			}
-		});
+		// togglebutton.setOnCheckedChangeListener(new OnCheckedChangeListener()
+		// {
+		//
+		// // @Override
+		// public void onCheckedChanged(final CompoundButton buttonView,
+		// final boolean isChecked) {
+		// saveBoolean("pref.running", isChecked);
+		// }
+		// });
 
 	}
 
