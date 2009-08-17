@@ -1,5 +1,6 @@
 package android.preference;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.Editable;
@@ -11,6 +12,8 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
+
+import com.NotiMe.R;
 
 /**
  * A preference type that allows a user to choose a time
@@ -83,12 +86,12 @@ public class TimePickerPreference extends DialogPreference implements
 		addMinute = new Button(getContext());
 		subMinute = new Button(getContext());
 
-		notiMeCaption.setText(" Notime ");
-		minutesAdvanceCaption.setText("minutes before");
+		notiMeCaption.setText(R.string.timerPickerPreference_NotiMe);
+		minutesAdvanceCaption.setText(R.string.timerPickerPreference_minutesBefore);
 		addMinute.setWidth(45);
 		subMinute.setWidth(45);
-		addMinute.setText("+");
-		subMinute.setText("-");
+		addMinute.setText(R.string.timerPickerPreference_plus);
+		subMinute.setText(R.string.timerPickerPreference_minus);
 		timeText.setWidth(80);
 		timeText.setHeight(20);
 		timeText.setText("" + minutes);
@@ -149,7 +152,8 @@ public class TimePickerPreference extends DialogPreference implements
 	public void onTimeChanged(final TimePicker view, final int hour,
 			final int minute) {
 
-		persistString(hour + ":" + minute);
+//		persistString(hour + (String) getText(R.string.timerPickerPreference_colon) + minute);
+		persistString(hour + (String) ":" + minute);
 	}
 
 	private void saveTime() {

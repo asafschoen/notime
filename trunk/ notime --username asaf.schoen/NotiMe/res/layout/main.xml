@@ -29,7 +29,7 @@
 
 					<EditText android:id="@+id/username"
 						android:layout_height="wrap_content" android:paddingBottom="0dip"
-						android:text="" android:hint="Your Google login"
+						android:text="" android:hint="@string/main_loginhint"
 						android:layout_width="235sp" />
 
 					<TextView android:layout_width="fill_parent"
@@ -39,12 +39,12 @@
 				</RelativeLayout>
 
 				<EditText android:id="@+id/password" android:layout_height="wrap_content"
-					android:paddingBottom="0dip" android:text="" android:hint="Your password"
+					android:paddingBottom="0dip" android:text="" android:hint="@string/main_passwordhint"
 					android:layout_width="235sp" android:password="true" />
 
 				<CheckBox android:id="@+id/remember" android:paddingBottom="24sp"
 					android:paddingTop="24sp" android:layout_width="wrap_content"
-					android:layout_height="wrap_content" android:text="Remember Me" />
+					android:layout_height="wrap_content" android:text="@string/main_rememberme" />
 
 			</LinearLayout>
 

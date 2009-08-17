@@ -45,23 +45,23 @@ public class NotifyingService extends Service implements LocationListener {
 				JavaCalendarUtils.Unit.MINUTE);
 	}
 
-	static CharSequence getTimeText(final int time) {
+	CharSequence getTimeText(final int time) {
 		if (time > 0) {
 			final int hours = Math.abs(time / 60);
 			final int mins = time % 60;
 			CharSequence h = null, m = null, t = null;
 			if (hours > 1) {
-				h = hours + " hours";
+				h = hours + getString(R.string.notifyingService_hours);
 			} else if (hours == 1) {
-				h = hours + " hour";
+				h = hours + getString(R.string.notifyingService_hour);
 			}
 			if (mins > 1) {
-				m = mins + " minutes";
+				m = mins + getString(R.string.notifyingService_minutes);
 			} else if (mins == 1) {
-				m = mins + " minute";
+				m = mins + getString(R.string.notifyingService_minute);
 			}
 			if ((m != null) && (h != null)) {
-				t = h + " and " + m;
+				t = h + getString(R.string.notifyingService_and) + m;
 			} else if (m != null) {
 				t = m;
 			} else if (h != null) {
@@ -70,7 +70,7 @@ public class NotifyingService extends Service implements LocationListener {
 			return t;
 		} else {
 			// return "notiMe can't locate your next appointment!";
-			return "You should have been on your way already!";
+			return getString(R.string.notifyingService_beenOnYourWay);
 		}
 	}
 
@@ -467,13 +467,13 @@ public class NotifyingService extends Service implements LocationListener {
 		if (getInCarTime != null) {
 			final int minToGo = getMinutesToGo(getInCarTime);
 			if (minToGo > 0) {
-				text = eventDet.get_origEvent().get_title() + " - "
-						+ getTimeText(minToGo) + " to go!";
+				text = eventDet.get_origEvent().get_title() + getString(R.string.notifyingService_minus)
+						+ getTimeText(minToGo) + getString(R.string.notifyingService_toGo);
 			} else {
 				text = getTimeText(minToGo);
 			}
 		} else {
-			text = "Problema!";
+			text = getString(R.string.notifyingService_problem);
 		}
 
 		// Set the icon, scrolling text and timestamp.

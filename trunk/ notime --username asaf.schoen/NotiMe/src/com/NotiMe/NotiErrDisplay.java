@@ -71,8 +71,7 @@ public class NotiErrDisplay extends Activity {
 		}
 
 		final TextView tv1 = (TextView) findViewById(R.id.message);
-		tv1.setText("NotiMe can't find the location of the following event: "
-				+ event);
+		tv1.setText(getString(R.string.notiErrDisplay_cantFindLocation) + event);
 
 		final TextView tv2 = (TextView) findViewById(R.id.location);
 		tv2.setText("Location provided: " + origLocation);

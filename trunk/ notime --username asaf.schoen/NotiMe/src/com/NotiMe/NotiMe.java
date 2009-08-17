@@ -109,13 +109,6 @@ public class NotiMe extends Activity {
 			}
 		});
 
-		final View exitButton = findViewById(R.id.exit_button);
-		exitButton.setOnClickListener(new OnClickListener() {
-			public void onClick(final View v) {
-				finish();
-			}
-		});
-
 		final PreferenceReader pr = new PreferenceReader(this);
 
 		final CheckBox rememberCheckBox = (CheckBox) findViewById(R.id.remember);

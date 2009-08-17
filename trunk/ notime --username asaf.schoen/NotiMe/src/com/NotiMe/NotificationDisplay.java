@@ -52,15 +52,15 @@ public class NotificationDisplay extends Activity {
 		if (getInCarTime != null) {
 			minToGo = NotifyingService.getMinutesToGo(getInCarTime);
 			if (minToGo > 0) {
-				timeStr = " in "
+				timeStr = getString(R.string.notificationDisplay_in)
 						+ NotifyingService.getMinutesToGo(getInCarTime);
 			} else {
-				timeStr = " now!";
+				timeStr = getString(R.string.notificationDisplay_now);
 			}
 		}
 
-		event.set_notificationText("You should get on your way for "
-				+ event.get_origEvent().get_title() + " at "
+		event.set_notificationText(getString(R.string.notificationDisplay_getOnYourWay)
+				+ event.get_origEvent().get_title() + getString(R.string.notificationDisplay_at)
 				+ event.get_origEvent().get_where() + timeStr);
 
 		// tv
