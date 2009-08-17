@@ -2,6 +2,7 @@ package com.NotiMe;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
+import android.preference.TimePickerPreference;
 
 public class PreferenceReader {
 
@@ -16,7 +17,12 @@ public class PreferenceReader {
 	}
 
 	public String getNotificationTime() {
-		return loadString("pref.time");
+
+		final String nt = loadString("pref.time");
+		if (nt.equals("")) {
+			return Integer.toString(TimePickerPreference.NOTI_TIME);
+		}
+		return nt;
 	}
 
 	public String getPass() {

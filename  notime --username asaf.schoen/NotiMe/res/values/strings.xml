@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+	
+
 	<string name="app_name">NotiMe!</string>
 	<string name="ok">OK</string>
+	<string name="cancel">Cancel</string>
 	<string name="welcome">Please enter your Google account information
 	</string>
 	<string name="username">User Name</string>
