@@ -17,7 +17,7 @@
 
 		<TextView android:id="@+id/suggestions" android:layout_width="fill_parent"
 			android:layout_height="wrap_content" android:layout_weight="0"
-			android:paddingBottom="1dip" android:text="Suggestions: " />
+			android:paddingBottom="1dip" android:text="@string/notierrdisplay_suggestions" />
 
 		<RadioGroup android:layout_width="fill_parent"
 			android:layout_height="wrap_content" android:orientation="vertical"
@@ -26,7 +26,7 @@
 			<RadioButton android:checked="false" android:id="@+id/option1" />
 			<RadioButton android:checked="false" android:id="@+id/option2" />
 
-			<RadioButton android:checked="false" android:text="NotiMe"
+			<RadioButton android:checked="false" android:text="@string/notierrdisplay_notime"
 				android:id="@+id/timebefore" />
 			<RelativeLayout android:id="@+id/widget76"
 				android:layout_width="wrap_content" android:layout_height="wrap_content"
@@ -34,22 +34,22 @@
 				android:layout_centerHorizontal="true">
 
 				<EditText android:id="@+id/Minutes" android:layout_height="wrap_content"
-					android:width="25pt" android:layout_width="25pt" android:text="10"
+					android:width="25pt" android:layout_width="25pt" android:text="@string/notierrdisplay_ten"
 					android:layout_toRightOf="@+id/Snooze" android:inputType="number"></EditText>
 				<Button android:id="@+id/errPlus" android:layout_width="wrap_content"
-					android:layout_height="wrap_content" android:text="+"
+					android:layout_height="wrap_content" android:text="@string/notierrdisplay_plus"
 					android:width="30pt" android:layout_toRightOf="@+id/Minutes"></Button>
 				<Button android:id="@+id/errMinus" android:layout_width="wrap_content"
-					android:layout_height="wrap_content" android:text="-"
+					android:layout_height="wrap_content" android:text="@string/notierrdisplay_minus"
 					android:width="30pt" android:layout_toRightOf="@+id/errPlus"></Button>
 				<TextView android:layout_width="fill_parent"
-					android:layout_height="wrap_content" android:text="minutes before"
+					android:layout_height="wrap_content" android:text="@string/notierrdisplay_minutesbefore"
 					android:layout_toRightOf="@+id/errMinus"
 					android:layout_alignBottom="@+id/errMinus" />
 			</RelativeLayout>
 			
 			<RadioButton android:checked="false"
-				android:text="Dismiss NotiMe for this event" android:id="@+id/dismiss" />
+				android:text="@string/notierrdisplay_dismiss" android:id="@+id/dismiss" />
 		</RadioGroup>
 
 		<RelativeLayout android:id="@+id/widget76"

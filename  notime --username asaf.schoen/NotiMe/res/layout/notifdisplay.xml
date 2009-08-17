@@ -11,24 +11,18 @@
 			android:layout_height="wrap_content" android:layout_weight="0"
 			android:paddingBottom="40dip" />
 
-		<RelativeLayout android:id="@+id/widget76"
-			android:layout_width="wrap_content" android:layout_height="wrap_content"
-			android:layout_centerVertical="true" android:layout_centerHorizontal="true">
-
-			
-
-
-		</RelativeLayout>
-		<Button android:id="@+id/event" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Show Event">
-			</Button><Button android:id="@+id/map" android:layout_width="wrap_content"
-			android:layout_height="wrap_content" android:text="Show Directions"
+		<Button android:id="@+id/event" android:layout_width="wrap_content"
+			android:layout_height="wrap_content" android:text="@string/notifdisplay_showEvent">
+		</Button>
+		<Button android:id="@+id/map" android:layout_width="wrap_content"
+			android:layout_height="wrap_content" android:text="@string/notifdisplay_showDirection"
 			android:layout_below="@+id/event">
 		</Button>
 		<Button android:id="@+id/snooze" android:layout_width="wrap_content"
-			android:layout_height="wrap_content" android:text="Snooze"
+			android:layout_height="wrap_content" android:text="@string/notifdisplay_snooze"
 			android:layout_below="@+id/notify_ok"></Button>
 		<Button android:id="@+id/dismiss" android:layout_width="wrap_content"
-			android:layout_height="wrap_content" android:text="Dismiss"
+			android:layout_height="wrap_content" android:text="@string/notifdisplay_dismiss"
 			android:layout_below="@+id/map">
 		</Button>
 	</LinearLayout>

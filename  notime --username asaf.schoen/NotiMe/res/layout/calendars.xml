@@ -1,4 +1,10 @@
-<TableLayout android:id="@+id/TableLayout01" android:layout_width="fill_parent" android:layout_height="fill_parent" xmlns:android="http://schemas.android.com/apk/res/android"><CheckBox android:id="@+id/CheckBox01" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Calendar 1"></CheckBox>
-<CheckBox android:id="@+id/CheckBox02" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Calendar 2"></CheckBox>
-<CheckBox android:id="@+id/CheckBox03" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Calendar 3"></CheckBox>
+<TableLayout android:id="@+id/TableLayout01"
+	android:layout_width="fill_parent" android:layout_height="fill_parent"
+	xmlns:android="http://schemas.android.com/apk/res/android">
+	<CheckBox android:id="@+id/CheckBox01" android:layout_width="wrap_content"
+		android:layout_height="wrap_content" android:text="@string/calendars_one"></CheckBox>
+	<CheckBox android:id="@+id/CheckBox02" android:layout_width="wrap_content"
+		android:layout_height="wrap_content" android:text="@string/calendars_two"></CheckBox>
+	<CheckBox android:id="@+id/CheckBox03" android:layout_width="wrap_content"
+		android:layout_height="wrap_content" android:text="@string/calendars_three"></CheckBox>
 </TableLayout>
