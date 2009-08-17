@@ -1,22 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_height="fill_parent" android:layout_width="fill_parent"
-	android:orientation="horizontal">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent" android:layout_height="fill_parent">
 
 	<LinearLayout android:orientation="vertical"
 		android:layout_height="wrap_content" android:layout_width="fill_parent"
-		android:layout_gravity="center">
+		android:layout_gravity="center" android:paddingLeft="5dip">
 
 		<TextView android:id="@+id/message" android:layout_width="fill_parent"
 			android:layout_height="wrap_content" android:layout_weight="0"
-			android:paddingBottom="1dip" />
+			android:text="message sflhsdflksdhglaijhgkaldhgfg"
+			android:paddingBottom="1dip" android:padding="5dip" android:textSize="16sp" />
 
 		<TextView android:id="@+id/location" android:layout_width="fill_parent"
 			android:layout_height="wrap_content" android:layout_weight="0"
-			android:paddingBottom="1dip" />
+			android:text="location asdfpaoidufhaslkfjbgalskhbgaisg"
+			android:paddingBottom="10dip" android:paddingLeft="5dip"
+			android:paddingRight="5dip" android:textSize="16sp" />
 
 		<TextView android:id="@+id/suggestions" android:layout_width="fill_parent"
 			android:layout_height="wrap_content" android:layout_weight="0"
+			android:textSize="16sp" android:textStyle="bold"
 			android:paddingBottom="1dip" android:text="@string/notierrdisplay_suggestions" />
 
 		<RadioGroup android:layout_width="fill_parent"
@@ -26,40 +29,34 @@
 			<RadioButton android:checked="false" android:id="@+id/option1" />
 			<RadioButton android:checked="false" android:id="@+id/option2" />
 
-			<RadioButton android:checked="false" android:text="@string/notierrdisplay_notime"
-				android:id="@+id/timebefore" />
+			<RadioButton android:checked="false"
+				android:text="@string/notierrdisplay_notime" android:id="@+id/timebefore" />
+				
 			<RelativeLayout android:id="@+id/widget76"
 				android:layout_width="wrap_content" android:layout_height="wrap_content"
 				android:layout_centerVertical="true"
-				android:layout_centerHorizontal="true">
+				android:layout_centerHorizontal="true" android:paddingLeft="60dip">
 
 				<EditText android:id="@+id/Minutes" android:layout_height="wrap_content"
-					android:width="25pt" android:layout_width="25pt" android:text="@string/notierrdisplay_ten"
-					android:layout_toRightOf="@+id/Snooze" android:inputType="number"></EditText>
+					android:width="25pt" android:layout_width="25pt" android:layout_below="@+id/timebefore" 
+					android:text="@string/notierrdisplay_ten" android:inputType="number"></EditText>
 				<Button android:id="@+id/errPlus" android:layout_width="wrap_content"
 					android:layout_height="wrap_content" android:text="@string/notierrdisplay_plus"
 					android:width="30pt" android:layout_toRightOf="@+id/Minutes"></Button>
 				<Button android:id="@+id/errMinus" android:layout_width="wrap_content"
 					android:layout_height="wrap_content" android:text="@string/notierrdisplay_minus"
 					android:width="30pt" android:layout_toRightOf="@+id/errPlus"></Button>
-				<TextView android:layout_width="fill_parent"
-					android:layout_height="wrap_content" android:text="@string/notierrdisplay_minutesbefore"
-					android:layout_toRightOf="@+id/errMinus"
-					android:layout_alignBottom="@+id/errMinus" />
+
 			</RelativeLayout>
-			
+
 			<RadioButton android:checked="false"
 				android:text="@string/notierrdisplay_dismiss" android:id="@+id/dismiss" />
 		</RadioGroup>
 
-		<RelativeLayout android:id="@+id/widget76"
-			android:layout_width="wrap_content" android:layout_height="wrap_content"
-			android:layout_centerVertical="true" android:layout_centerHorizontal="true">
 
-			<Button android:id="@+id/errnotifyok" android:layout_width="wrap_content"
-				android:layout_height="wrap_content" android:text="@string/ok"
-				android:width="30pt">
-			</Button>
-		</RelativeLayout>
 	</LinearLayout>
-</LinearLayout>
+	<Button android:id="@+id/errnotifyok" android:layout_width="fill_parent"
+		android:layout_height="wrap_content" android:text="@string/ok"
+		android:layout_alignParentBottom="true">
+	</Button>
+</RelativeLayout>

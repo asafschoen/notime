@@ -1,30 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_height="fill_parent" android:layout_width="fill_parent"
-	android:orientation="horizontal">
-
-	<LinearLayout android:orientation="vertical"
-		android:layout_height="wrap_content" android:layout_width="fill_parent"
-		android:layout_gravity="center">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
 
 		<TextView android:id="@+id/notify_txt" android:layout_width="fill_parent"
 			android:layout_height="wrap_content" android:layout_weight="0"
-			android:paddingBottom="40dip" />
+			android:padding="40dip" android:textSize="18sp" android:layout_gravity="top" />
 
-		<Button android:id="@+id/event" android:layout_width="wrap_content"
-			android:layout_height="wrap_content" android:text="@string/notifdisplay_showEvent">
-		</Button>
-		<Button android:id="@+id/map" android:layout_width="wrap_content"
-			android:layout_height="wrap_content" android:text="@string/notifdisplay_showDirection"
-			android:layout_below="@+id/event">
-		</Button>
-		<Button android:id="@+id/snooze" android:layout_width="wrap_content"
-			android:layout_height="wrap_content" android:text="@string/notifdisplay_snooze"
-			android:layout_below="@+id/notify_ok"></Button>
-		<Button android:id="@+id/dismiss" android:layout_width="wrap_content"
-			android:layout_height="wrap_content" android:text="@string/notifdisplay_dismiss"
-			android:layout_below="@+id/map">
-		</Button>
-	</LinearLayout>
-</LinearLayout>
+		<TableLayout android:id="@+id/TableLayout01"
+			android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_alignParentBottom="true">
+			<TableRow>
 
+				<Button android:id="@+id/event" android:text="@string/notifdisplay_showEvent"
+					android:layout_weight="3">
+				</Button>
+				<Button android:id="@+id/map"  android:text="@string/notifdisplay_showDirection"
+					android:layout_below="@+id/event" android:layout_weight="2">
+				</Button>
+			</TableRow>
+			<TableRow>
+				<Button android:id="@+id/snooze"  android:text="@string/notifdisplay_snooze"
+					android:layout_below="@+id/notify_ok" 
+					android:layout_weight="3"></Button>
+				<Button android:id="@+id/dismiss"  android:text="@string/notifdisplay_dismiss"
+					android:layout_below="@+id/map" 
+					android:layout_weight="2"></Button>
+			</TableRow>
+		</TableLayout>
+		
+</RelativeLayout>
