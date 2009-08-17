@@ -59,13 +59,13 @@
 	<string name="preference_ringtone_title">Ringtone Preference</string>
 	<string name="preference_ringtone_sum">Pick a ringtone for sound</string>
 	<string name="preference_light_title">Light</string>
-	<string name="preference_light_sum">The notification will toggle the led</string>
+	<string name="preference_light_sum">The notification will blink the led</string>
 	<string name="preference_timepref_title">Notification time setup</string>
 	<string name="preference_time_title">Notification time</string>
-	<string name="preference_time_sum">Time to notify before you need to get on your way to the event according to your current location</string>
+	<string name="preference_time_sum">Time to notify before you need to get on your way</string>
 	<string name="preference_calendarpref_title">Calendars setup</string>
 	<string name="preference_calendar_title">Calendars</string>
-	<string name="preference_calendar_sum">Click here to choose the Google calendars NotiMe will read from</string>
+	<string name="preference_calendar_sum">Click here to choose the calendars NotiMe will read from</string>
 	
 	<string name="notifdisplay_showEvent">Show Event</string>
 	<string name="notifdisplay_showDirection">Show Directions</string>
@@ -73,11 +73,10 @@
 	<string name="notifdisplay_dismiss">Dismiss</string>
 	
 	<string name="notierrdisplay_suggestions">Suggestions: </string>
-	<string name="notierrdisplay_notime">NotiMe</string>
+	<string name="notierrdisplay_notime">NotiMe (minutes before)</string>
 	<string name="notierrdisplay_ten">10</string>
 	<string name="notierrdisplay_plus">+</string>
 	<string name="notierrdisplay_minus">-</string>
-	<string name="notierrdisplay_minutesbefore">minutes before</string>
 	<string name="notierrdisplay_dismiss">Dismiss NotiMe for this event</string>
 	
 	<string name="main_loginhint">Your Google login</string>

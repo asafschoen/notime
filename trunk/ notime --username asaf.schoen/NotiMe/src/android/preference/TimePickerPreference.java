@@ -1,9 +1,9 @@
 package android.preference;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.View;
@@ -83,17 +83,21 @@ public class TimePickerPreference extends DialogPreference implements
 		notiMeCaption = new TextView(getContext());
 		minutesAdvanceCaption = new TextView(getContext());
 		timeText = new EditText(getContext());
+		timeText.setInputType(InputType.TYPE_CLASS_NUMBER);
+		timeText.setEnabled(false);
+		timeText.setClickable(false);
 		addMinute = new Button(getContext());
 		subMinute = new Button(getContext());
 
 		notiMeCaption.setText(R.string.timerPickerPreference_NotiMe);
-		minutesAdvanceCaption.setText(R.string.timerPickerPreference_minutesBefore);
-		addMinute.setWidth(45);
-		subMinute.setWidth(45);
+		minutesAdvanceCaption
+				.setText(R.string.timerPickerPreference_minutesBefore);
+		addMinute.setWidth(65);
+		subMinute.setWidth(65);
 		addMinute.setText(R.string.timerPickerPreference_plus);
 		subMinute.setText(R.string.timerPickerPreference_minus);
-		timeText.setWidth(80);
-		timeText.setHeight(20);
+		addMinute.setLongClickable(true);
+		timeText.setWidth(45);
 		timeText.setText("" + minutes);
 
 		d.addView(notiMeCaption);
@@ -111,6 +115,13 @@ public class TimePickerPreference extends DialogPreference implements
 
 			}
 		});
+//		addMinute.setOnLongClickListener(new OnLongClickListener() {
+//
+//			@Override
+//			public boolean onLongClick(View v) {
+//
+//			}
+//		});
 		subMinute.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(final View v) {
@@ -152,7 +163,8 @@ public class TimePickerPreference extends DialogPreference implements
 	public void onTimeChanged(final TimePicker view, final int hour,
 			final int minute) {
 
-//		persistString(hour + (String) getText(R.string.timerPickerPreference_colon) + minute);
+		// persistString(hour + (String)
+		// getText(R.string.timerPickerPreference_colon) + minute);
 		persistString(hour + (String) ":" + minute);
 	}
 
