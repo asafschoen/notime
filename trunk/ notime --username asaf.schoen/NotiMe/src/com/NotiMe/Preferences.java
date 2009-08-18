@@ -3,6 +3,7 @@ package com.NotiMe;
 import java.util.StringTokenizer;
 
 import android.content.SharedPreferences;
+import android.media.RingtoneManager;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
@@ -23,74 +24,78 @@ public class Preferences extends PreferenceActivity {
 
 		// sound box listener
 		final CheckBoxPreference soundcb = (CheckBoxPreference) findPreference("cbp1");
-		soundcb
-				.setOnPreferenceChangeListener(new CheckBoxPreference.OnPreferenceChangeListener() {
+		soundcb.setOnPreferenceChangeListener(new CheckBoxPreference.OnPreferenceChangeListener() {
+			public boolean onPreferenceChange(final Preference preference, final Object newValue) {
+				final CheckBoxPreference cbp = (CheckBoxPreference) preference;
+				// update the new state
+				cbp.setChecked((Boolean)newValue);
+				// save the new state in the pref file
+				saveBoolean("pref.sound", (Boolean) newValue);
+				// find the ringtone preference
+				final RingtonePreference ring = (RingtonePreference) findPreference("ring1");
+				// enable/disable the ringtone preference
+				ring.setEnabled((Boolean) newValue);
 
-					public boolean onPreferenceChange(
-							final Preference preference, final Object newValue) {
-						final CheckBoxPreference cbp = (CheckBoxPreference) preference;
-						// update the new state
-						cbp.setChecked((Boolean) newValue);
-						// save the new state in the pref file
-						saveBoolean("pref.sound", (Boolean) newValue);
-						// find the ringtone preference
-						final RingtonePreference ring = (RingtonePreference) findPreference("ring1");
-						// enable/disable the ringtone preference
-						ring.setEnabled((Boolean) newValue);
+				return false;
+			}
+		});
+		
+		final RingtonePreference ring = (RingtonePreference) findPreference("ring1");
+		if(ring.isEnabled()){
+			ring.setShowSilent(false);
+			ring.setRingtoneType(RingtoneManager.TYPE_NOTIFICATION);
 
-						return false;
-					}
-				});
+		}
 		// vibration listener
 		final CheckBoxPreference vibrationcb = (CheckBoxPreference) findPreference("cbp2");
 		vibrationcb
-				.setOnPreferenceChangeListener(new CheckBoxPreference.OnPreferenceChangeListener() {
+		.setOnPreferenceChangeListener(new CheckBoxPreference.OnPreferenceChangeListener() {
 
-					public boolean onPreferenceChange(
-							final Preference preference, final Object newValue) {
-						final CheckBoxPreference cbp = (CheckBoxPreference) preference;
-						cbp.setChecked((Boolean) newValue);
-						saveBoolean("pref.vibration", (Boolean) newValue);
+			public boolean onPreferenceChange(
+					final Preference preference, final Object newValue) {
+				final CheckBoxPreference cbp = (CheckBoxPreference) preference;
+				cbp.setChecked((Boolean) newValue);
+				saveBoolean("pref.vibration", (Boolean) newValue);
 
-						return false;
-					}
-				});
+				return false;
+			}
+		});
 		// screen listener
 		final CheckBoxPreference screencb = (CheckBoxPreference) findPreference("cbp3");
 		screencb
-				.setOnPreferenceChangeListener(new CheckBoxPreference.OnPreferenceChangeListener() {
+		.setOnPreferenceChangeListener(new CheckBoxPreference.OnPreferenceChangeListener() {
 
-					public boolean onPreferenceChange(
-							final Preference preference, final Object newValue) {
-						final CheckBoxPreference cbp = (CheckBoxPreference) preference;
-						cbp.setChecked((Boolean) newValue);
-						saveBoolean("pref.screen", (Boolean) newValue);
+			public boolean onPreferenceChange(
+					final Preference preference, final Object newValue) {
+				final CheckBoxPreference cbp = (CheckBoxPreference) preference;
+				cbp.setChecked((Boolean) newValue);
+				saveBoolean("pref.screen", (Boolean) newValue);
 
-						return false;
-					}
-				});
+				return false;
+			}
+		});
 		// calendars list listener(on preference change)
 		final ListPreference multiPref = (ListPreference) findPreference("list1");
 		multiPref
-				.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
-					public boolean onPreferenceChange(
-							final Preference preference, final Object newValue) {
-						saveString("calendar.selection", "" + newValue);
-						return true;
-					}
-				});
+		.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+			public boolean onPreferenceChange(
+					final Preference preference, final Object newValue) {
+				saveString("calendar.selection", "" + newValue);
+				return true;
+			}
+		});
 		// timepicker listener(on preference change custom made callback OMG!!)
 		final TimePickerPreference timePref = (TimePickerPreference) findPreference("time1");
 		timePref
-				.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+		.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
 
-					public boolean onPreferenceChange(
-							final Preference preference, final Object newValue) {
-						saveString("pref.time", "" + newValue);
-						return false;
-					}
+			public boolean onPreferenceChange(
+					final Preference preference, final Object newValue) {
+				saveString("pref.time", "" + newValue);
+				return false;
+			}
 
-				});
+		});
 
 		// the preference gets the string containing the calendars
 		final PreferenceReader pReader = new PreferenceReader(this);
