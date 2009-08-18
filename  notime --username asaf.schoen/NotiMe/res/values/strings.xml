@@ -31,21 +31,21 @@
 	<string name="timerPickerPreference_minus">-</string>
 	<string name="timerPickerPreference_colon">:</string>
 	
-	<string name="notiErrDisplay_cantFindLocation">NotiMe can't find the location of the following event: </string>
-	<string name="notificationDisplay_in"> in </string>
-	<string name="notificationDisplay_now"> now!</string>
-	<string name="notificationDisplay_getOnYourWay">You should get on your way for</string>
-	<string name="notificationDisplay_at"> at </string>
+	<string name="notiErrDisplay_cantFindLocation">"NotiMe can't find the location of the following event: "</string>
+	<string name="notificationDisplay_in">" in "</string>
+	<string name="notificationDisplay_now">" now!"</string>
+	<string name="notificationDisplay_getOnYourWay">"You should get on your way for "</string>
+	<string name="notificationDisplay_at">" at "</string>
 	
-	<string name="notifyingService_hours"> hours</string>
-	<string name="notifyingService_hour"> hour</string>
-	<string name="notifyingService_minutes"> minutes</string>
-	<string name="notifyingService_minute"> minute</string>
-	<string name="notifyingService_and"> and </string>
+	<string name="notifyingService_hours">" hours"</string>
+	<string name="notifyingService_hour">" hour"</string>
+	<string name="notifyingService_minutes">" minutes"</string>
+	<string name="notifyingService_minute">" minute"</string>
+	<string name="notifyingService_and">" and "</string>
 	<string name="notifyingService_beenOnYourWay">You should have been on your way already!</string>
 	<string name="notifyingService_problem">Problem</string>
-	<string name="notifyingService_minus"> - </string>
-	<string name="notifyingService_toGo"> to go!</string>
+	<string name="notifyingService_minus">" - "</string>
+	<string name="notifyingService_toGo">" to go!"</string>
 	
 	<string name="calendars_one">Calendar 1</string>
 	<string name="calendars_two">Calendar 2</string>
