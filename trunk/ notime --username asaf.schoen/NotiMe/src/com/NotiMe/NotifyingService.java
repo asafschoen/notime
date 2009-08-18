@@ -514,11 +514,11 @@ public class NotifyingService extends Service implements LocationListener {
 			effects |= Notification.DEFAULT_VIBRATE;
 		}
 		if (pr.isSoundNotification()) {
-			if (pr.getSoundURI() != "") {
-				notification.sound = Uri.parse(pr.getSoundURI());
-			} else {
-				effects |= Notification.DEFAULT_SOUND;
-			}
+			// if (pr.getSoundURI() != "") {
+			// notification.sound = Uri.parse(pr.getSoundURI());
+			// } else {
+			effects |= Notification.DEFAULT_SOUND;
+			// }
 		}
 		if (pr.isScreenNotification()) {
 			// effects |= Notification.DEFAULT_LIGHTS;

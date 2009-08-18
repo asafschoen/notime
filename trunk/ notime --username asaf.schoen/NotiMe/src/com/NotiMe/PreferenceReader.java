@@ -61,9 +61,10 @@ public class PreferenceReader {
 		return loadBoolean("pref.vibration");
 	}
 	
-	public String getSoundURI(){
-		return loadString("ring1");
-	}
+
+	// public String getSoundURI(){
+	// return loadString("ring1");
+	// }
 
 	private boolean loadBoolean(final String field) {
 
