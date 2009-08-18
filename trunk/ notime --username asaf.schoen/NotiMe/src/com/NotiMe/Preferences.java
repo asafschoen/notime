@@ -2,10 +2,7 @@ package com.NotiMe;
 
 import java.util.StringTokenizer;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.media.RingtoneManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
@@ -14,24 +11,8 @@ import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.TimePickerPreference;
 import android.preference.Preference.OnPreferenceChangeListener;
-import android.provider.Settings;
 
 public class Preferences extends PreferenceActivity {
-
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data)
-	{
-		if (resultCode != RESULT_OK || data == null) return;
-		 
-	    Uri u = data.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
-	 
-	    if (u == null) return;
-	 
-	    if (requestCode == 1) {
-	      Settings.System.putString(getContentResolver(), Settings.System.RINGTONE, u.toString());
-	    }
-	}
-
 
 	@Override
 	protected void onCreate(final Bundle savedInstanceState) {
@@ -48,15 +29,6 @@ public class Preferences extends PreferenceActivity {
 				cbp.setChecked((Boolean)newValue);
 				// save the new state in the pref file
 				saveBoolean("pref.sound", (Boolean) newValue);
-
-				Intent i = new Intent(android.media.RingtoneManager.ACTION_RINGTONE_PICKER);
-		        String existing = Settings.System.getString(getContentResolver(), Settings.System.NOTIFICATION_SOUND);
-		        if (existing != null){
-		          i.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, Uri.parse(existing));
-		        }
-		        i.putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_DEFAULT, false);
-		        startActivityForResult(i, 1);
-
 				return false;
 			}
 		});
