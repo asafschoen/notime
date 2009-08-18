@@ -7,7 +7,8 @@
 			android:title="@string/preference_vibration_title" android:summary="@string/preference_vibration_sum" />
 		<RingtonePreference android:key="ring1"
 			android:title="@string/preference_ringtone_title" android:showDefault="true"
-			android:showSilent="true" android:summary="@string/preference_ringtone_sum" />
+			android:showSilent="false" android:ringtoneType="notification"
+			android:summary="@string/preference_ringtone_sum" />
 		<CheckBoxPreference android:key="cbp3"
 			android:title="@string/preference_light_title" android:summary="@string/preference_light_sum" />
 	</PreferenceCategory>
