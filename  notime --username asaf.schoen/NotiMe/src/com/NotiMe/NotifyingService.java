@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.StringTokenizer;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -139,8 +140,23 @@ public class NotifyingService extends Service implements LocationListener {
 
 	private void checkEvents() throws Exception {
 		notificationTime = Integer.parseInt(pr.getNotificationTime());
-		final LinkedList<NotiCalendar> parsedCalendarsList = GoogleCalendarP
+		LinkedList<NotiCalendar> parsedCalendarsList = GoogleCalendarP
 				.getAllCals();// remove unneeded calendars
+		System.out.println("SELECTED CALENDARS: "
+				+ pr.getSelectedCalendarList());
+
+		final String selectedCals = pr.getSelectedCalendarList();
+		// splits it from the ,
+		final StringTokenizer selectedIDsTokenizer = new StringTokenizer(
+				selectedCals, ",");
+		final LinkedList<String> cIDs = new LinkedList<String>();
+		final int size = selectedIDsTokenizer.countTokens();
+		// put each calendar in a separate string in cTest[] array
+		for (int i = 0; i < size; i++) {
+			cIDs.add(selectedIDsTokenizer.nextToken());
+		}
+		parsedCalendarsList.retainAll(cIDs);
+
 		final LinkedList<NotiEvent> parsedEventsList = GoogleCalendarP
 				.getEvents(parsedCalendarsList);
 
@@ -256,7 +272,7 @@ public class NotifyingService extends Service implements LocationListener {
 				nd.set_published(true);
 				nd.set_origEvent(firstEvent);
 
-				nd.set_directionsURL("http://maps.google.com/maps?f=d&saddr="
+				nd.set_directionsURL("http://maps.google.com/maps?saddr="
 						+ latitude + "," + longitude + "&daddr="
 						+ eventLatitude + "," + eventLongitude + "");
 
@@ -351,14 +367,17 @@ public class NotifyingService extends Service implements LocationListener {
 		// String[] cNames = new String[calendarList.size()], cValues = new
 		// String[calendarList.size()];
 		String cNames = "";
+		String cIDs = "";
 		for (final NotiCalendar notiCalendar2 : calendarList) {
 			final NotiCalendar notiCalendar = notiCalendar2;
 			System.out
 					.println("???????????????????" + notiCalendar.get_title());
 			cNames = cNames + notiCalendar.get_title() + ",";
+			cIDs = cIDs + notiCalendar.get_id() + ",";
 		}
 		System.out.println("?????????????/" + cNames);
-		pr.setCalendarList(cNames);
+		pr.setCalendarListNames(cNames);
+		pr.setCalendarListIDs(cIDs);
 
 		nNM = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
@@ -468,8 +487,10 @@ public class NotifyingService extends Service implements LocationListener {
 		if (getInCarTime != null) {
 			final int minToGo = getMinutesToGo(getInCarTime);
 			if (minToGo > 0) {
-				text = eventDet.get_origEvent().get_title() + getString(R.string.notifyingService_minus)
-						+ getTimeText(minToGo) + getString(R.string.notifyingService_toGo);
+				text = eventDet.get_origEvent().get_title()
+						+ getString(R.string.notifyingService_minus)
+						+ getTimeText(minToGo)
+						+ getString(R.string.notifyingService_toGo);
 			} else {
 				text = getTimeText(minToGo);
 			}
@@ -487,10 +508,9 @@ public class NotifyingService extends Service implements LocationListener {
 			effects |= Notification.DEFAULT_VIBRATE;
 		}
 		if (pr.isSoundNotification()) {
-			if(pr.getSoundURI()!=""){
+			if (pr.getSoundURI() != "") {
 				notification.sound = Uri.parse(pr.getSoundURI());
-			}
-			else{
+			} else {
 				effects |= Notification.DEFAULT_SOUND;
 			}
 		}

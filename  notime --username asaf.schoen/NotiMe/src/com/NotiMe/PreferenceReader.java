@@ -12,8 +12,12 @@ public class PreferenceReader {
 		_activity = activity;
 	}
 
-	public String getCalenderList() {
+	public String getCalenderListNames() {
 		return loadString("calendar.list");
+	}
+	
+	public String getCalenderListIDs() {
+		return loadString("calendar.listIDs");
 	}
 
 	public String getNotificationTime() {
@@ -82,8 +86,12 @@ public class PreferenceReader {
 		editor.commit();
 	}
 
-	public void setCalendarList(final String list) {
+	public void setCalendarListNames(final String list) {
 		saveString("calendar.list", list);
+	}
+	
+	public void setCalendarListIDs(final String list) {
+		saveString("calendar.listIDs", list);
 	}
 
 }
