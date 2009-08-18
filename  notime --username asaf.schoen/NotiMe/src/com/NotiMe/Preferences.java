@@ -47,9 +47,11 @@ public class Preferences extends PreferenceActivity {
 				return false;
 			}
 		});
-		// screen listener
-		final CheckBoxPreference screencb = (CheckBoxPreference) findPreference("cbp3");
-		screencb
+		// light listener
+		final CheckBoxPreference lightcb = (CheckBoxPreference) findPreference("cbp3");
+		lightcb.setChecked(true);
+		saveBoolean("pref.screen", true);
+		lightcb
 		.setOnPreferenceChangeListener(new CheckBoxPreference.OnPreferenceChangeListener() {
 
 			public boolean onPreferenceChange(
@@ -107,14 +109,14 @@ public class Preferences extends PreferenceActivity {
 
 	}
 
-	private void saveBoolean(final String field, final boolean value) {
+	void saveBoolean(final String field, final boolean value) {
 		final SharedPreferences prefFile = getSharedPreferences("notiMePref", 0);
 		final SharedPreferences.Editor editor = prefFile.edit();
 		editor.putBoolean(field, value);
 		editor.commit();
 	}
 
-	private void saveString(final String field, final String data) {
+	void saveString(final String field, final String data) {
 		final SharedPreferences prefFile = getSharedPreferences("notiMePref", 0);
 		final SharedPreferences.Editor editor = prefFile.edit();
 		editor.putString(field, data);

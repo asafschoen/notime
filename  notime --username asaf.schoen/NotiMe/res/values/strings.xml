@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	
+
 
 	<string name="app_name">NotiMe!</string>
 	<string name="ok">OK</string>
 	<string name="cancel">Cancel</string>
-	<string name="welcome">Please enter your Google account information</string>
+	<string name="welcome">Please enter your Google account information
+	</string>
 	<string name="username">User Name</string>
 	<string name="password">Password</string>
 	<string name="google_suffix">'@'google.com</string>
@@ -13,29 +14,31 @@
 	<string name="about_title">NotiMe!</string>
 	<string name="about_text">
 		NotiMe is Location based Notification
-		Service for your Google Calendar!\n\n
+		Service for
+		your Google Calendar!\n\n
 
 		Brought to you by:
 		Danny, Slava and Asaf
 	</string>
 	<string name="exit">EXIT</string>
-	
+
 	<string name="error_login_details">Please fill in your login information</string>
-	<string name="error_login">I could not log you in!\nCheck your login information and your connection status</string>
+	<string name="error_login">I could not log you in!\nCheck your login
+		information and your connection status</string>
 	<string name="error_connection">I could not connect to the Internet :(</string>
-	
+
 	<string name="timerPickerPreference_NotiMe"> NotiMe </string>
 	<string name="timerPickerPreference_minutesBefore">minutes before</string>
 	<string name="timerPickerPreference_plus">+</string>
 	<string name="timerPickerPreference_minus">-</string>
 	<string name="timerPickerPreference_colon">:</string>
-	
-	<string name="notiErrDisplay_cantFindLocation">"NotiMe can't find the location of the following event: "</string>
+
+
 	<string name="notificationDisplay_in">" in "</string>
 	<string name="notificationDisplay_now">" now!"</string>
 	<string name="notificationDisplay_getOnYourWay">"You should get on your way for "</string>
 	<string name="notificationDisplay_at">" at "</string>
-	
+
 	<string name="notifyingService_hours">" hours"</string>
 	<string name="notifyingService_hour">" hour"</string>
 	<string name="notifyingService_minutes">" minutes"</string>
@@ -45,42 +48,45 @@
 	<string name="notifyingService_problem">Problem</string>
 	<string name="notifyingService_minus">" - "</string>
 	<string name="notifyingService_toGo">" to go!"</string>
-	
-	<string name="calendars_one">Calendar 1</string>
-	<string name="calendars_two">Calendar 2</string>
-	<string name="calendars_three">Calendar 3</string>
-	
+
 	<string name="preference_signalpref_title">Notification signals</string>
 	<string name="preference_sound_title">Sound</string>
 	<string name="preference_sound_sum">The notification will produce a sound</string>
 	<string name="preference_vibration_title">Vibration</string>
-	<string name="preference_vibration_sum">The notification will produce a small vibration</string>
+	<string name="preference_vibration_sum">The notification will produce a small vibration
+	</string>
 	<string name="preference_ringtone_title">Ringtone Preference</string>
 	<string name="preference_ringtone_sum">Pick a ringtone for sound</string>
 	<string name="preference_light_title">Light</string>
 	<string name="preference_light_sum">The notification will blink the led</string>
 	<string name="preference_timepref_title">Notification time setup</string>
 	<string name="preference_time_title">Notification time</string>
-	<string name="preference_time_sum">Time to notify before you need to get on your way</string>
+	<string name="preference_time_sum">Time to notify before you need to get on your way
+	</string>
 	<string name="preference_calendarpref_title">Calendars setup</string>
 	<string name="preference_calendar_title">Calendars</string>
-	<string name="preference_calendar_sum">Click here to choose the calendars NotiMe will read from</string>
-	
+	<string name="preference_calendar_sum">Click here to choose the calendars NotiMe will read
+		from</string>
+
 	<string name="notifdisplay_showEvent">Show Event</string>
 	<string name="notifdisplay_showDirection">Show Directions</string>
 	<string name="notifdisplay_snooze">Snooze</string>
 	<string name="notifdisplay_dismiss">Dismiss</string>
-	
+
+
+	<string name="notierrdisplay_cantFindLocation">NotiMe can't find the location of the following event:</string>
+	<string name="notierrdisplay_locprovided">"Location provided: "</string>
 	<string name="notierrdisplay_suggestions">Suggestions: </string>
+	<string name="notierrdisplay_corrections">Or choose a correction: </string>
 	<string name="notierrdisplay_notime">NotiMe (minutes before)</string>
 	<string name="notierrdisplay_ten">10</string>
 	<string name="notierrdisplay_plus">+</string>
 	<string name="notierrdisplay_minus">-</string>
 	<string name="notierrdisplay_dismiss">Dismiss NotiMe for this event</string>
-	
+
 	<string name="main_loginhint">Your Google login</string>
 	<string name="main_passwordhint">Your password</string>
 	<string name="main_rememberme">Remember Me</string>
-	
-	
+
+
 </resources>

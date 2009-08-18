@@ -6,16 +6,16 @@ import android.preference.TimePickerPreference;
 
 public class PreferenceReader {
 
-	static Activity _activity;
+	public static Activity _activity;
 
-	PreferenceReader(final Activity activity) {
+	public PreferenceReader(final Activity activity) {
 		_activity = activity;
 	}
 
 	public String getCalenderListNames() {
 		return loadString("calendar.list");
 	}
-	
+
 	public String getCalenderListIDs() {
 		return loadString("calendar.listIDs");
 	}
@@ -49,7 +49,7 @@ public class PreferenceReader {
 		return loadBoolean("pref.running");
 	}
 
-	public boolean isScreenNotification() {
+	public boolean isLightNotification() {
 		return loadBoolean("pref.screen");
 	}
 
@@ -60,11 +60,18 @@ public class PreferenceReader {
 	public boolean isVibrationNotification() {
 		return loadBoolean("pref.vibration");
 	}
-	
 
 	// public String getSoundURI(){
 	// return loadString("ring1");
 	// }
+
+	public boolean isCalendarsSet() {
+		return loadBoolean("pref.calendarsset");
+	}
+
+	public void setCalendarSet(boolean data) {
+		saveBoolean("pref.calendarsset", data);
+	}
 
 	private boolean loadBoolean(final String field) {
 
@@ -79,6 +86,14 @@ public class PreferenceReader {
 		return prefFile.getString(field, "");
 	}
 
+	private void saveBoolean(final String field, final boolean value) {
+		final SharedPreferences prefFile = _activity.getSharedPreferences(
+				"notiMePref", 0);
+		final SharedPreferences.Editor editor = prefFile.edit();
+		editor.putBoolean(field, value);
+		editor.commit();
+	}
+
 	private void saveString(final String field, final String data) {
 		final SharedPreferences prefFile = _activity.getSharedPreferences(
 				"notiMePref", 0);
@@ -90,9 +105,10 @@ public class PreferenceReader {
 	public void setCalendarListNames(final String list) {
 		saveString("calendar.list", list);
 	}
-	
+
 	public void setCalendarListIDs(final String list) {
 		saveString("calendar.listIDs", list);
+//		saveString("calendar.selection", list);
 	}
 
 }
