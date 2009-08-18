@@ -17,6 +17,7 @@ import android.content.SharedPreferences;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Binder;
 import android.os.Bundle;
 import android.os.ConditionVariable;
@@ -486,7 +487,12 @@ public class NotifyingService extends Service implements LocationListener {
 			effects |= Notification.DEFAULT_VIBRATE;
 		}
 		if (pr.isSoundNotification()) {
-			effects |= Notification.DEFAULT_SOUND;
+			if(pr.getSoundURI()!=""){
+				notification.sound = Uri.parse(pr.getSoundURI());
+			}
+			else{
+				effects |= Notification.DEFAULT_SOUND;
+			}
 		}
 		if (pr.isScreenNotification()) {
 			// effects |= Notification.DEFAULT_LIGHTS;
