@@ -15,6 +15,7 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -393,7 +394,7 @@ public class NotifyingService extends Service implements LocationListener {
 		if (lastKnownLocation != null) {
 			latitude = lastKnownLocation.getLatitude();
 			longitude = lastKnownLocation.getLongitude();
-		} else if(lastKnownLocationNet != null){
+		} else if (lastKnownLocationNet != null) {
 			latitude = lastKnownLocationNet.getLatitude();
 			longitude = lastKnownLocationNet.getLongitude();
 		}
@@ -550,10 +551,20 @@ public class NotifyingService extends Service implements LocationListener {
 	 * helpers for starting/stopping monitoring of GPS changes below
 	 **********************************************************************/
 	private void startListening() {
-		// lm.requestLocationUpdates(lm.getBestProvider(new Criteria(), true),
-		// 600000, 1000, this);
-		lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 60000, 1000,
-				this);
+
+		Criteria criteria = new Criteria();
+		criteria.setAccuracy(Criteria.ACCURACY_FINE);
+		criteria.setAltitudeRequired(true);
+		criteria.setBearingRequired(false);
+		criteria.setCostAllowed(true);
+		criteria.setPowerRequirement(Criteria.POWER_LOW);
+
+		// lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 60000// 1min
+		// , 1000// 100m
+		// , this);
+		lm.requestLocationUpdates(lm.getBestProvider(criteria, true), 60000// 1min
+				, 1000// 100m
+				, this);
 	}
 
 	private void stopListening() {
