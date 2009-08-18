@@ -12,12 +12,12 @@ public class PreferenceReader {
 		_activity = activity;
 	}
 
-	public String getCalenderListNames() {
-		return loadString("calendar.list");
-	}
-
 	public String getCalenderListIDs() {
 		return loadString("calendar.listIDs");
+	}
+
+	public String getCalenderListNames() {
+		return loadString("calendar.list");
 	}
 
 	public String getNotificationTime() {
@@ -41,6 +41,14 @@ public class PreferenceReader {
 		return loadString("pref.user");
 	}
 
+	public boolean isCalendarsSet() {
+		return loadBoolean("pref.calendarsset");
+	}
+
+	public boolean isLightNotification() {
+		return loadBoolean("pref.screen");
+	}
+
 	public boolean isRemember() {
 		return loadBoolean("pref.remember");
 	}
@@ -49,28 +57,16 @@ public class PreferenceReader {
 		return loadBoolean("pref.running");
 	}
 
-	public boolean isLightNotification() {
-		return loadBoolean("pref.screen");
-	}
-
 	public boolean isSoundNotification() {
 		return loadBoolean("pref.sound");
-	}
-
-	public boolean isVibrationNotification() {
-		return loadBoolean("pref.vibration");
 	}
 
 	// public String getSoundURI(){
 	// return loadString("ring1");
 	// }
 
-	public boolean isCalendarsSet() {
-		return loadBoolean("pref.calendarsset");
-	}
-
-	public void setCalendarSet(boolean data) {
-		saveBoolean("pref.calendarsset", data);
+	public boolean isVibrationNotification() {
+		return loadBoolean("pref.vibration");
 	}
 
 	private boolean loadBoolean(final String field) {
@@ -102,13 +98,17 @@ public class PreferenceReader {
 		editor.commit();
 	}
 
+	public void setCalendarListIDs(final String list) {
+		saveString("calendar.listIDs", list);
+		// saveString("calendar.selection", list);
+	}
+
 	public void setCalendarListNames(final String list) {
 		saveString("calendar.list", list);
 	}
 
-	public void setCalendarListIDs(final String list) {
-		saveString("calendar.listIDs", list);
-//		saveString("calendar.selection", list);
+	public void setCalendarSet(final boolean data) {
+		saveBoolean("pref.calendarsset", data);
 	}
 
 }
