@@ -59,9 +59,11 @@ public class NotificationDisplay extends Activity {
 			}
 		}
 
-		event.set_notificationText(getString(R.string.notificationDisplay_getOnYourWay)
-				+ event.get_origEvent().get_title() + getString(R.string.notificationDisplay_at)
-				+ event.get_origEvent().get_where() + timeStr);
+		event
+				.set_notificationText(getString(R.string.notificationDisplay_getOnYourWay)
+						+ event.get_origEvent().get_title()
+						+ getString(R.string.notificationDisplay_at)
+						+ event.get_origEvent().get_where() + timeStr);
 
 		// tv
 		// .setText("You should get on your way for <getWhat()> in <getTimeToDrive()> at <getWhere>");

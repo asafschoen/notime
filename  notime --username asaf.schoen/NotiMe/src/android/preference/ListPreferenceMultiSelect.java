@@ -44,7 +44,7 @@ public class ListPreferenceMultiSelect extends ListPreference {
 		super(context, attrs);
 
 		mClickedDialogEntryIndices = new boolean[getEntries().length];
-//		java.util.Arrays.fill(mClickedDialogEntryIndices, true);
+		// java.util.Arrays.fill(mClickedDialogEntryIndices, true);
 
 	}
 
@@ -84,7 +84,8 @@ public class ListPreferenceMultiSelect extends ListPreference {
 					"ListPreference requires an entries array and an entryValues array which are both the same length");
 		}
 
-		PreferenceReader pr = new PreferenceReader(PreferenceReader._activity);
+		final PreferenceReader pr = new PreferenceReader(
+				PreferenceReader._activity);
 		System.out.println("isCalendarsSet() " + pr.isCalendarsSet());
 		if (!pr.isCalendarsSet()) {
 			pr.setCalendarSet(true);
@@ -93,8 +94,8 @@ public class ListPreferenceMultiSelect extends ListPreference {
 
 			if (entryValues != null) {
 				final StringBuffer value = new StringBuffer();
-				for (int i = 0; i < entryValues.length; i++) {
-					value.append(entryValues[i]).append(SEPARATOR);
+				for (final CharSequence entryValue : entryValues) {
+					value.append(entryValue).append(SEPARATOR);
 				}
 				if (callChangeListener(value)) {
 					String val = value.toString();
@@ -112,7 +113,7 @@ public class ListPreferenceMultiSelect extends ListPreference {
 				new DialogInterface.OnMultiChoiceClickListener() {
 					public void onClick(final DialogInterface dialog,
 							final int which, final boolean val) {
-						 mClickedDialogEntryIndices[which] = val;
+						mClickedDialogEntryIndices[which] = val;
 					}
 				});
 	}

@@ -47,43 +47,14 @@ public class NotifyingService extends Service implements LocationListener {
 				JavaCalendarUtils.Unit.MINUTE);
 	}
 
-	CharSequence getTimeText(final int time) {
-		if (time > 0) {
-			final int hours = Math.abs(time / 60);
-			final int mins = time % 60;
-			CharSequence h = null, m = null, t = null;
-			if (hours > 1) {
-				h = hours + getString(R.string.notifyingService_hours);
-			} else if (hours == 1) {
-				h = hours + getString(R.string.notifyingService_hour);
-			}
-			if (mins > 1) {
-				m = mins + getString(R.string.notifyingService_minutes);
-			} else if (mins == 1) {
-				m = mins + getString(R.string.notifyingService_minute);
-			}
-			if ((m != null) && (h != null)) {
-				t = h + getString(R.string.notifyingService_and) + m;
-			} else if (m != null) {
-				t = m;
-			} else if (h != null) {
-				t = h;
-			}
-			return t;
-		} else {
-			// return "notiMe can't locate your next appointment!";
-			return getString(R.string.notifyingService_beenOnYourWay);
-		}
-	}
-
 	private LocationManager lm;
 
 	private double latitude, longitude;
 
 	private int notificationTime;
+
 	// Use a layout id for a unique identifier
 	static int NOTIME_NOTIFICATIONS = R.layout.preferences;
-
 	// private ConditionVariable nCondition;
 	private ConditionVariable nMaxTimeCondition;
 
@@ -113,11 +84,11 @@ public class NotifyingService extends Service implements LocationListener {
 			NotifyingService.this.stopSelf();
 		}
 	};
+
 	// Start up the thread running the service. Note that we create a
 	// separate thread because the service normally runs in the process's
 	// main thread, which we don't want to block.
 	final Thread notifyingThread = new Thread(null, mTask, "NotifyingService");
-
 	// This is the object that receives interactions from clients. See
 	// RemoteService for a more complete example.
 	private final IBinder nBinder = new Binder() {
@@ -140,7 +111,7 @@ public class NotifyingService extends Service implements LocationListener {
 
 	private void checkEvents() throws Exception {
 		notificationTime = Integer.parseInt(pr.getNotificationTime());
-		LinkedList<NotiCalendar> parsedCalendarsList = GoogleCalendarP
+		final LinkedList<NotiCalendar> parsedCalendarsList = GoogleCalendarP
 				.getAllCals();// remove unneeded calendars
 		System.out.println("SELECTED CALENDARS: "
 				+ pr.getSelectedCalendarList());
@@ -241,6 +212,35 @@ public class NotifyingService extends Service implements LocationListener {
 		// time
 
 		return getInCarTime;
+	}
+
+	CharSequence getTimeText(final int time) {
+		if (time > 0) {
+			final int hours = Math.abs(time / 60);
+			final int mins = time % 60;
+			CharSequence h = null, m = null, t = null;
+			if (hours > 1) {
+				h = hours + getString(R.string.notifyingService_hours);
+			} else if (hours == 1) {
+				h = hours + getString(R.string.notifyingService_hour);
+			}
+			if (mins > 1) {
+				m = mins + getString(R.string.notifyingService_minutes);
+			} else if (mins == 1) {
+				m = mins + getString(R.string.notifyingService_minute);
+			}
+			if ((m != null) && (h != null)) {
+				t = h + getString(R.string.notifyingService_and) + m;
+			} else if (m != null) {
+				t = m;
+			} else if (h != null) {
+				t = h;
+			}
+			return t;
+		} else {
+			// return "notiMe can't locate your next appointment!";
+			return getString(R.string.notifyingService_beenOnYourWay);
+		}
 	}
 
 	private void handleKnownLocation(final String eventLatitude,
@@ -378,7 +378,6 @@ public class NotifyingService extends Service implements LocationListener {
 		System.out.println("?????????????/" + cNames);
 		pr.setCalendarListNames(cNames);
 		pr.setCalendarListIDs(cIDs);
-		
 
 		nNM = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
@@ -552,7 +551,7 @@ public class NotifyingService extends Service implements LocationListener {
 	 **********************************************************************/
 	private void startListening() {
 
-		Criteria criteria = new Criteria();
+		final Criteria criteria = new Criteria();
 		criteria.setAccuracy(Criteria.ACCURACY_FINE);
 		criteria.setAltitudeRequired(true);
 		criteria.setBearingRequired(false);

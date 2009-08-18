@@ -111,17 +111,17 @@ public class TimePickerPreference extends DialogPreference implements
 			public void onClick(final View v) {
 				minutes++;
 				timeText.setText(minutes.toString());
-				saveTime();
+				// saveTime();
 
 			}
 		});
-//		addMinute.setOnLongClickListener(new OnLongClickListener() {
-//
-//			@Override
-//			public boolean onLongClick(View v) {
-//
-//			}
-//		});
+		// addMinute.setOnLongClickListener(new OnLongClickListener() {
+		//
+		// @Override
+		// public boolean onLongClick(View v) {
+		//
+		// }
+		// });
 		subMinute.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(final View v) {
@@ -129,7 +129,7 @@ public class TimePickerPreference extends DialogPreference implements
 					minutes--;
 				}
 				timeText.setText(minutes.toString());
-				saveTime();
+				// saveTime();
 			}
 		});
 		timeText.addTextChangedListener(new TextWatcher() {
@@ -156,6 +156,18 @@ public class TimePickerPreference extends DialogPreference implements
 	/*
 	 * (non-Javadoc)
 	 * 
+	 * @see android.preference.DialogPreference#onDialogClosed(boolean)
+	 */
+	@Override
+	protected void onDialogClosed(final boolean positiveResult) {
+		if (positiveResult) {
+			saveTime();
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see
 	 * android.widget.TimePicker.OnTimeChangedListener#onTimeChanged(android
 	 * .widget.TimePicker, int, int)
@@ -165,7 +177,7 @@ public class TimePickerPreference extends DialogPreference implements
 
 		// persistString(hour + (String)
 		// getText(R.string.timerPickerPreference_colon) + minute);
-		persistString(hour + (String) ":" + minute);
+		persistString(hour + ":" + minute);
 	}
 
 	private void saveTime() {
