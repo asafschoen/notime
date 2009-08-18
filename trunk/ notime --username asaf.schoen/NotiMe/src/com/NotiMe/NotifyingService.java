@@ -388,9 +388,14 @@ public class NotifyingService extends Service implements LocationListener {
 		lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 		final Location lastKnownLocation = lm
 				.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+		final Location lastKnownLocationNet = lm
+				.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 		if (lastKnownLocation != null) {
 			latitude = lastKnownLocation.getLatitude();
 			longitude = lastKnownLocation.getLongitude();
+		} else if(lastKnownLocationNet != null){
+			latitude = lastKnownLocationNet.getLatitude();
+			longitude = lastKnownLocationNet.getLongitude();
 		}
 		startListening();
 	}
