@@ -1,62 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_width="fill_parent" android:layout_height="fill_parent">
+<LinearLayout android:id="@+id/linlayoutBase"
+	android:layout_width="fill_parent" android:layout_height="fill_parent"
+	android:orientation="vertical" xmlns:android="http://schemas.android.com/apk/res/android">
 
-	<LinearLayout android:orientation="vertical"
-		android:layout_height="wrap_content" android:layout_width="fill_parent"
-		android:layout_gravity="center" android:paddingLeft="5dip">
+	<ScrollView android:id="@+id/scrollview"
+		android:layout_width="fill_parent" android:layout_height="wrap_content"
+		android:layout_weight="1">
 
-		<TextView android:id="@+id/message" android:layout_width="fill_parent"
-			android:layout_height="wrap_content" android:layout_weight="0"
-			android:text="message sflhsdflksdhglaijhgkaldhgfg"
-			android:paddingBottom="1dip" android:padding="5dip" android:textSize="16sp" />
-
-		<TextView android:id="@+id/location" android:layout_width="fill_parent"
-			android:layout_height="wrap_content" android:layout_weight="0"
-			android:text="location asdfpaoidufhaslkfjbgalskhbgaisg"
-			android:paddingBottom="10dip" android:paddingLeft="5dip"
-			android:paddingRight="5dip" android:textSize="16sp" />
-
-		<TextView android:id="@+id/suggestions" android:layout_width="fill_parent"
-			android:layout_height="wrap_content" android:layout_weight="0"
-			android:textSize="16sp" android:textStyle="bold"
-			android:paddingBottom="1dip" android:text="@string/notierrdisplay_suggestions" />
-
-		<RadioGroup android:layout_width="fill_parent"
-			android:layout_height="wrap_content" android:orientation="vertical"
-			android:id="@+id/group1">
-
-			<RadioButton android:checked="false" android:id="@+id/option1" />
-			<RadioButton android:checked="false" android:id="@+id/option2" />
-
-			<RadioButton android:checked="false"
-				android:text="@string/notierrdisplay_notime" android:id="@+id/timebefore" />
-				
-			<RelativeLayout android:id="@+id/widget76"
-				android:layout_width="wrap_content" android:layout_height="wrap_content"
-				android:layout_centerVertical="true"
-				android:layout_centerHorizontal="true" android:paddingLeft="60dip">
-
-				<EditText android:id="@+id/Minutes" android:layout_height="wrap_content"
-					android:width="25pt" android:layout_width="25pt" android:layout_below="@+id/timebefore" 
-					android:text="@string/notierrdisplay_ten" android:inputType="number"></EditText>
-				<Button android:id="@+id/errPlus" android:layout_width="wrap_content"
-					android:layout_height="wrap_content" android:text="@string/notierrdisplay_plus"
-					android:width="30pt" android:layout_toRightOf="@+id/Minutes"></Button>
-				<Button android:id="@+id/errMinus" android:layout_width="wrap_content"
-					android:layout_height="wrap_content" android:text="@string/notierrdisplay_minus"
-					android:width="30pt" android:layout_toRightOf="@+id/errPlus"></Button>
-
-			</RelativeLayout>
-
-			<RadioButton android:checked="false"
-				android:text="@string/notierrdisplay_dismiss" android:id="@+id/dismiss" />
-		</RadioGroup>
+		<LinearLayout android:id="@+id/widget30"
+			android:layout_width="fill_parent" android:layout_height="wrap_content"
+			android:orientation="vertical">
 
 
+			<TextView android:id="@+id/message" android:layout_width="fill_parent"
+				android:layout_height="wrap_content" android:layout_weight="0"
+				android:text="message sflhsdflksdhglaijhgkaldhgfg"
+				android:paddingBottom="2dip" android:paddingLeft="5dip"
+				android:paddingRight="5dip" android:textSize="16sp" />
+
+			<TextView android:id="@+id/messageC" android:layout_width="fill_parent"
+				android:layout_height="wrap_content" android:layout_weight="0"
+				android:text="message sflhsdflksdhglaijhgkaldhgfg"
+				android:textStyle="italic" android:paddingBottom="5dip"
+				android:paddingRight="5dip" android:paddingLeft="15dip"
+				android:textSize="16sp" />
+
+			<TextView android:id="@+id/location" android:layout_width="fill_parent"
+				android:layout_height="wrap_content" android:layout_weight="0"
+				android:text="location asdfpaoidufhaslkfjbgalskhbgaisg"
+				android:paddingBottom="2dip" android:paddingLeft="5dip"
+				android:paddingRight="5dip" android:textSize="16sp" />
+
+			<TextView android:id="@+id/locationC" android:layout_width="fill_parent"
+				android:layout_height="wrap_content" android:layout_weight="0"
+				android:text="location asdfpaoidufhaslkfjbgalskhbgaisg"
+				android:paddingBottom="10dip" android:paddingLeft="15dip"
+				android:paddingRight="5dip" android:textSize="16sp"
+				android:textStyle="italic" />
+
+			<TextView android:id="@+id/suggestions"
+				android:layout_width="fill_parent" android:layout_height="wrap_content"
+				android:layout_weight="0" android:textSize="16sp" android:textStyle="bold"
+				android:paddingBottom="1dip" android:text="@string/notierrdisplay_suggestions" />
+
+			<RadioGroup android:layout_width="fill_parent"
+				android:layout_height="wrap_content" android:orientation="vertical"
+				android:id="@+id/group1">
+
+				<RadioButton android:checked="false"
+					android:text="@string/notierrdisplay_dismiss" android:id="@+id/dismiss" />
+
+				<RadioButton android:checked="false"
+					android:text="@string/notierrdisplay_notime" android:id="@+id/timebefore" />
+
+				<RelativeLayout android:id="@+id/widget76"
+					android:layout_width="wrap_content" android:layout_height="wrap_content"
+					android:layout_centerVertical="true"
+					android:layout_centerHorizontal="true" android:paddingLeft="60dip">
+
+					<EditText android:id="@+id/Minutes" android:layout_height="wrap_content"
+						android:width="25pt" android:layout_width="25pt"
+						android:layout_below="@+id/timebefore" android:text="@string/notierrdisplay_ten"
+						android:inputType="number"></EditText>
+					<Button android:id="@+id/errPlus" android:layout_width="wrap_content"
+						android:layout_height="wrap_content" android:text="@string/notierrdisplay_plus"
+						android:width="30pt" android:layout_toRightOf="@+id/Minutes"></Button>
+					<Button android:id="@+id/errMinus" android:layout_width="wrap_content"
+						android:layout_height="wrap_content" android:text="@string/notierrdisplay_minus"
+						android:width="30pt" android:layout_toRightOf="@+id/errPlus"></Button>
+
+				</RelativeLayout>
+
+				<TextView android:id="@+id/corrections"
+					android:layout_width="fill_parent" android:layout_height="wrap_content"
+					android:layout_weight="0" android:textSize="16sp"
+					android:textStyle="bold" android:paddingTop="5dip"
+					android:paddingBottom="1dip" android:text="@string/notierrdisplay_corrections" />
+
+				<RadioButton android:checked="false" android:id="@+id/option1" />
+				<RadioButton android:checked="false" android:id="@+id/option2" />
+
+
+
+
+			</RadioGroup>
+
+
+		</LinearLayout>
+
+	</ScrollView>
+	<LinearLayout android:id="@+id/linlayoutButtons"
+		android:layout_width="fill_parent" android:layout_height="wrap_content"
+		android:layout_weight="0">
+
+		<Button android:id="@+id/errnotifyok" android:layout_width="fill_parent"
+			android:layout_height="wrap_content" android:text="@string/ok">
+		</Button>
 	</LinearLayout>
-	<Button android:id="@+id/errnotifyok" android:layout_width="fill_parent"
-		android:layout_height="wrap_content" android:text="@string/ok"
-		android:layout_alignParentBottom="true">
-	</Button>
-</RelativeLayout>
+</LinearLayout>

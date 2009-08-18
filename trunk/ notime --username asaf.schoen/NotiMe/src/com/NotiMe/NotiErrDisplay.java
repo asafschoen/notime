@@ -71,15 +71,25 @@ public class NotiErrDisplay extends Activity {
 		}
 
 		final TextView tv1 = (TextView) findViewById(R.id.message);
-		tv1.setText(getString(R.string.notiErrDisplay_cantFindLocation) + event);
+		tv1.setText(getString(R.string.notierrdisplay_cantFindLocation));
+
+		final TextView tv1C = (TextView) findViewById(R.id.messageC);
+		tv1C.setText(event.get_origEvent().get_title());
 
 		final TextView tv2 = (TextView) findViewById(R.id.location);
-		tv2.setText("Location provided: " + origLocation);
+		tv2.setText(getString(R.string.notierrdisplay_locprovided));
+
+		final TextView tv2C = (TextView) findViewById(R.id.locationC);
+		tv2C.setText(origLocation);
+
+		final TextView tv3 = (TextView) findViewById(R.id.corrections);
 
 		final RadioButton option1RBtn = (RadioButton) findViewById(R.id.option1);
 		if (l1Str.equals("")) {
+			tv3.setVisibility(View.INVISIBLE);
 			option1RBtn.setVisibility(View.INVISIBLE);
 		} else {
+			tv3.setVisibility(View.VISIBLE);
 			option1RBtn.setText(l1Str);
 		}
 
@@ -103,6 +113,7 @@ public class NotiErrDisplay extends Activity {
 			public void onClick(final View v) {
 
 				_counter++;
+				timeAlertRBtn.setChecked(true);
 				et.setText(_counter.toString());
 			}
 		});
@@ -112,12 +123,14 @@ public class NotiErrDisplay extends Activity {
 		minusBtn.setOnClickListener(new Button.OnClickListener() {
 			public void onClick(final View v) {
 				_counter--;
+				timeAlertRBtn.setChecked(true);
 				et.setText(_counter.toString());
 			}
 		});
 		;
 
 		final RadioButton dismissRBtn = (RadioButton) findViewById(R.id.dismiss);
+		dismissRBtn.setChecked(true);
 		if (dismissRBtn.isChecked()) {
 			// TODO do something
 		}

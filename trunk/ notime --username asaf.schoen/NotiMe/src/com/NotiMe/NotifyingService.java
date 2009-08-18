@@ -19,7 +19,6 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.net.Uri;
 import android.os.Binder;
 import android.os.Bundle;
 import android.os.ConditionVariable;
@@ -379,6 +378,7 @@ public class NotifyingService extends Service implements LocationListener {
 		System.out.println("?????????????/" + cNames);
 		pr.setCalendarListNames(cNames);
 		pr.setCalendarListIDs(cIDs);
+		
 
 		nNM = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
@@ -520,7 +520,7 @@ public class NotifyingService extends Service implements LocationListener {
 			effects |= Notification.DEFAULT_SOUND;
 			// }
 		}
-		if (pr.isScreenNotification()) {
+		if (pr.isLightNotification()) {
 			// effects |= Notification.DEFAULT_LIGHTS;
 			notification.flags = Notification.FLAG_SHOW_LIGHTS;
 			notification.ledOnMS = 500;
