@@ -29,7 +29,7 @@ public class NotiErrDisplay extends Activity {
 		setContentView(R.layout.notierrdisplay);
 
 		final Bundle extras = getIntent().getExtras();
-
+		final boolean isHideDots = extras.getBoolean("com.NotiMe.hideDots");
 		final String id = extras.getString("com.NotiMe.ID");
 		final NotiDetails event = NotifyingService.eventsDetails.get(id);
 
@@ -41,7 +41,7 @@ public class NotiErrDisplay extends Activity {
 		String l1Str = "", l2Str = "";
 		Address address;
 		// String latt1, longt1;
-		if (origLocation != null) {
+		if ((origLocation != null) && !isHideDots) {
 			try {
 				// location = "uzi narcis, tel aviv, israel";
 
@@ -85,7 +85,7 @@ public class NotiErrDisplay extends Activity {
 		final TextView tv3 = (TextView) findViewById(R.id.corrections);
 
 		final RadioButton option1RBtn = (RadioButton) findViewById(R.id.option1);
-		if (l1Str.equals("")) {
+		if (isHideDots || l1Str.equals("")) {
 			tv3.setVisibility(View.INVISIBLE);
 			option1RBtn.setVisibility(View.INVISIBLE);
 		} else {
@@ -94,7 +94,7 @@ public class NotiErrDisplay extends Activity {
 		}
 
 		final RadioButton option2RBtn = (RadioButton) findViewById(R.id.option2);
-		if (l2Str.equals("")) {
+		if (isHideDots || l2Str.equals("")) {
 			option2RBtn.setVisibility(View.INVISIBLE);
 		} else {
 			option2RBtn.setText(l2Str);

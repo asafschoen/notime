@@ -31,6 +31,33 @@ public class NotificationDisplay extends Activity {
 		}
 	}
 
+	CharSequence getTimeText(final int time) {
+		if (time > 0) {
+			final int hours = Math.abs(time / 60);
+			final int mins = time % 60;
+			CharSequence h = null, m = null, t = null;
+			if (hours > 1) {
+				h = hours + getString(R.string.notifyingService_hours);
+			} else if (hours == 1) {
+				h = hours + getString(R.string.notifyingService_hour);
+			}
+			if (mins > 1) {
+				m = mins + getString(R.string.notifyingService_minutes);
+			} else if (mins == 1) {
+				m = mins + getString(R.string.notifyingService_minute);
+			}
+			if ((m != null) && (h != null)) {
+				t = h + getString(R.string.notifyingService_and) + m;
+			} else if (m != null) {
+				t = m;
+			} else if (h != null) {
+				t = h;
+			}
+			return t;
+		}
+		return "";
+	}
+
 	@Override
 	protected void onCreate(final Bundle icicle) {
 		// Be sure to call the super class.
@@ -38,7 +65,8 @@ public class NotificationDisplay extends Activity {
 		setContentView(R.layout.notifdisplay);
 
 		final Bundle extras = getIntent().getExtras();
-
+		final boolean isAfterTimeAlert = extras
+				.getBoolean("com.NotiMe.afterTimeAlert");
 		final String id = extras.getString("com.NotiMe.ID");
 		final Calendar getInCarTime = (Calendar) extras
 				.getSerializable("com.NotiMe.GetInCarTime");
@@ -53,7 +81,7 @@ public class NotificationDisplay extends Activity {
 			minToGo = NotifyingService.getMinutesToGo(getInCarTime);
 			if (minToGo > 0) {
 				timeStr = getString(R.string.notificationDisplay_in)
-						+ NotifyingService.getMinutesToGo(getInCarTime);
+						+ getTimeText(minToGo);
 			} else {
 				timeStr = getString(R.string.notificationDisplay_now);
 			}
@@ -70,6 +98,10 @@ public class NotificationDisplay extends Activity {
 		tv.setText(event.get_notificationText());
 
 		final Button mapBtn = (Button) findViewById(R.id.map);
+
+		if (isAfterTimeAlert) {
+			mapBtn.setEnabled(false);
+		}
 		mapBtn.setOnClickListener(new Button.OnClickListener() {
 			public void onClick(final View v) {
 				final Intent mapIntent = new Intent(Intent.ACTION_VIEW, Uri

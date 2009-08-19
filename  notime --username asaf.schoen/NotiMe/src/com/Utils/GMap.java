@@ -71,7 +71,8 @@ public class GMap {
 	 * @param placeB
 	 *            the second place
 	 * 
-	 * @return the time in minutes or null if no route was found
+	 * @return the time in minutes or -1 if no route was found or null for a
+	 *         problem
 	 * 
 	 * @throws IOException
 	 *             Signals that an I/O exception has occurred.
@@ -90,6 +91,9 @@ public class GMap {
 		String inputLine;
 		int duration = 0;
 		while ((inputLine = in.readLine()) != null) {
+			if (inputLine.contains("We could not calculate directions between")) {
+				return -1;
+			}
 			if (inputLine.contains("about")) {
 				final String[] strings = inputLine.split(" ");
 				for (int i = 0; i < strings.length; i++) {
