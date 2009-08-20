@@ -239,9 +239,8 @@ public class NotifyingService extends Service implements LocationListener {
 		final Collection<NotiDetails> e = NotifyingService.eventsDetails
 				.values();
 		for (final NotiDetails notiDetails : e) {
-
-			final NotiDetails eventDet = notiDetails;
-			updateDetEvent(eventDet.get_origEvent().get_id());
+			updateDetEvent(notiDetails.get_origEvent().get_id());
+			final NotiDetails eventDet = notiDetails;// eventsDetails.get(notiDetails.get_origEvent().get_id());
 
 			System.out.println("IN FOR: is diss:" + eventDet.is_dissmissed()
 					+ " is snooze: " + eventDet.is_snooze()
