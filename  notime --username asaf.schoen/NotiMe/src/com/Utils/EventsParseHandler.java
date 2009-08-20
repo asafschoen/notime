@@ -106,7 +106,10 @@ public class EventsParseHandler extends DefaultHandler {
 		if (localName.equals("entry")) {
 			if ((curEvent.get_where() != null) && (curEvent.get_when() != null)) {
 				if (new Date().before(curEvent.get_when())) {
-					myEventsList.add(curEvent);
+					if ((curEvent.get_where() != null)
+							&& !curEvent.get_where().equals("")) {
+						myEventsList.add(curEvent);
+					}
 				}
 			} else {
 				// System.out.println("not valid event - missing time/location");
