@@ -120,6 +120,9 @@ public class NotifyingService extends Service implements LocationListener {
 	// main thread, which we don't want to block.
 	final Thread notifyingThread = new Thread(null, mTask, "NotifyingService");
 
+	LinkedList<NotiCalendar> parsedCalendarsList = null;
+	LinkedList<NotiEvent> parsedEventsList = null;
+
 	PreferenceReader pr = new PreferenceReader(PreferenceReader._activity);
 	private boolean run = true;
 
@@ -127,7 +130,7 @@ public class NotifyingService extends Service implements LocationListener {
 		final ConnectivityManager connec = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 
 		notificationTime = Integer.parseInt(pr.getNotificationTime());
-		LinkedList<NotiCalendar> parsedCalendarsList = null;
+
 		try {
 			parsedCalendarsList = GoogleCalendarP.getAllCals();
 		} catch (final Exception e1) {
@@ -147,7 +150,7 @@ public class NotifyingService extends Service implements LocationListener {
 		for (int i = 0; i < size; i++) {
 			cIDs.add(selectedIDsTokenizer.nextToken());
 		}
-		LinkedList<NotiEvent> parsedEventsList = null;
+
 		if (parsedCalendarsList != null) {
 			parsedCalendarsList.retainAll(cIDs);
 
@@ -211,8 +214,10 @@ public class NotifyingService extends Service implements LocationListener {
 			} else {// not new
 				System.out.println("THE EVENT IS NOT NEW");
 
+				updateDetEvent(firstEvent.get_id());
 				final NotiDetails eventDet = NotifyingService.eventsDetails
 						.get(firstEvent.get_id());
+
 				if (eventDet.is_locationFixed() && !eventDet.is_dissmissed()
 						&& !eventDet.is_published()) {// only location fixed
 					System.out.println("ONLY LOCATION FIXED");
@@ -236,6 +241,7 @@ public class NotifyingService extends Service implements LocationListener {
 		for (final NotiDetails notiDetails : e) {
 
 			final NotiDetails eventDet = notiDetails;
+			updateDetEvent(eventDet.get_origEvent().get_id());
 
 			System.out.println("IN FOR: is diss:" + eventDet.is_dissmissed()
 					+ " is snooze: " + eventDet.is_snooze()
@@ -348,8 +354,7 @@ public class NotifyingService extends Service implements LocationListener {
 			// route
 			if ((eventDet != null) && !eventDet.is_noRoutePublished()) {
 				eventDet.set_noRoutePublished(true);
-				NotifyingService.eventsDetails.put(eventDet.get_origEvent()
-						.get_id(), eventDet);
+
 				showNotification(eventDet.get_origEvent().get_id(), null,
 						NotifyingService.NOTIFY_NO_ROUTE);
 
@@ -827,6 +832,20 @@ public class NotifyingService extends Service implements LocationListener {
 	private void stopListening() {
 		if (lm != null) {
 			lm.removeUpdates(this);
+		}
+	}
+
+	private void updateDetEvent(final String eventID) {
+		if (parsedEventsList == null) {
+			return;
+		}
+		final int index = parsedEventsList.indexOf(eventID);
+		if (index != -1) {
+			final NotiEvent updatedEvent = parsedEventsList.get(index);
+			final NotiDetails eventDet = NotifyingService.eventsDetails
+					.get(eventID);
+			eventDet.set_origEvent(updatedEvent);
+			NotifyingService.eventsDetails.put(eventID, eventDet);
 		}
 	}
 }
