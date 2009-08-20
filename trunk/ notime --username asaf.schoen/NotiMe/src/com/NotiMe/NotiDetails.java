@@ -7,20 +7,21 @@ import android.location.Address;
 import com.Utils.NotiEvent;
 
 public class NotiDetails {
-	private boolean _locationFixed = false;
 	private Address _address;
+	private String _directionsURL;
+	private boolean _dissmissed = false;
+	private boolean _locationFixed = false;
+	private boolean _noRoutePublished = false;
+	private int _notificationID = 0; // for snooze or time alert
+	private String _notificationText;
+	private NotiEvent _origEvent;
+	private boolean _published = false;
+	private boolean _snooze = false;
+	private boolean _snoozePublished = false;
+	private Calendar _snoozeTime;
 	private boolean _timeAlert = false;
 	private int _timeAlertInMin = 0;
-	private boolean _snooze = false;
-	private Calendar _snoozeTime;
-	private boolean _published = false;
-	private boolean _dissmissed = false;
-	private String _notificationText;
-	private String _directionsURL;
-	private int _notificationID = 0; // for snooze or time alert
-	private boolean _snoozePublished = false;
 	private boolean _timeAlertPublished = false;
-	private NotiEvent _origEvent;
 
 	/**
 	 * @return the _address
@@ -83,6 +84,13 @@ public class NotiDetails {
 	 */
 	protected boolean is_locationFixed() {
 		return _locationFixed;
+	}
+
+	/**
+	 * @return the _noRoute
+	 */
+	protected boolean is_noRoutePublished() {
+		return _noRoutePublished;
 	}
 
 	/**
@@ -150,6 +158,14 @@ public class NotiDetails {
 	 */
 	protected void set_locationFixed(final boolean locationFixed) {
 		_locationFixed = locationFixed;
+	}
+
+	/**
+	 * @param noRoute
+	 *            the _noRoute to set
+	 */
+	protected void set_noRoutePublished(final boolean noRoutePublished) {
+		_noRoutePublished = noRoutePublished;
 	}
 
 	/**

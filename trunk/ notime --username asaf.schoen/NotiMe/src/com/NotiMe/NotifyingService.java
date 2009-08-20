@@ -40,7 +40,23 @@ import com.Utils.NotiEvent;
  */
 public class NotifyingService extends Service implements LocationListener {
 
+	static HashMap<String, NotiDetails> eventsDetails = new HashMap<String, NotiDetails>();
+
+	static NotificationManager nNM;
+
 	private static int notificationID = 1;
+
+	static final int NOTIFY_ERR_LOCATION = 2;
+
+	static final int NOTIFY_NO_ROUTE = 3;
+
+	static final int NOTIFY_REG_TIME_PASSED = 1;
+	static final int NOTIFY_REGULAR = 0;
+	static final int NOTIFY_SNOOZE = 4;
+	static final int NOTIFY_TIME_ALERT = 5;
+
+	static int NOTIME_NOTIFICATIONS = 100;
+	private static int reqCode = 0;
 
 	static int getMinutesToGo(final Calendar getInCarTime) {
 		final Calendar currentTime = Calendar.getInstance();
@@ -48,24 +64,16 @@ public class NotifyingService extends Service implements LocationListener {
 				JavaCalendarUtils.Unit.MINUTE);
 	}
 
-	private LocationManager lm;
+	NotiEvent firstEvent;
 
+	GMap gMap = new GMap();
+
+	private boolean isConnection = true;
+
+	private boolean isProblemNotified = false;
 	private double latitude, longitude;
 
-	private int notificationTime;
-
-	static final int NOTIFY_REGULAR = 0;
-	static final int NOTIFY_REG_TIME_PASSED = 1;
-	static final int NOTIFY_ERR_LOCATION = 2;
-	static final int NOTIFY_NO_ROUTE = 3;
-	static final int NOTIFY_SNOOZE = 4;
-	static final int NOTIFY_TIME_ALERT = 5;
-	// Use a layout id for a unique identifier
-	static int NOTIME_NOTIFICATIONS = R.layout.preferences;
-	// private ConditionVariable nCondition;
-	private ConditionVariable nMaxTimeCondition;
-
-	private boolean run = true;
+	private LocationManager lm;
 
 	private final Runnable mTask = new Runnable() {
 
@@ -92,10 +100,6 @@ public class NotifyingService extends Service implements LocationListener {
 		}
 	};
 
-	// Start up the thread running the service. Note that we create a
-	// separate thread because the service normally runs in the process's
-	// main thread, which we don't want to block.
-	final Thread notifyingThread = new Thread(null, mTask, "NotifyingService");
 	// This is the object that receives interactions from clients. See
 	// RemoteService for a more complete example.
 	private final IBinder nBinder = new Binder() {
@@ -106,19 +110,18 @@ public class NotifyingService extends Service implements LocationListener {
 		}
 	};
 
-	static NotificationManager nNM;
+	// private ConditionVariable nCondition;
+	private ConditionVariable nMaxTimeCondition;
 
-	NotiEvent firstEvent;
+	private int notificationTime;
 
-	static HashMap<String, NotiDetails> eventsDetails = new HashMap<String, NotiDetails>();
-
-	GMap gMap = new GMap();
+	// Start up the thread running the service. Note that we create a
+	// separate thread because the service normally runs in the process's
+	// main thread, which we don't want to block.
+	final Thread notifyingThread = new Thread(null, mTask, "NotifyingService");
 
 	PreferenceReader pr = new PreferenceReader(PreferenceReader._activity);
-
-	private boolean isProblemNotified = false;
-
-	private static int reqCode = 0;
+	private boolean run = true;
 
 	private void checkEvents() {
 		final ConnectivityManager connec = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -173,65 +176,83 @@ public class NotifyingService extends Service implements LocationListener {
 				.getNetworkInfo(1).isConnectedOrConnecting())
 				|| ((latitude == 0) && (longitude == 0))) {
 			System.out.println("INSIDE IF");
+			isConnection = false;
 			if (!isProblemNotified) {
 				System.out.println("PROBLEM!!!!!!!!!!!!!!!!!!!");
 				isProblemNotified = true;
 				showShortNotification(getString(R.string.notifyingService_check));
 			}
-		} else if (!eventsDetails.containsKey(firstEvent.get_id())) {// new
-			// event
-			System.out.println("NEW EVENT");
-			if (firstEvent.get_latitude() != null) {// event location is known
-				try {
-					handleKnownLocation(firstEvent.get_latitude(), firstEvent
-							.get_longitude());
-				} catch (final IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+		} else if (firstEvent != null) {
+			if (!NotifyingService.eventsDetails
+					.containsKey(firstEvent.get_id())) {// new
+				// event
+				System.out.println("NEW EVENT");
+				if (firstEvent.get_latitude() != null) {// event location is
+					// known
+					try {
+						handleKnownLocation(firstEvent.get_latitude(),
+								firstEvent.get_longitude(), null);
+					} catch (final IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+
+				} else {// event location is unclear
+					System.out.println("EVENT LOCATION IS UNCLEAR");
+					final NotiDetails nd = new NotiDetails();
+					nd.set_published(false);
+					nd.set_origEvent(firstEvent);
+					NotifyingService.eventsDetails.put(firstEvent.get_id(), nd);
+
+					showNotification(firstEvent.get_id(), null,
+							NotifyingService.NOTIFY_ERR_LOCATION);
 				}
 
-			} else {// event location is unclear
-				System.out.println("EVENT LOCATION IS UNCLEAR");
-				final NotiDetails nd = new NotiDetails();
-				nd.set_published(false);
-				nd.set_origEvent(firstEvent);
-				eventsDetails.put(firstEvent.get_id(), nd);
+			} else {// not new
+				System.out.println("THE EVENT IS NOT NEW");
 
-				showNotification(firstEvent.get_id(), null, null,
-						NOTIFY_ERR_LOCATION);
-			}
-
-		} else {// not new
-			System.out.println("THE EVENT IS NOT NEW");
-
-			final NotiDetails eventDet = eventsDetails.get(firstEvent.get_id());
-			if (eventDet.is_locationFixed() && !eventDet.is_dissmissed()
-					&& !eventDet.is_published()) {// only location fixed
-				try {
-					handleKnownLocation(Double.toString(eventDet.get_address()
-							.getLatitude()), Double.toString(eventDet
-							.get_address().getLongitude()));
-				} catch (final IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+				final NotiDetails eventDet = NotifyingService.eventsDetails
+						.get(firstEvent.get_id());
+				if (eventDet.is_locationFixed() && !eventDet.is_dissmissed()
+						&& !eventDet.is_published()) {// only location fixed
+					System.out.println("ONLY LOCATION FIXED");
+					try {
+						handleKnownLocation(Double.toString(eventDet
+								.get_address().getLatitude()),
+								Double.toString(eventDet.get_address()
+										.getLongitude()), eventDet);
+					} catch (final IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 				}
-			}
 
+			}
 		}
 
 		System.out.println("BEFORE INDEPENDENT CHECK");
-		final Collection<NotiDetails> e = eventsDetails.values();
+		final Collection<NotiDetails> e = NotifyingService.eventsDetails
+				.values();
 		for (final NotiDetails notiDetails : e) {
+
 			final NotiDetails eventDet = notiDetails;
+
+			System.out.println("IN FOR: is diss:" + eventDet.is_dissmissed()
+					+ " is snooze: " + eventDet.is_snooze()
+					+ " snooze publish: " + eventDet.is_snoozePublished()
+					+ " snooze time: " + eventDet.get_snoozeTime() + " is TA: "
+					+ eventDet.is_timeAlert() + "is TA Pub: "
+					+ eventDet.is_timeAlertPublished());
 
 			final Calendar currentTime = Calendar.getInstance();
 			final NotiEvent origEvent = eventDet.get_origEvent();
 			if (eventDet.is_dissmissed()
 					&& currentTime.before(origEvent.get_when())) {
 				System.out.println("EVENT REMOVED FROM HASHMAP");
-				eventsDetails.remove(origEvent.get_id());
+				NotifyingService.eventsDetails.remove(origEvent.get_id());
 			} else if (!eventDet.is_dissmissed() && eventDet.is_snooze()
 					&& !eventDet.is_snoozePublished()) {// Snooze
+				System.out.println("BEFORE SNOOZE");
 				if (eventDet.get_snoozeTime().before(currentTime)) {
 					System.out.println("SNOOZE ALERT");
 					System.out.println("SNOOZE TIME: "
@@ -247,6 +268,7 @@ public class NotifyingService extends Service implements LocationListener {
 			} else if (!eventDet.is_dissmissed() && eventDet.is_timeAlert()
 					&& !eventDet.is_timeAlertPublished()) { // Time
 				// Alert
+				System.out.println("BEFORE TIME ALERT");
 				final Calendar alertTime = Calendar.getInstance();
 				alertTime.setTime(eventDet.get_origEvent().get_when());
 				alertTime.add(Calendar.MINUTE, (-1)
@@ -274,6 +296,9 @@ public class NotifyingService extends Service implements LocationListener {
 
 	private Calendar getGetInCarTime(final NotiEvent event,
 			final Integer drivingTimeInMin) {
+		if (drivingTimeInMin == null) {
+			return null;
+		}
 		final Calendar getInCarTime = Calendar.getInstance();
 		getInCarTime.setTime(event.get_when());// event time
 		getInCarTime.add(Calendar.MINUTE, drivingTimeInMin * (-1));// minus
@@ -313,13 +338,30 @@ public class NotifyingService extends Service implements LocationListener {
 	}
 
 	private void handleKnownLocation(final String eventLatitude,
-			final String eventLongitude) throws IOException {
+			final String eventLongitude, final NotiDetails eventDet)
+			throws IOException {
 		System.out.println("EVENT LOCATION IS KNOWN");
 		final Integer drivingTimeInMin = getDrivingTimeInMin(eventLatitude,
 				eventLongitude);
 
-		if ((drivingTimeInMin == null) || drivingTimeInMin.equals(-1)) {
-			showNotification(firstEvent.get_id(), null, null, NOTIFY_NO_ROUTE);
+		if ((drivingTimeInMin == null) || drivingTimeInMin.equals(-1)) {// no
+			// route
+			if ((eventDet != null) && !eventDet.is_noRoutePublished()) {
+				eventDet.set_noRoutePublished(true);
+				NotifyingService.eventsDetails.put(eventDet.get_origEvent()
+						.get_id(), eventDet);
+				showNotification(eventDet.get_origEvent().get_id(), null,
+						NotifyingService.NOTIFY_NO_ROUTE);
+
+			} else if (eventDet == null) {
+				final NotiDetails nd = new NotiDetails();
+				nd.set_origEvent(firstEvent);
+				nd.set_noRoutePublished(true);
+				NotifyingService.eventsDetails.put(firstEvent.get_id(), nd);
+
+				showNotification(firstEvent.get_id(), null,
+						NotifyingService.NOTIFY_NO_ROUTE);
+			}
 			return;
 		}
 
@@ -350,14 +392,15 @@ public class NotifyingService extends Service implements LocationListener {
 						+ latitude + "," + longitude + "&daddr="
 						+ eventLatitude + "," + eventLongitude + "");
 
-				eventsDetails.put(firstEvent.get_id(), nd);
-				final int minToGo = getMinutesToGo(getInCarTime);
+				NotifyingService.eventsDetails.put(firstEvent.get_id(), nd);
+				final int minToGo = NotifyingService
+						.getMinutesToGo(getInCarTime);
 				if (minToGo > 0) {
 					showNotification(firstEvent.get_id(), getInCarTime,
-							minToGo, NOTIFY_REGULAR);
+							NotifyingService.NOTIFY_REGULAR);
 				} else {
 					showNotification(firstEvent.get_id(), getInCarTime,
-							minToGo, NOTIFY_REG_TIME_PASSED);
+							NotifyingService.NOTIFY_REG_TIME_PASSED);
 				}
 
 			}
@@ -369,11 +412,13 @@ public class NotifyingService extends Service implements LocationListener {
 
 	private void handleSnoozeOrTimeAlert(final NotiDetails eventDet)
 			throws IOException {
+		System.out.println("IN HANDLE SN TA");
 		final NotiEvent origEvent = eventDet.get_origEvent();
 		if (eventDet.get_notificationID() == 0) {
-			eventDet.set_notificationID(notificationID);
-			notificationID++;
-			eventsDetails.put(origEvent.get_id(), eventDet);
+			System.out.println("ID=0");
+			eventDet.set_notificationID(NotifyingService.notificationID);
+			NotifyingService.notificationID++;
+			NotifyingService.eventsDetails.put(origEvent.get_id(), eventDet);
 		}
 		String eventLatitude, eventLongitude;
 		if (eventDet.is_locationFixed()) {
@@ -386,17 +431,22 @@ public class NotifyingService extends Service implements LocationListener {
 			eventLongitude = origEvent.get_longitude();
 		}
 
-		final Calendar getInCarTime = getGetInCarTime(origEvent,
-				getDrivingTimeInMin(eventLatitude, eventLongitude));
-
-		final int minToGo = getMinutesToGo(getInCarTime);
+		Calendar getInCarTime = null;
+		try {
+			getInCarTime = getGetInCarTime(origEvent, getDrivingTimeInMin(
+					eventLatitude, eventLongitude));
+		} catch (final Exception e) {
+			// TODO: handle exception
+		}
 
 		if (eventDet.is_snooze()) {
-			showNotification(origEvent.get_id(), getInCarTime, minToGo,
-					NOTIFY_SNOOZE);
+			System.out.println("IN HANDLE SN TA - SNOOZE!");
+			showNotification(origEvent.get_id(), getInCarTime,
+					NotifyingService.NOTIFY_SNOOZE);
 		} else {
-			showNotification(origEvent.get_id(), getInCarTime, minToGo,
-					NOTIFY_TIME_ALERT);
+			System.out.println("IN HANDLE SN TA - TA!");
+			showNotification(origEvent.get_id(), getInCarTime,
+					NotifyingService.NOTIFY_TIME_ALERT);
 		}
 
 	}
@@ -413,51 +463,51 @@ public class NotifyingService extends Service implements LocationListener {
 
 		switch (notificationType) {
 		case NOTIFY_REGULAR:
-			return PendingIntent.getActivity(this, reqCode++, new Intent(this,
-					NotificationDisplay.class).setFlags(
-					Intent.FLAG_ACTIVITY_NEW_TASK)
-					.putExtra("com.NotiMe.ID", id).putExtra(
+			return PendingIntent.getActivity(this, NotifyingService.reqCode++,
+					new Intent(this, NotificationDisplay.class).setFlags(
+							Intent.FLAG_ACTIVITY_NEW_TASK).putExtra(
+							"com.NotiMe.ID", id).putExtra(
 							"com.NotiMe.GetInCarTime", getInCarTime).putExtra(
 							"com.NotiMe.afterTimeAlert",
 							eventDet.is_timeAlert()),
 					PendingIntent.FLAG_UPDATE_CURRENT);
 		case NOTIFY_REG_TIME_PASSED:
-			return PendingIntent.getActivity(this, reqCode++, new Intent(this,
-					NotificationDisplay.class).setFlags(
-					Intent.FLAG_ACTIVITY_NEW_TASK)
-					.putExtra("com.NotiMe.ID", id).putExtra(
+			return PendingIntent.getActivity(this, NotifyingService.reqCode++,
+					new Intent(this, NotificationDisplay.class).setFlags(
+							Intent.FLAG_ACTIVITY_NEW_TASK).putExtra(
+							"com.NotiMe.ID", id).putExtra(
 							"com.NotiMe.GetInCarTime", getInCarTime).putExtra(
 							"com.NotiMe.afterTimeAlert",
 							eventDet.is_timeAlert()),
 					PendingIntent.FLAG_UPDATE_CURRENT);
 		case NOTIFY_ERR_LOCATION:
-			return PendingIntent.getActivity(this, reqCode++, new Intent(this,
-					NotiErrDisplay.class).setFlags(
-					Intent.FLAG_ACTIVITY_NEW_TASK)
-					.putExtra("com.NotiMe.ID", id).putExtra(
+			return PendingIntent.getActivity(this, NotifyingService.reqCode++,
+					new Intent(this, NotiErrDisplay.class).setFlags(
+							Intent.FLAG_ACTIVITY_NEW_TASK).putExtra(
+							"com.NotiMe.ID", id).putExtra(
 							"com.NotiMe.hideDots", false),
 					PendingIntent.FLAG_UPDATE_CURRENT);
 		case NOTIFY_NO_ROUTE:
-			return PendingIntent.getActivity(this, reqCode++, new Intent(this,
-					NotiErrDisplay.class).setFlags(
-					Intent.FLAG_ACTIVITY_NEW_TASK)
-					.putExtra("com.NotiMe.ID", id).putExtra(
+			return PendingIntent.getActivity(this, NotifyingService.reqCode++,
+					new Intent(this, NotiErrDisplay.class).setFlags(
+							Intent.FLAG_ACTIVITY_NEW_TASK).putExtra(
+							"com.NotiMe.ID", id).putExtra(
 							"com.NotiMe.hideDots", true),
 					PendingIntent.FLAG_UPDATE_CURRENT);
 		case NOTIFY_SNOOZE:
-			return PendingIntent.getActivity(this, reqCode++, new Intent(this,
-					NotificationDisplay.class).setFlags(
-					Intent.FLAG_ACTIVITY_NEW_TASK)
-					.putExtra("com.NotiMe.ID", id).putExtra(
+			return PendingIntent.getActivity(this, NotifyingService.reqCode++,
+					new Intent(this, NotificationDisplay.class).setFlags(
+							Intent.FLAG_ACTIVITY_NEW_TASK).putExtra(
+							"com.NotiMe.ID", id).putExtra(
 							"com.NotiMe.GetInCarTime", getInCarTime).putExtra(
 							"com.NotiMe.afterTimeAlert",
 							eventDet.is_timeAlert()),
 					PendingIntent.FLAG_UPDATE_CURRENT);
 		case NOTIFY_TIME_ALERT:
-			return PendingIntent.getActivity(this, reqCode++, new Intent(this,
-					NotificationDisplay.class).setFlags(
-					Intent.FLAG_ACTIVITY_NEW_TASK)
-					.putExtra("com.NotiMe.ID", id).putExtra(
+			return PendingIntent.getActivity(this, NotifyingService.reqCode++,
+					new Intent(this, NotificationDisplay.class).setFlags(
+							Intent.FLAG_ACTIVITY_NEW_TASK).putExtra(
+							"com.NotiMe.ID", id).putExtra(
 							"com.NotiMe.GetInCarTime", getInCarTime).putExtra(
 							"com.NotiMe.afterTimeAlert",
 							eventDet.is_timeAlert()),
@@ -477,44 +527,9 @@ public class NotifyingService extends Service implements LocationListener {
 
 		saveBoolean("pref.running", true);
 
-		// System.out.println("!!!!!!!!!!!!!" + pr.getUser());
-		// System.out.println("!!!!!!!!!!!!!" + pr.getPass());
-		// GoogleCalendarP.setLogin(pr.getUser(), pr.getPass());
-		// notificationTime = Integer.parseInt(pr.getNotificationTime());
-		// try {
-		// GoogleCalendarP.authenticate(false);
-		// } catch (final MalformedURLException e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// } catch (final IOException e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// }
+		setCalendars();
 
-		LinkedList<NotiCalendar> calendarList = null;
-		try {
-			calendarList = GoogleCalendarP.getAllCals();
-		} catch (final Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		// String[] cNames = new String[calendarList.size()], cValues = new
-		// String[calendarList.size()];
-		String cNames = "";
-		String cIDs = "";
-		for (final NotiCalendar notiCalendar2 : calendarList) {
-			final NotiCalendar notiCalendar = notiCalendar2;
-			System.out
-					.println("???????????????????" + notiCalendar.get_title());
-			cNames = cNames + notiCalendar.get_title() + ",";
-			cIDs = cIDs + notiCalendar.get_id() + ",";
-		}
-		System.out.println("?????????????/" + cNames);
-		pr.setCalendarListNames(cNames);
-		pr.setCalendarListIDs(cIDs);
-
-		nNM = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+		NotifyingService.nNM = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
 		// nCondition = new ConditionVariable(false);
 		nMaxTimeCondition = new ConditionVariable(false);
@@ -540,10 +555,18 @@ public class NotifyingService extends Service implements LocationListener {
 		saveBoolean("pref.running", false);
 		System.out.println("ON DESTROY!!!!!!!!!!!!!!!!!!!!!!!");
 		// Cancel the persistent notification.
-		nNM.cancel(NOTIME_NOTIFICATIONS);
-		// Stop the thread from generating further notifications
-		// nCondition.open();
+		NotifyingService.nNM.cancel(NotifyingService.NOTIME_NOTIFICATIONS);
 
+		// cancel the others
+		final Collection<NotiDetails> e = NotifyingService.eventsDetails
+				.values();
+		for (final NotiDetails notiDetails : e) {
+			final NotiDetails eventDet = notiDetails;
+			NotifyingService.nNM.cancel(eventDet.get_notificationID());
+		}
+		e.clear();
+
+		// Stop the thread from generating further notifications
 		run = false;
 
 		stopListening();
@@ -570,9 +593,8 @@ public class NotifyingService extends Service implements LocationListener {
 		s += "\tAccuracy:  " + location.getAccuracy() + "\n";
 
 		// Toast.makeText(NotifyingService.this, s, Toast.LENGTH_LONG).show();
-		System.out.println(s);
+		System.out.println("LOCATION CHANGED: " + s);
 
-		// nCondition.open();
 	}
 
 	// @Override
@@ -618,13 +640,39 @@ public class NotifyingService extends Service implements LocationListener {
 		editor.commit();
 	}
 
-	private void showNotification(final String eventID,
-			final Calendar getInCarTime, final Integer minToGo,
-			final int notificationType) {
+	private void setCalendars() {
+		LinkedList<NotiCalendar> calendarList = null;
+		try {
+			calendarList = GoogleCalendarP.getAllCals();
+		} catch (final Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
+		String cNames = "";
+		String cIDs = "";
+
+		// handle null!!
+		for (final NotiCalendar notiCalendar2 : calendarList) {
+			final NotiCalendar notiCalendar = notiCalendar2;
+			cNames = cNames + notiCalendar.get_title() + ",";
+			cIDs = cIDs + notiCalendar.get_id() + ",";
+		}
+		pr.setCalendarListNames(cNames);
+		pr.setCalendarListIDs(cIDs);
+	}
+
+	private void showNotification(final String eventID,
+			final Calendar getInCarTime, final int notificationType) {
+		System.out.println("SHOW NOTIFICATION!");
+		int minToGo = 0;
+		if (getInCarTime != null) {
+			minToGo = NotifyingService.getMinutesToGo(getInCarTime);
+		}
 		// we'll use the same text for the ticker and the expanded notification
 		CharSequence text = "";
-		final NotiDetails eventDet = eventsDetails.get(eventID);
+		final NotiDetails eventDet = NotifyingService.eventsDetails
+				.get(eventID);
 
 		switch (notificationType) {
 		case NOTIFY_REGULAR:
@@ -644,12 +692,20 @@ public class NotifyingService extends Service implements LocationListener {
 			break;
 		case NOTIFY_SNOOZE:
 			text = getString(R.string.notifyingService_snoozed)
-					+ eventDet.get_origEvent().get_title()
-					+ getString(R.string.notifyingService_minus)
-					+ getTimeText(minToGo)
-					+ getString(R.string.notifyingService_toGo);
+					+ eventDet.get_origEvent().get_title();
+			if (minToGo > 0) {
+				text = text + getString(R.string.notifyingService_minus)
+						+ getTimeText(minToGo)
+						+ getString(R.string.notifyingService_toGo);
+			}
+
+			else if (isConnection) {
+				text = text + " " + getTimeText(minToGo);
+			}
+
 			break;
 		case NOTIFY_TIME_ALERT:
+			System.out.println("IN SHOW NOTIFICATION - TA");
 			text = getString(R.string.notifyingService_timealert)
 					+ eventDet.get_origEvent().get_title()
 					+ getString(R.string.notifyingService_startin)
@@ -695,9 +751,11 @@ public class NotifyingService extends Service implements LocationListener {
 		// We use a layout id because it is a unique number. We use it later to
 		// cancel.
 		if (eventDet.get_notificationID() == 0) {
-			nNM.notify(NOTIME_NOTIFICATIONS, notification);
+			NotifyingService.nNM.notify(NotifyingService.NOTIME_NOTIFICATIONS,
+					notification);
 		} else {
-			nNM.notify(eventDet.get_notificationID(), notification);
+			NotifyingService.nNM.notify(eventDet.get_notificationID(),
+					notification);
 		}
 	}
 
@@ -734,13 +792,15 @@ public class NotifyingService extends Service implements LocationListener {
 				+ Notification.FLAG_ONLY_ALERT_ONCE;
 
 		final PendingIntent contentIntent = PendingIntent.getActivity(this,
-				reqCode++, new Intent(this, NotiMe.class), 0);
+				NotifyingService.reqCode++, new Intent(this, NotiMe.class), 0);
 
 		// Set the info for the views that show in the notification panel.
 		notification.setLatestEventInfo(this, getText(R.string.app_name), text,
 				contentIntent);
 
-		nNM.notify(++notificationID, notification);
+		NotifyingService.nNM.notify(NotifyingService.notificationID,
+				notification);
+		NotifyingService.notificationID++;
 
 	}
 

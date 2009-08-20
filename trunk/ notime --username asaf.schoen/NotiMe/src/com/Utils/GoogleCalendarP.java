@@ -28,21 +28,21 @@ import org.xml.sax.XMLReader;
  */
 public final class GoogleCalendarP {
 
-	/** The authentication token. */
-	public static String mAuthToken = null;// "DQAAAHUAAAA4FdYPFHGBAnCXT_-6UlZswMlrOWhdf9X0GeVIxWi5Cmxm-9Z2Hl7eVFNQ6coRTFbv63Rzxe45gPARaqeHpyEsrOyJA3_fWkwSUzzQ_q6Tp9rs2oiX-4YlOTf7Kkl7XLzhdrXdWcHLJEMqj9c8kPvhzzQs_QrTWAMBvecqBU4yTw";;
-
-	/** The user & the password. */
-	private static String mUsername = "", mPassword = "";
-
-	/** The last activity. */
-	private static long mLastActivity = 0;
-
 	/** The Constant HOSTNAME_VERIFIER. */
 	private final static HostnameVerifier HOSTNAME_VERIFIER = new HostnameVerifier() {
 		public boolean verify(final String hostname, final SSLSession session) {
 			return "www.google.com".equals(hostname);
 		}
 	};
+
+	/** The authentication token. */
+	public static String mAuthToken = null;// "DQAAAHUAAAA4FdYPFHGBAnCXT_-6UlZswMlrOWhdf9X0GeVIxWi5Cmxm-9Z2Hl7eVFNQ6coRTFbv63Rzxe45gPARaqeHpyEsrOyJA3_fWkwSUzzQ_q6Tp9rs2oiX-4YlOTf7Kkl7XLzhdrXdWcHLJEMqj9c8kPvhzzQs_QrTWAMBvecqBU4yTw";;
+
+	/** The last activity. */
+	private static long mLastActivity = 0;
+
+	/** The user & the password. */
+	private static String mUsername = "", mPassword = "";
 
 	/**
 	 * Authentication in the Google Calendar service through HTTPS.
@@ -62,16 +62,16 @@ public final class GoogleCalendarP {
 	public final static String authenticate(final boolean force)
 			throws MalformedURLException, IOException {
 		final long millis = System.currentTimeMillis();
-		if (!(force) && (millis - mLastActivity < 1800000)) {
-			mLastActivity = millis;
-			return mAuthToken;
+		if (!(force) && (millis - GoogleCalendarP.mLastActivity < 1800000)) {
+			GoogleCalendarP.mLastActivity = millis;
+			return GoogleCalendarP.mAuthToken;
 		} else {
-			mLastActivity = millis;
+			GoogleCalendarP.mLastActivity = millis;
 		}
 
 		final HttpsURLConnection uc = (HttpsURLConnection) new URL(
 				"https://www.google.com/accounts/ClientLogin").openConnection();
-		uc.setHostnameVerifier(HOSTNAME_VERIFIER);
+		uc.setHostnameVerifier(GoogleCalendarP.HOSTNAME_VERIFIER);
 		uc.setDoOutput(true);
 		uc.setRequestMethod("POST");
 		uc.setRequestProperty("Content-Type",
@@ -80,9 +80,9 @@ public final class GoogleCalendarP {
 		final BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(uc
 				.getOutputStream()));
 		bw.write(URLEncoder.encode("Email", "UTF-8") + "="
-				+ URLEncoder.encode(mUsername, "UTF-8") + "&"
+				+ URLEncoder.encode(GoogleCalendarP.mUsername, "UTF-8") + "&"
 				+ URLEncoder.encode("Passwd", "UTF-8") + "="
-				+ URLEncoder.encode(mPassword, "UTF-8") + "&"
+				+ URLEncoder.encode(GoogleCalendarP.mPassword, "UTF-8") + "&"
 				+ URLEncoder.encode("source", "UTF-8") + "="
 				+ URLEncoder.encode("NotiMe-NotiMe-0.1", "UTF-8") + "&"
 				+ URLEncoder.encode("service", "UTF-8") + "="
@@ -98,9 +98,9 @@ public final class GoogleCalendarP {
 		// only the 3rd parameter (Auth) is of interest
 		in.readLine();
 		in.readLine();
-		mAuthToken = in.readLine().substring(5);
+		GoogleCalendarP.mAuthToken = in.readLine().substring(5);
 		in.close();
-		return mAuthToken;
+		return GoogleCalendarP.mAuthToken;
 	}
 
 	/**
@@ -112,7 +112,7 @@ public final class GoogleCalendarP {
 	 *             the exception
 	 */
 	public final static LinkedList<NotiCalendar> getAllCals() throws Exception {
-		if (mAuthToken == null) {
+		if (GoogleCalendarP.mAuthToken == null) {
 			throw new Exception("User not Authenticated!");
 		}
 
@@ -124,9 +124,8 @@ public final class GoogleCalendarP {
 		uc.setUseCaches(false);
 		uc.setRequestMethod("GET");
 		uc.setRequestProperty("Content-Type", "application/atom+xml");
-		uc
-				.setRequestProperty("Authorization", "GoogleLogin auth="
-						+ mAuthToken);
+		uc.setRequestProperty("Authorization", "GoogleLogin auth="
+				+ GoogleCalendarP.mAuthToken);
 
 		/* Get a SAXParser from the SAXPArserFactory. */
 		final SAXParserFactory spf = SAXParserFactory.newInstance();
@@ -159,7 +158,7 @@ public final class GoogleCalendarP {
 	public final static LinkedList<NotiEvent> getEvents(
 			final LinkedList<NotiCalendar> cals) throws Exception {
 
-		if (mAuthToken == null) {
+		if (GoogleCalendarP.mAuthToken == null) {
 			throw new Exception("User not Authenticated!");
 		}
 
@@ -177,7 +176,7 @@ public final class GoogleCalendarP {
 			uc.setRequestMethod("GET");
 			uc.setRequestProperty("Content-Type", "application/atom+xml");
 			uc.setRequestProperty("Authorization", "GoogleLogin auth="
-					+ mAuthToken);
+					+ GoogleCalendarP.mAuthToken);
 
 			/* Get a SAXParser from the SAXPArserFactory. */
 			final SAXParserFactory spf = SAXParserFactory.newInstance();
@@ -215,7 +214,7 @@ public final class GoogleCalendarP {
 		GoogleCalendarP.setLogin("noti.me.android", "notimeand");
 		// GoogleCalendarP.authenticate(false);
 		// System.out.println(mAuthToken);
-		mAuthToken = "DQAAAHUAAAA4FdYPFHGBAnCXT_-6UlZswMlrOWhdf9X0GeVIxWi5Cmxm-9Z2Hl7eVFNQ6coRTFbv63Rzxe45gPARaqeHpyEsrOyJA3_fWkwSUzzQ_q6Tp9rs2oiX-4YlOTf7Kkl7XLzhdrXdWcHLJEMqj9c8kPvhzzQs_QrTWAMBvecqBU4yTw";
+		GoogleCalendarP.mAuthToken = "DQAAAHUAAAA4FdYPFHGBAnCXT_-6UlZswMlrOWhdf9X0GeVIxWi5Cmxm-9Z2Hl7eVFNQ6coRTFbv63Rzxe45gPARaqeHpyEsrOyJA3_fWkwSUzzQ_q6Tp9rs2oiX-4YlOTf7Kkl7XLzhdrXdWcHLJEMqj9c8kPvhzzQs_QrTWAMBvecqBU4yTw";
 		try {
 			final LinkedList<NotiCalendar> parsedDataList = GoogleCalendarP
 					.getAllCals();
@@ -235,7 +234,7 @@ public final class GoogleCalendarP {
 	 */
 	public final static void setLogin(final String username,
 			final String password) {
-		mUsername = username;
-		mPassword = password;
+		GoogleCalendarP.mUsername = username;
+		GoogleCalendarP.mPassword = password;
 	}
 }
