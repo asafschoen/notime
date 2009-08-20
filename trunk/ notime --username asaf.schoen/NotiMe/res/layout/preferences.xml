@@ -15,7 +15,7 @@
 			android:title="@string/preference_time_title" android:summary="@string/preference_time_sum" />
 	</PreferenceCategory>
 
-	<PreferenceCategory android:title="@string/preference_calendarpref_title">
+	<PreferenceCategory android:title="@string/preference_calendarpref_title"> 
 		<ListPreferenceMultiSelect android:key="list1"
 			android:title="@string/preference_calendar_title" android:summary="@string/preference_calendar_sum"
 			android:entries="@array/placeholder" android:entryValues="@array/placeholder" />

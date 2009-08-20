@@ -90,7 +90,10 @@ public class ListPreferenceMultiSelect extends ListPreference {
 				PreferenceReader._activity);
 		System.out.println("isCalendarsSet() " + pr.isCalendarsSet());
 		if (!pr.isCalendarsSet()) {
-			pr.setCalendarSet(true);
+			if (!entries[0].equals("Please start NotiMe and come back!")) {
+				pr.setCalendarSet(true);
+			}
+
 			System.out.println("entered if isCalendarsSet() "
 					+ pr.isCalendarsSet());
 

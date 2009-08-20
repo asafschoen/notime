@@ -65,16 +65,7 @@ public class Preferences extends PreferenceActivity {
 						return false;
 					}
 				});
-		// calendars list listener(on preference change)
-		final ListPreference multiPref = (ListPreference) findPreference("list1");
-		multiPref
-				.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
-					public boolean onPreferenceChange(
-							final Preference preference, final Object newValue) {
-						saveString("calendar.selection", "" + newValue);
-						return true;
-					}
-				});
+
 		// timepicker listener(on preference change custom made callback OMG!!)
 		final TimePickerPreference timePref = (TimePickerPreference) findPreference("time1");
 		timePref
@@ -107,9 +98,26 @@ public class Preferences extends PreferenceActivity {
 		}
 
 		final ListPreferenceMultiSelect calendars = (ListPreferenceMultiSelect) findPreference("list1");
+		// if (cNames.length == 0) {
+		// Toast.makeText(Preferences.this, "come back later",
+		// Toast.LENGTH_LONG).show();
+		//
+		// }
+		if (cNames.length > 0) {
+			calendars.setEntries(cNames);
+			calendars.setEntryValues(cIDs);
+		}
 
-		calendars.setEntries(cNames);
-		calendars.setEntryValues(cIDs);
+		// calendars list listener(on preference change)
+		final ListPreference multiPref = (ListPreference) findPreference("list1");
+		multiPref
+				.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+					public boolean onPreferenceChange(
+							final Preference preference, final Object newValue) {
+						saveString("calendar.selection", "" + newValue);
+						return true;
+					}
+				});
 
 	}
 
