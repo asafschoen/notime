@@ -25,9 +25,9 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import com.Utils.GoogleCalendarP;
 
 public class NotiMe extends Activity {
-	private static final int PREFERENCES_ID = Menu.FIRST;
-
 	private static final int ABOUT_ID = Menu.FIRST + 1;
+
+	private static final int PREFERENCES_ID = Menu.FIRST;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -174,8 +174,9 @@ public class NotiMe extends Activity {
 	public boolean onCreateOptionsMenu(final Menu menu) {
 		super.onCreateOptionsMenu(menu);
 
-		menu.add(0, PREFERENCES_ID, 0, "Preferences").setShortcut('4', 's');
-		menu.add(0, ABOUT_ID, 0, "About").setShortcut('5', 'z');
+		menu.add(0, NotiMe.PREFERENCES_ID, 0, "Preferences").setShortcut('4',
+				's');
+		menu.add(0, NotiMe.ABOUT_ID, 0, "About").setShortcut('5', 'z');
 
 		return true;
 	}

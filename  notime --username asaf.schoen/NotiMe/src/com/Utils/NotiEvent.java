@@ -7,29 +7,29 @@ import java.util.Date;
  */
 public class NotiEvent implements Comparable<NotiEvent> {
 
-	/** The id. */
-	private String _id;
-
-	/** The title. */
-	private String _title;
-
 	/** The content. */
 	private String _content;
 
+	/** The id. */
+	private String _id;
+
+	/** The latitude. */
+	private String _latitude;
+
 	/** The link for the event. */
 	private String _link;
+
+	/** The longitude. */
+	private String _longitude;
+
+	/** The title. */
+	private String _title;
 
 	/** The date and time. */
 	private Date _when;
 
 	/** The location of the event. */
 	private String _where;
-
-	/** The latitude. */
-	private String _latitude;
-
-	/** The longitude. */
-	private String _longitude;
 
 	/*
 	 * (non-Javadoc)

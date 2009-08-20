@@ -15,30 +15,30 @@ import org.xml.sax.helpers.DefaultHandler;
  */
 public class EventsParseHandler extends DefaultHandler {
 
+	/** The current event. */
+	private NotiEvent curEvent;
+
+	/** The in content flag. */
+	private boolean in_content = false;
+
 	// ===========================================================
 	// Fields
 	// ===========================================================
 	/** The in entry flag. */
 	private boolean in_entry = false;
 
-	/** The in id flag. */
-	private boolean in_id = false;
-
-	/** The in title flag. */
-	private boolean in_title = false;
-
-	/** The in content flag. */
-	private boolean in_content = false;
-
 	/** The in gml-pos flag. */
 	private boolean in_gml_pos = false;
+
+	/** The in id flag. */
+	private boolean in_id = false;
 
 	// /** Indicates if the current event is valid (has time and location). */
 	// private boolean has_location = true;
 	// private boolean has_time = true;
 
-	/** The current event. */
-	private NotiEvent curEvent;
+	/** The in title flag. */
+	private boolean in_title = false;
 
 	/** The list of events. */
 	private LinkedList<NotiEvent> myEventsList;

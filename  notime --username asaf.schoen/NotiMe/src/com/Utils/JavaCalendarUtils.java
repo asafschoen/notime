@@ -107,9 +107,9 @@ public class JavaCalendarUtils {
 		long total = 0;
 
 		while (increment > 0) {
-			add(first, unit.calendarUnit, increment);
+			JavaCalendarUtils.add(first, unit.calendarUnit, increment);
 			if (first.after(last)) {
-				add(first, unit.calendarUnit, increment * -1);
+				JavaCalendarUtils.add(first, unit.calendarUnit, increment * -1);
 				increment = (long) Math.floor(increment / 2);
 			} else {
 				total += increment;
@@ -140,7 +140,7 @@ public class JavaCalendarUtils {
 		final Calendar c2 = Calendar.getInstance();
 		c2.setTime(d2);
 
-		return difference(c1, c2, unit);
+		return JavaCalendarUtils.difference(c1, c2, unit);
 	}
 
 	/**
@@ -160,7 +160,7 @@ public class JavaCalendarUtils {
 	 */
 	public static double exactDifference(final Calendar c1, final Calendar c2,
 			final Unit unit) {
-		final long unitDifference = difference(c1, c2, unit);
+		final long unitDifference = JavaCalendarUtils.difference(c1, c2, unit);
 		final Calendar mid = (Calendar) c1.clone();
 		JavaCalendarUtils.add(mid, unit.calendarUnit, unitDifference);
 
@@ -194,7 +194,8 @@ public class JavaCalendarUtils {
 	 */
 	public static Map<Unit, Long> tieredDifference(final Calendar c1,
 			final Calendar c2) {
-		return tieredDifference(c1, c2, Arrays.asList(Unit.values()));
+		return JavaCalendarUtils.tieredDifference(c1, c2, Arrays.asList(Unit
+				.values()));
 	}
 
 	/**
@@ -230,7 +231,8 @@ public class JavaCalendarUtils {
 
 		for (final Unit unit : allUnits) {
 			if (units.contains(unit)) {
-				final long difference = difference(first, last, unit);
+				final long difference = JavaCalendarUtils.difference(first,
+						last, unit);
 				differences.put(unit, difference);
 				JavaCalendarUtils.add(first, unit.calendarUnit, difference);
 			}

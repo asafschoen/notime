@@ -9,7 +9,7 @@ public class PreferenceReader {
 	public static Activity _activity;
 
 	public PreferenceReader(final Activity activity) {
-		_activity = activity;
+		PreferenceReader._activity = activity;
 	}
 
 	public String getCalenderListIDs() {
@@ -71,28 +71,28 @@ public class PreferenceReader {
 
 	private boolean loadBoolean(final String field) {
 
-		final SharedPreferences prefFile = _activity.getSharedPreferences(
-				"notiMePref", 0);
+		final SharedPreferences prefFile = PreferenceReader._activity
+				.getSharedPreferences("notiMePref", 0);
 		return prefFile.getBoolean(field, false);
 	}
 
 	private String loadString(final String field) {
-		final SharedPreferences prefFile = _activity.getSharedPreferences(
-				"notiMePref", 0);
+		final SharedPreferences prefFile = PreferenceReader._activity
+				.getSharedPreferences("notiMePref", 0);
 		return prefFile.getString(field, "");
 	}
 
 	private void saveBoolean(final String field, final boolean value) {
-		final SharedPreferences prefFile = _activity.getSharedPreferences(
-				"notiMePref", 0);
+		final SharedPreferences prefFile = PreferenceReader._activity
+				.getSharedPreferences("notiMePref", 0);
 		final SharedPreferences.Editor editor = prefFile.edit();
 		editor.putBoolean(field, value);
 		editor.commit();
 	}
 
 	private void saveString(final String field, final String data) {
-		final SharedPreferences prefFile = _activity.getSharedPreferences(
-				"notiMePref", 0);
+		final SharedPreferences prefFile = PreferenceReader._activity
+				.getSharedPreferences("notiMePref", 0);
 		final SharedPreferences.Editor editor = prefFile.edit();
 		editor.putString(field, data);
 		editor.commit();

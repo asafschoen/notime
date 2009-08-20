@@ -23,19 +23,19 @@ public class TimePickerPreference extends DialogPreference implements
 
 	public static final int NOTI_TIME = 10;
 
-	private Integer minutes;
-	private TextView notiMeCaption;
-	private TextView minutesAdvanceCaption;
-	public EditText timeText;
-	private Button addMinute;
-	private Button subMinute;
-	String sharedPrefFile;
-	OnPreferenceChangeListener listener;
-
 	/**
 	 * The validation expression for this preference
 	 */
 	private static final String VALIDATION_EXPRESSION = "[0-2]*[0-9]:[0-5]*[0-9]";
+	private Button addMinute;
+	OnPreferenceChangeListener listener;
+	private Integer minutes;
+	private TextView minutesAdvanceCaption;
+	private TextView notiMeCaption;
+	String sharedPrefFile;
+	private Button subMinute;
+
+	public EditText timeText;
 
 	/**
 	 * @param context
@@ -59,7 +59,7 @@ public class TimePickerPreference extends DialogPreference implements
 
 	private int getTime() {
 		final SharedPreferences timePref = getSharedPreferences();
-		return timePref.getInt("A", NOTI_TIME);
+		return timePref.getInt("A", TimePickerPreference.NOTI_TIME);
 	}
 
 	/**
@@ -205,7 +205,8 @@ public class TimePickerPreference extends DialogPreference implements
 			return;
 		}
 
-		if (!((String) defaultValue).matches(VALIDATION_EXPRESSION)) {
+		if (!((String) defaultValue)
+				.matches(TimePickerPreference.VALIDATION_EXPRESSION)) {
 			return;
 		}
 

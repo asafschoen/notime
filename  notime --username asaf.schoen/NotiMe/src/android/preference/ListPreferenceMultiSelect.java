@@ -29,7 +29,7 @@ public class ListPreferenceMultiSelect extends ListPreference {
 		} else if ("".equals(val)) {
 			return null;
 		} else {
-			return ((String) val).split(SEPARATOR);
+			return ((String) val).split(ListPreferenceMultiSelect.SEPARATOR);
 		}
 	}
 
@@ -57,14 +57,16 @@ public class ListPreferenceMultiSelect extends ListPreference {
 			final StringBuffer value = new StringBuffer();
 			for (int i = 0; i < entryValues.length; i++) {
 				if (mClickedDialogEntryIndices[i]) {
-					value.append(entryValues[i]).append(SEPARATOR);
+					value.append(entryValues[i]).append(
+							ListPreferenceMultiSelect.SEPARATOR);
 				}
 			}
 
 			if (callChangeListener(value)) {
 				String val = value.toString();
 				if (val.length() > 0) {
-					val = val.substring(0, val.length() - SEPARATOR.length());
+					val = val.substring(0, val.length()
+							- ListPreferenceMultiSelect.SEPARATOR.length());
 				}
 				setValue(val);
 			}
@@ -95,13 +97,14 @@ public class ListPreferenceMultiSelect extends ListPreference {
 			if (entryValues != null) {
 				final StringBuffer value = new StringBuffer();
 				for (final CharSequence entryValue : entryValues) {
-					value.append(entryValue).append(SEPARATOR);
+					value.append(entryValue).append(
+							ListPreferenceMultiSelect.SEPARATOR);
 				}
 				if (callChangeListener(value)) {
 					String val = value.toString();
 					if (val.length() > 0) {
 						val = val.substring(0, val.length()
-								- SEPARATOR.length());
+								- ListPreferenceMultiSelect.SEPARATOR.length());
 					}
 					setValue(val);
 				}
@@ -122,7 +125,8 @@ public class ListPreferenceMultiSelect extends ListPreference {
 		System.out.println("ENTERED: restoreCheckedEntries");
 		final CharSequence[] entryValues = getEntryValues();
 
-		final String[] vals = parseStoredValue(getValue());
+		final String[] vals = ListPreferenceMultiSelect
+				.parseStoredValue(getValue());
 		if (vals != null) {
 			for (final String val2 : vals) {
 				final String val = val2.trim();

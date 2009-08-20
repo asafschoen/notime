@@ -122,7 +122,9 @@ public class NotiErrDisplay extends Activity {
 		final Button minusBtn = (Button) findViewById(R.id.errMinus);
 		minusBtn.setOnClickListener(new Button.OnClickListener() {
 			public void onClick(final View v) {
-				_counter--;
+				if (_counter > 0) {
+					_counter--;
+				}
 				timeAlertRBtn.setChecked(true);
 				et.setText(_counter.toString());
 			}

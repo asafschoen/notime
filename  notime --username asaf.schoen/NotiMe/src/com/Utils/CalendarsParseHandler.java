@@ -11,6 +11,9 @@ import org.xml.sax.helpers.DefaultHandler;
  */
 public class CalendarsParseHandler extends DefaultHandler {
 
+	/** The current calendar. */
+	private NotiCalendar curCal;
+
 	// ===========================================================
 	// Fields
 	// ===========================================================
@@ -22,9 +25,6 @@ public class CalendarsParseHandler extends DefaultHandler {
 
 	/** The in title flag. */
 	private boolean in_title = false;
-
-	/** The current calendar. */
-	private NotiCalendar curCal;
 
 	/** The calendars list. */
 	private LinkedList<NotiCalendar> myCalendarsList;
