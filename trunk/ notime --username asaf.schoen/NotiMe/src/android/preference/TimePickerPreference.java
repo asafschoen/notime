@@ -92,12 +92,12 @@ public class TimePickerPreference extends DialogPreference implements
 		notiMeCaption.setText(R.string.timerPickerPreference_NotiMe);
 		minutesAdvanceCaption
 				.setText(R.string.timerPickerPreference_minutesBefore);
-		addMinute.setWidth(65);
-		subMinute.setWidth(65);
+		addMinute.setWidth(64);
+		subMinute.setWidth(64);
 		addMinute.setText(R.string.timerPickerPreference_plus);
 		subMinute.setText(R.string.timerPickerPreference_minus);
 		addMinute.setLongClickable(true);
-		timeText.setWidth(45);
+		timeText.setWidth(43);
 		timeText.setText("" + minutes);
 
 		d.addView(notiMeCaption);
