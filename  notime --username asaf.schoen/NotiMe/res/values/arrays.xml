@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<string-array name="placeholder">
-		<item>Please start NotiMe and come back!</item>
+		<item>Please start NotiMe! first</item>
 	</string-array>
 
 </resources>  
