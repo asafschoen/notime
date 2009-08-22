@@ -15,7 +15,7 @@ import android.widget.TextView;
  */
 public class NotificationDisplay extends Activity {
 
-	final int SNOOZE_TIME = 1;
+	final int SNOOZE_TIME = 5;
 
 	// private Integer _counter = 10;
 

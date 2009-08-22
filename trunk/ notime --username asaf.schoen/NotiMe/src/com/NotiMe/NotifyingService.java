@@ -682,8 +682,9 @@ public class NotifyingService extends Service implements LocationListener {
 		case NOTIFY_REGULAR:
 			text = eventDet.get_origEvent().get_title()
 					+ getString(R.string.notifyingService_minus)
-					+ getTimeText(minToGo)
-					+ getString(R.string.notifyingService_toGo);
+					+ getString(R.string.notifyingService_toGo)
+					+ getTimeText(minToGo);
+
 			break;
 		case NOTIFY_REG_TIME_PASSED:
 			text = getTimeText(minToGo);
@@ -699,8 +700,9 @@ public class NotifyingService extends Service implements LocationListener {
 					+ eventDet.get_origEvent().get_title();
 			if (minToGo > 0) {
 				text = text + getString(R.string.notifyingService_minus)
-						+ getTimeText(minToGo)
-						+ getString(R.string.notifyingService_toGo);
+						+ getString(R.string.notifyingService_toGo)
+						+ getTimeText(minToGo);
+
 			}
 
 			else if (isConnection) {
