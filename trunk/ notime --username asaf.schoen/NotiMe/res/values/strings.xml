@@ -45,7 +45,7 @@ Brought to you by:
 	<string name="notifyingService_minutes">" minutes"</string>
 	<string name="notifyingService_minute">" minute"</string>
 	<string name="notifyingService_and">" and "</string>
-	<string name="notifyingService_beenOnYourWay">You should have been on your way already!</string>
+	<string name="notifyingService_beenOnYourWay">You should have left by now!</string>
 	<string name="notifyingService_problem">Problem</string>
 	<string name="notifyingService_error">Event location not found</string>
 	<string name="notifyingService_snoozed">&quot;Snoozed: &quot;</string>
@@ -64,10 +64,9 @@ Brought to you by:
 	<string name="preference_ringtone_sum">Pick a ringtone for sound</string>
 	<string name="preference_light_title">Light</string>
 	<string name="preference_light_sum">Alert me with led</string>
-	<string name="preference_timepref_title">Notification time setup</string>
+	<string name="preference_timepref_title">Notification Time Setup</string>
 	<string name="preference_time_title">Notification Time</string>
-	<string name="preference_time_sum">Time to notify before you need to get on your way
-	</string>
+	<string name="preference_time_sum">Time to notify before you need to get going</string>
 	<string name="preference_calendarpref_title">Calendars Setup</string>
 	<string name="preference_calendar_title">Calendars</string>
 	<string name="preference_calendar_sum">The calendars NotiMe! will read

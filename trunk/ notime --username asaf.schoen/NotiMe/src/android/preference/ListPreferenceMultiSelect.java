@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.util.AttributeSet;
 
-import com.NotiMe.PreferenceReader;
+import com.NotiMe.PreferenceManager;
 
 /**
  * A {@link Preference} that displays a list of entries as a dialog and allows
@@ -86,16 +86,16 @@ public class ListPreferenceMultiSelect extends ListPreference {
 					"ListPreference requires an entries array and an entryValues array which are both the same length");
 		}
 
-		final PreferenceReader pr = new PreferenceReader(
-				PreferenceReader._activity);
-		System.out.println("isCalendarsSet() " + pr.isCalendarsSet());
-		if (!pr.isCalendarsSet()) {
+		final PreferenceManager pm = new PreferenceManager(
+				PreferenceManager._activity);
+		System.out.println("isCalendarsSet() " + pm.isCalendarsSet());
+		if (!pm.isCalendarsSet()) {
 			if (!entries[0].equals("Please start NotiMe and come back!")) {
-				pr.setCalendarSet(true);
+				pm.setCalendarSet(true);
 			}
 
 			System.out.println("entered if isCalendarsSet() "
-					+ pr.isCalendarsSet());
+					+ pm.isCalendarsSet());
 
 			if (entryValues != null) {
 				final StringBuffer value = new StringBuffer();

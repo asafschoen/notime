@@ -2,7 +2,6 @@ package com.NotiMe;
 
 import java.util.StringTokenizer;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
@@ -13,6 +12,8 @@ import android.preference.TimePickerPreference;
 import android.preference.Preference.OnPreferenceChangeListener;
 
 public class Preferences extends PreferenceActivity {
+	final PreferenceManager pm = new PreferenceManager(
+			PreferenceManager._activity);
 
 	@Override
 	protected void onCreate(final Bundle savedInstanceState) {
@@ -21,8 +22,9 @@ public class Preferences extends PreferenceActivity {
 		addPreferencesFromResource(R.layout.preferences);
 
 		// sound box listener
-		final CheckBoxPreference soundcb = (CheckBoxPreference) findPreference("cbp1");
-		soundcb
+		final CheckBoxPreference soundCheckBox = (CheckBoxPreference) findPreference("cbp1");
+		soundCheckBox.setChecked(pm.isSoundNotification());
+		soundCheckBox
 				.setOnPreferenceChangeListener(new CheckBoxPreference.OnPreferenceChangeListener() {
 					public boolean onPreferenceChange(
 							final Preference preference, final Object newValue) {
@@ -30,37 +32,39 @@ public class Preferences extends PreferenceActivity {
 						// update the new state
 						cbp.setChecked((Boolean) newValue);
 						// save the new state in the pref file
-						saveBoolean("pref.sound", (Boolean) newValue);
+						pm.setSoundNotification((Boolean) newValue);
 						return false;
 					}
 				});
 
 		// vibration listener
-		final CheckBoxPreference vibrationcb = (CheckBoxPreference) findPreference("cbp2");
-		vibrationcb
+		final CheckBoxPreference vibrationCheckBox = (CheckBoxPreference) findPreference("cbp2");
+		vibrationCheckBox.setChecked(pm.isVibrationNotification());
+		vibrationCheckBox
 				.setOnPreferenceChangeListener(new CheckBoxPreference.OnPreferenceChangeListener() {
 
 					public boolean onPreferenceChange(
 							final Preference preference, final Object newValue) {
 						final CheckBoxPreference cbp = (CheckBoxPreference) preference;
 						cbp.setChecked((Boolean) newValue);
-						saveBoolean("pref.vibration", (Boolean) newValue);
+						pm.setVibrationNotification((Boolean) newValue);
 
 						return false;
 					}
 				});
 		// light listener
-		final CheckBoxPreference lightcb = (CheckBoxPreference) findPreference("cbp3");
-		lightcb.setChecked(true);
-		saveBoolean("pref.screen", true);
-		lightcb
+		final CheckBoxPreference lightCheckBox = (CheckBoxPreference) findPreference("cbp3");
+		lightCheckBox.setChecked(pm.isLightNotification());
+		lightCheckBox.setChecked(true);
+		pm.setLightNotification(true);
+		lightCheckBox
 				.setOnPreferenceChangeListener(new CheckBoxPreference.OnPreferenceChangeListener() {
 
 					public boolean onPreferenceChange(
 							final Preference preference, final Object newValue) {
 						final CheckBoxPreference cbp = (CheckBoxPreference) preference;
 						cbp.setChecked((Boolean) newValue);
-						saveBoolean("pref.screen", (Boolean) newValue);
+						pm.setLightNotification((Boolean) newValue);
 
 						return false;
 					}
@@ -73,16 +77,16 @@ public class Preferences extends PreferenceActivity {
 
 					public boolean onPreferenceChange(
 							final Preference preference, final Object newValue) {
-						saveString("pref.time", "" + newValue);
+						pm.setNotificationTime("" + newValue);
 						return false;
 					}
 
 				});
 
 		// the preference gets the string containing the calendars
-		final PreferenceReader pReader = new PreferenceReader(this);
-		final String calendarList = pReader.getCalenderListNames();
-		final String calendarIDs = pReader.getCalenderListIDs();
+		final PreferenceManager pReader = new PreferenceManager(this);
+		final String calendarList = pReader.getCalendarListNames();
+		final String calendarIDs = pReader.getCalendarListIDs();
 		// splits it from the ,
 		final StringTokenizer namesTokenizer = new StringTokenizer(
 				calendarList, ",");
@@ -98,40 +102,21 @@ public class Preferences extends PreferenceActivity {
 		}
 
 		final ListPreferenceMultiSelect calendars = (ListPreferenceMultiSelect) findPreference("list1");
-		// if (cNames.length == 0) {
-		// Toast.makeText(Preferences.this, "come back later",
-		// Toast.LENGTH_LONG).show();
-		//
-		// }
 		if (cNames.length > 0) {
 			calendars.setEntries(cNames);
 			calendars.setEntryValues(cIDs);
 		}
 
-		// calendars list listener(on preference change)
 		final ListPreference multiPref = (ListPreference) findPreference("list1");
 		multiPref
 				.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
 					public boolean onPreferenceChange(
 							final Preference preference, final Object newValue) {
-						saveString("calendar.selection", "" + newValue);
+						pm.setSelectedCalendarList("" + newValue);
 						return true;
 					}
 				});
 
 	}
 
-	void saveBoolean(final String field, final boolean value) {
-		final SharedPreferences prefFile = getSharedPreferences("notiMePref", 0);
-		final SharedPreferences.Editor editor = prefFile.edit();
-		editor.putBoolean(field, value);
-		editor.commit();
-	}
-
-	void saveString(final String field, final String data) {
-		final SharedPreferences prefFile = getSharedPreferences("notiMePref", 0);
-		final SharedPreferences.Editor editor = prefFile.edit();
-		editor.putString(field, data);
-		editor.commit();
-	}
 }
