@@ -24,13 +24,16 @@ public class GMap {
 	 *             Signals that an I/O exception has occurred.
 	 */
 	public static void main(final String[] args) throws IOException {
-		final GMap gm = new GMap();
-		int d = gm.getTime("Χ‘Χ¨Χ•Χ“Χ¦Χ§Χ™ 3, ΧªΧ ΧΧ‘Χ™Χ‘", "Χ¨ΧΧª Χ”Χ’Χ•ΧΧ, Χ™Χ©Χ¨ΧΧ");
-		System.out.println("hours: " + Math.abs(d / 60) + " mins: " + d % 60);
-		d = gm.getTime("32.066157,34.777821", "31.768318,35.213711");
-		System.out.println("hours: " + Math.abs(d / 60) + " mins: " + d % 60);
-		d = gm.getTime("Washington, DC", "New York, NY");
-		System.out.println("hours: " + Math.abs(d / 60) + " mins: " + d % 60);
+		// final GMap gm = new GMap();
+		// int d = gm.getTime("αψεγφχι 3, ϊμ ΰαια", "ψξϊ δβεμο, ιωψΰμ");
+		// System.out.println("hours: " + Math.abs(d / 60) + " mins: " + d %
+		// 60);
+		// d = gm.getTime("32.066157,34.777821", "31.768318,35.213711");
+		// System.out.println("hours: " + Math.abs(d / 60) + " mins: " + d %
+		// 60);
+		// d = gm.getTime("Washington, DC", "New York, NY");
+		// System.out.println("hours: " + Math.abs(d / 60) + " mins: " + d %
+		// 60);
 	}
 
 	/**

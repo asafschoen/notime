@@ -14,7 +14,6 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
@@ -123,13 +122,13 @@ public class NotifyingService extends Service implements LocationListener {
 	LinkedList<NotiCalendar> parsedCalendarsList = null;
 	LinkedList<NotiEvent> parsedEventsList = null;
 
-	PreferenceReader pr = new PreferenceReader(PreferenceReader._activity);
+	PreferenceManager pm = new PreferenceManager(PreferenceManager._activity);
 	private boolean run = true;
 
 	private void checkEvents() {
 		final ConnectivityManager connec = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 
-		notificationTime = Integer.parseInt(pr.getNotificationTime());
+		notificationTime = Integer.parseInt(pm.getNotificationTime());
 
 		try {
 			parsedCalendarsList = GoogleCalendarP.getAllCals();
@@ -138,9 +137,9 @@ public class NotifyingService extends Service implements LocationListener {
 			e1.printStackTrace();
 		}// remove unneeded calendars
 		System.out.println("SELECTED CALENDARS: "
-				+ pr.getSelectedCalendarList());
+				+ pm.getSelectedCalendarList());
 
-		final String selectedCals = pr.getSelectedCalendarList();
+		final String selectedCals = pm.getSelectedCalendarList();
 		// splits it from the ,
 		final StringTokenizer selectedIDsTokenizer = new StringTokenizer(
 				selectedCals, ",");
@@ -376,8 +375,7 @@ public class NotifyingService extends Service implements LocationListener {
 			final Calendar getInCarTime = getGetInCarTime(firstEvent,
 					drivingTimeInMin);
 
-			notificationPublishTime.setTime(firstEvent.get_when());// event
-			// time
+			notificationPublishTime.setTime(firstEvent.get_when());// event time
 			notificationPublishTime.add(Calendar.MINUTE, notificationTime
 					* (-1));// minus notification time
 			notificationPublishTime.add(Calendar.MINUTE, drivingTimeInMin
@@ -529,7 +527,7 @@ public class NotifyingService extends Service implements LocationListener {
 	@Override
 	public void onCreate() {
 
-		saveBoolean("pref.running", true);
+		pm.setRunning(true);
 
 		setCalendars();
 
@@ -556,7 +554,7 @@ public class NotifyingService extends Service implements LocationListener {
 
 	@Override
 	public void onDestroy() {
-		saveBoolean("pref.running", false);
+		pm.setRunning(false);
 		System.out.println("ON DESTROY!!!!!!!!!!!!!!!!!!!!!!!");
 		// Cancel the persistent notification.
 		NotifyingService.nNM.cancel(NotifyingService.NOTIME_NOTIFICATIONS);
@@ -637,13 +635,6 @@ public class NotifyingService extends Service implements LocationListener {
 				+ new Date(currentTime.getTimeInMillis()));
 	}
 
-	private void saveBoolean(final String field, final boolean value) {
-		final SharedPreferences prefFile = getSharedPreferences("notiMePref", 0);
-		final SharedPreferences.Editor editor = prefFile.edit();
-		editor.putBoolean(field, value);
-		editor.commit();
-	}
-
 	private void setCalendars() {
 		LinkedList<NotiCalendar> calendarList = null;
 		try {
@@ -662,8 +653,8 @@ public class NotifyingService extends Service implements LocationListener {
 			cNames = cNames + notiCalendar.get_title() + ",";
 			cIDs = cIDs + notiCalendar.get_id() + ",";
 		}
-		pr.setCalendarListNames(cNames);
-		pr.setCalendarListIDs(cIDs);
+		pm.setCalendarListNames(cNames);
+		pm.setCalendarListIDs(cIDs);
 	}
 
 	private void showNotification(final String eventID,
@@ -726,17 +717,17 @@ public class NotifyingService extends Service implements LocationListener {
 				text, System.currentTimeMillis());
 
 		int effects = 0;
-		if (pr.isVibrationNotification()) {
+		if (pm.isVibrationNotification()) {
 			effects |= Notification.DEFAULT_VIBRATE;
 		}
-		if (pr.isSoundNotification()) {
+		if (pm.isSoundNotification()) {
 			// if (pr.getSoundURI() != "") {
 			// notification.sound = Uri.parse(pr.getSoundURI());
 			// } else {
 			effects |= Notification.DEFAULT_SOUND;
 			// }
 		}
-		if (pr.isLightNotification()) {
+		if (pm.isLightNotification()) {
 			// effects |= Notification.DEFAULT_LIGHTS;
 			notification.flags = Notification.FLAG_SHOW_LIGHTS;
 			notification.ledOnMS = 500;
@@ -774,17 +765,17 @@ public class NotifyingService extends Service implements LocationListener {
 						.currentTimeMillis());
 
 		int effects = 0;
-		if (pr.isVibrationNotification()) {
+		if (pm.isVibrationNotification()) {
 			effects |= Notification.DEFAULT_VIBRATE;
 		}
-		if (pr.isSoundNotification()) {
+		if (pm.isSoundNotification()) {
 			// if (pr.getSoundURI() != "") {
 			// notification.sound = Uri.parse(pr.getSoundURI());
 			// } else {
 			effects |= Notification.DEFAULT_SOUND;
 			// }
 		}
-		if (pr.isLightNotification()) {
+		if (pm.isLightNotification()) {
 			// effects |= Notification.DEFAULT_LIGHTS;
 			notification.flags = Notification.FLAG_SHOW_LIGHTS;
 			notification.ledOnMS = 500;

@@ -1,7 +1,6 @@
 package android.preference;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
@@ -13,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.NotiMe.PreferenceManager;
 import com.NotiMe.R;
 
 /**
@@ -21,18 +21,20 @@ import com.NotiMe.R;
 public class TimePickerPreference extends DialogPreference implements
 		TimePicker.OnTimeChangedListener {
 
-	public static final int NOTI_TIME = 10;
-
+	public static final int NOTI_TIME = 15;
 	/**
 	 * The validation expression for this preference
 	 */
 	private static final String VALIDATION_EXPRESSION = "[0-2]*[0-9]:[0-5]*[0-9]";
+
 	private Button addMinute;
 	OnPreferenceChangeListener listener;
 	private Integer minutes;
 	private TextView minutesAdvanceCaption;
 	private TextView notiMeCaption;
-	String sharedPrefFile;
+	final PreferenceManager pm = new PreferenceManager(
+			PreferenceManager._activity);
+	// String sharedPrefFile;
 	private Button subMinute;
 
 	public EditText timeText;
@@ -58,8 +60,7 @@ public class TimePickerPreference extends DialogPreference implements
 	}
 
 	private int getTime() {
-		final SharedPreferences timePref = getSharedPreferences();
-		return timePref.getInt("A", TimePickerPreference.NOTI_TIME);
+		return pm.getNotificationTimeInt();
 	}
 
 	/**
@@ -111,17 +112,9 @@ public class TimePickerPreference extends DialogPreference implements
 			public void onClick(final View v) {
 				minutes++;
 				timeText.setText(minutes.toString());
-				// saveTime();
-
 			}
 		});
-		// addMinute.setOnLongClickListener(new OnLongClickListener() {
-		//
-		// @Override
-		// public boolean onLongClick(View v) {
-		//
-		// }
-		// });
+
 		subMinute.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(final View v) {
@@ -129,7 +122,6 @@ public class TimePickerPreference extends DialogPreference implements
 					minutes--;
 				}
 				timeText.setText(minutes.toString());
-				// saveTime();
 			}
 		});
 		timeText.addTextChangedListener(new TextWatcher() {
@@ -174,17 +166,11 @@ public class TimePickerPreference extends DialogPreference implements
 	 */
 	public void onTimeChanged(final TimePicker view, final int hour,
 			final int minute) {
-
-		// persistString(hour + (String)
-		// getText(R.string.timerPickerPreference_colon) + minute);
 		persistString(hour + ":" + minute);
 	}
 
 	private void saveTime() {
-		final SharedPreferences timePref = getSharedPreferences();
-		final SharedPreferences.Editor editor = timePref.edit();
-		editor.putInt("A", minutes);
-		editor.commit();
+		pm.setNotificationTime(minutes);
 		listener.onPreferenceChange(this, minutes);
 
 	}

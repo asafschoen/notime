@@ -17,11 +17,6 @@ public class NotificationDisplay extends Activity {
 
 	final int SNOOZE_TIME = 5;
 
-	// private Integer _counter = 10;
-
-	// static String text = "";
-	// static String url = "";
-
 	private void cancelNotification(final NotiDetails event) {
 		if (event.get_notificationID() == 0) {
 			NotifyingService.nNM.cancel(NotifyingService.NOTIME_NOTIFICATIONS);
@@ -93,8 +88,6 @@ public class NotificationDisplay extends Activity {
 						+ getString(R.string.notificationDisplay_at)
 						+ event.get_origEvent().get_where() + timeStr);
 
-		// tv
-		// .setText("You should get on your way for <getWhat()> in <getTimeToDrive()> at <getWhere>");
 		tv.setText(event.get_notificationText());
 
 		final Button mapBtn = (Button) findViewById(R.id.map);

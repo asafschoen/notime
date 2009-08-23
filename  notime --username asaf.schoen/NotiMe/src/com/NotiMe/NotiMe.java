@@ -6,7 +6,6 @@ import java.net.MalformedURLException;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -28,6 +27,9 @@ public class NotiMe extends Activity {
 	private static final int ABOUT_ID = Menu.FIRST + 1;
 
 	private static final int PREFERENCES_ID = Menu.FIRST;
+	EditText passText;
+	final PreferenceManager pm = new PreferenceManager(this);
+	EditText userText;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -35,16 +37,30 @@ public class NotiMe extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 
+		if (!pm.isRemember() && !pm.isRunning()) {
+			pm.clearPreferences();
+		}
+
+		userText = (EditText) findViewById(R.id.username);
+		passText = (EditText) findViewById(R.id.password);
+
+		System.out.println("isRunning: " + pm.isRunning());
+		System.out.println("isRemember: " + pm.isRemember());
+
+		userText.setText(pm.getUser());
+		passText.setText(pm.getPass());
+
 		// this toggle button starts and stop the notification service
 		final ToggleButton togglebutton = (ToggleButton) findViewById(R.id.toggle_button);
+		togglebutton.setChecked(pm.isRunning());
 		togglebutton.setOnClickListener(new OnClickListener() {
 			public void onClick(final View v) {
 				// Perform action on clicks
 				if (togglebutton.isChecked()) {
 					System.out.println("TOGGLE BUTTON CHECKED");
 
-					final PreferenceReader pr = new PreferenceReader(
-							PreferenceReader._activity);
+					// final PreferenceReader pr = new PreferenceReader(
+					// PreferenceReader._activity);
 
 					final ConnectivityManager connec = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 
@@ -52,10 +68,13 @@ public class NotiMe extends Activity {
 							|| connec.getNetworkInfo(1)
 									.isConnectedOrConnecting()) {
 
-						final String user = pr.getUser().trim();
-						final String pass = pr.getPass().trim();
-						System.out.println("!!!!!!!!!!!!!" + user);
-						System.out.println("!!!!!!!!!!!!!" + pass);
+						// final String user = pr.getUser().trim();
+						// final String pass = pr.getPass().trim();
+						final String user = userText.getText().toString()
+								.trim();
+						final String pass = passText.getText().toString()
+								.trim();
+
 						if ((user != null) && (pass != null)
 								&& !user.equals("") && !pass.equals("")) {
 
@@ -65,7 +84,8 @@ public class NotiMe extends Activity {
 
 									startService(new Intent(NotiMe.this,
 											NotifyingService.class));
-									saveBoolean("pref.running", true);
+									pm.setRunning(true);
+									System.out.println("RUNNING!");
 								} else {
 									Toast.makeText(NotiMe.this,
 											R.string.error_login,
@@ -103,17 +123,19 @@ public class NotiMe extends Activity {
 
 				} else {
 					System.out.println("TOGGLE BUTTON UNCHECKED");
-					saveBoolean("pref.running", false);
+					if (!pm.isRemember()) {
+						System.out.println("CLEAR!");
+						pm.clearPreferences();
+					}
+					pm.setRunning(false);
+					System.out.println("NOT RUNNING!");
 					stopService(new Intent(NotiMe.this, NotifyingService.class));
 				}
 			}
 		});
 
-		final PreferenceReader pr = new PreferenceReader(this);
-
 		final CheckBox rememberCheckBox = (CheckBox) findViewById(R.id.remember);
-		final boolean isRemember = pr.isRemember();
-		rememberCheckBox.setChecked(isRemember);
+		rememberCheckBox.setChecked(pm.isRemember());
 		rememberCheckBox
 				.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
@@ -122,19 +144,16 @@ public class NotiMe extends Activity {
 							final CompoundButton buttonView,
 							final boolean isChecked) {
 
-						saveBoolean("pref.remember", isChecked);
+						pm.setRemember(isChecked);
 					}
 				});
-
-		final EditText userText = (EditText) findViewById(R.id.username);
-		final EditText passText = (EditText) findViewById(R.id.password);
 
 		userText.setOnKeyListener(new OnKeyListener() {
 
 			// @Override
 			public boolean onKey(final View v, final int keyCode,
 					final KeyEvent event) {
-				saveString("pref.user", userText.getText().toString());
+				pm.setUser(userText.getText().toString());
 				return false;
 			}
 		});
@@ -144,29 +163,10 @@ public class NotiMe extends Activity {
 			// @Override
 			public boolean onKey(final View v, final int keyCode,
 					final KeyEvent event) {
-				saveString("pref.pass", passText.getText().toString());
+				pm.setPass(passText.getText().toString());
 				return false;
 			}
 		});
-
-		if (isRemember) {
-			userText.setText(pr.getUser());
-			passText.setText(pr.getPass());
-		} else {
-			saveString("pref.pass", "");
-			saveString("pref.user", "");
-		}
-
-		togglebutton.setChecked(pr.isRunning());
-		// togglebutton.setOnCheckedChangeListener(new OnCheckedChangeListener()
-		// {
-		//
-		// // @Override
-		// public void onCheckedChanged(final CompoundButton buttonView,
-		// final boolean isChecked) {
-		// saveBoolean("pref.running", isChecked);
-		// }
-		// });
 
 	}
 
@@ -179,6 +179,14 @@ public class NotiMe extends Activity {
 		menu.add(0, NotiMe.ABOUT_ID, 0, "About").setShortcut('5', 'z');
 
 		return true;
+	}
+
+	@Override
+	protected void onDestroy() {
+		if (!pm.isRemember() && !pm.isRunning()) {
+			pm.clearPreferences();
+		}
+		super.onDestroy();
 	}
 
 	@Override
@@ -202,20 +210,6 @@ public class NotiMe extends Activity {
 	public boolean onPrepareOptionsMenu(final Menu menu) {
 		super.onPrepareOptionsMenu(menu);
 		return true;
-	}
-
-	private void saveBoolean(final String field, final boolean value) {
-		final SharedPreferences prefFile = getSharedPreferences("notiMePref", 0);
-		final SharedPreferences.Editor editor = prefFile.edit();
-		editor.putBoolean(field, value);
-		editor.commit();
-	}
-
-	private void saveString(final String field, final String data) {
-		final SharedPreferences prefFile = getSharedPreferences("notiMePref", 0);
-		final SharedPreferences.Editor editor = prefFile.edit();
-		editor.putString(field, data);
-		editor.commit();
 	}
 
 }
