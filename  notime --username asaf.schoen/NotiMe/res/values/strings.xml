@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-
 	<string name="app_name">NotiMe!</string>
 	<string name="ok">OK</string>
 	<string name="cancel">Cancel</string>
@@ -12,13 +11,8 @@
 	<string name="google_suffix">'@'google.com</string>
 	<string name="remember_me">remember me</string>
 	<string name="about_title">NotiMe!</string>
-	<string name="about_text">NotiMe! is a Location based Notification
- Service for
- your Google Calendar!\n\n
-
-Brought to you by:
- Danny, Slava and Asaf
-</string>
+	<string name="about_text"><b>NotiMe!</b> is a Location based Notification
+ Service for your Google Calendar!\n\nIt is open source, so you can help us improve on:\n<i>http://code.google.com/p/notime/</i>\n\nOr mail us to:\n<i>noti.me.android@gmail.com</i></string>
 	<string name="exit">EXIT</string>
 
 	<string name="error_login_details">Please fill in your login information</string>
@@ -26,12 +20,11 @@ Brought to you by:
  information and your connection status</string>
 	<string name="error_connection">I could not connect to the Internet :(</string>
 
-	<string name="timerPickerPreference_NotiMe"> NotiMe! </string>
+	<string name="timerPickerPreference_NotiMe">NotiMe!</string>
 	<string name="timerPickerPreference_minutesBefore">minutes before</string>
 	<string name="timerPickerPreference_plus">+</string>
 	<string name="timerPickerPreference_minus">-</string>
 	<string name="timerPickerPreference_colon">:</string>
-
 
 	<string name="notificationDisplay_in">" in "</string>
 	<string name="notificationDisplay_now">" now!"</string>
@@ -77,20 +70,18 @@ Brought to you by:
 	<string name="notifdisplay_snooze">Snooze</string>
 	<string name="notifdisplay_dismiss">Dismiss</string>
 
-
-	<string name="notierrdisplay_cantFindLocation">NotiMe! can not find the location of the following event:</string>
+	<string name="notierrdisplay_cantFindLocation"><b>NotiMe!</b> can not find the location of the following event:</string>
 	<string name="notierrdisplay_locprovided">"Location provided: "</string>
 	<string name="notierrdisplay_suggestions">Suggestions:</string>
 	<string name="notierrdisplay_corrections">Suggested alternatives:</string>
-	<string name="notierrdisplay_notime">NotiMe! (minutes before)</string>
+	<string name="notierrdisplay_notime"><b>NotiMe!</b> (minutes before)</string>
 	<string name="notierrdisplay_ten">10</string>
 	<string name="notierrdisplay_plus">+</string>
 	<string name="notierrdisplay_minus">-</string>
-	<string name="notierrdisplay_dismiss">Dismiss NotiMe! for this event</string>
+	<string name="notierrdisplay_dismiss">Dismiss <b>NotiMe!</b> for this event</string>
 
 	<string name="main_loginhint">Your Google login</string>
 	<string name="main_passwordhint">Your password</string>
 	<string name="main_rememberme">Remember Me</string>
-
 
 </resources>
