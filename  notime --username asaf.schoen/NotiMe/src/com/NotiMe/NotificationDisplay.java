@@ -22,7 +22,6 @@ public class NotificationDisplay extends Activity {
 			NotifyingService.nNM.cancel(NotifyingService.NOTIME_NOTIFICATIONS);
 		} else {
 			NotifyingService.nNM.cancel(event.get_notificationID());
-			System.out.println("CANCEL ID: " + event.get_notificationID());
 		}
 	}
 
@@ -99,7 +98,6 @@ public class NotificationDisplay extends Activity {
 			public void onClick(final View v) {
 				final Intent mapIntent = new Intent(Intent.ACTION_VIEW, Uri
 						.parse(event.get_directionsURL()));
-				System.out.println(event.get_directionsURL());
 				mapIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				startActivity(mapIntent);
 				cancelNotification(event);

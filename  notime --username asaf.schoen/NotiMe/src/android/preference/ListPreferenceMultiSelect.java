@@ -50,7 +50,6 @@ public class ListPreferenceMultiSelect extends ListPreference {
 
 	@Override
 	protected void onDialogClosed(final boolean positiveResult) {
-		System.out.println("ENTERED: onDialogClosed");
 		// super.onDialogClosed(positiveResult);
 		final CharSequence[] entryValues = getEntryValues();
 		if (positiveResult && (entryValues != null)) {
@@ -76,7 +75,6 @@ public class ListPreferenceMultiSelect extends ListPreference {
 
 	@Override
 	protected void onPrepareDialogBuilder(final Builder builder) {
-		System.out.println("ENTERED: onPrepareDialogBuilder");
 		final CharSequence[] entries = getEntries();
 		final CharSequence[] entryValues = getEntryValues();
 
@@ -88,14 +86,10 @@ public class ListPreferenceMultiSelect extends ListPreference {
 
 		final PreferenceManager pm = new PreferenceManager(
 				PreferenceManager._activity);
-		System.out.println("isCalendarsSet() " + pm.isCalendarsSet());
 		if (!pm.isCalendarsSet()) {
 			if (!entries[0].equals("Please start NotiMe and come back!")) {
 				pm.setCalendarSet(true);
 			}
-
-			System.out.println("entered if isCalendarsSet() "
-					+ pm.isCalendarsSet());
 
 			if (entryValues != null) {
 				final StringBuffer value = new StringBuffer();
@@ -125,7 +119,6 @@ public class ListPreferenceMultiSelect extends ListPreference {
 	}
 
 	private void restoreCheckedEntries() {
-		System.out.println("ENTERED: restoreCheckedEntries");
 		final CharSequence[] entryValues = getEntryValues();
 
 		final String[] vals = ListPreferenceMultiSelect
