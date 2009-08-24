@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,8 +26,12 @@ import com.Utils.GoogleCalendarP;
 
 public class NotiMe extends Activity {
 	private static final int ABOUT_ID = Menu.FIRST + 1;
+	private final static String CLASS_TAG = "NotiMe: ";
+	static final boolean DEBUG_LOG = false;
 
 	private static final int PREFERENCES_ID = Menu.FIRST;
+	static final String TAG = "NotiMe!";
+
 	EditText passText;
 	final PreferenceManager pm = new PreferenceManager(this);
 	EditText userText;
@@ -44,9 +49,6 @@ public class NotiMe extends Activity {
 		userText = (EditText) findViewById(R.id.username);
 		passText = (EditText) findViewById(R.id.password);
 
-		System.out.println("isRunning: " + pm.isRunning());
-		System.out.println("isRemember: " + pm.isRemember());
-
 		userText.setText(pm.getUser());
 		passText.setText(pm.getPass());
 
@@ -57,7 +59,10 @@ public class NotiMe extends Activity {
 			public void onClick(final View v) {
 				// Perform action on clicks
 				if (togglebutton.isChecked()) {
-					System.out.println("TOGGLE BUTTON CHECKED");
+					if (com.NotiMe.NotiMe.DEBUG_LOG) {
+						Log.d(com.NotiMe.NotiMe.TAG, NotiMe.CLASS_TAG
+								+ "toggle button checked");
+					}
 
 					// final PreferenceReader pr = new PreferenceReader(
 					// PreferenceReader._activity);
@@ -85,7 +90,10 @@ public class NotiMe extends Activity {
 									startService(new Intent(NotiMe.this,
 											NotifyingService.class));
 									pm.setRunning(true);
-									System.out.println("RUNNING!");
+									if (com.NotiMe.NotiMe.DEBUG_LOG) {
+										Log.d(com.NotiMe.NotiMe.TAG,
+												NotiMe.CLASS_TAG + "running");
+									}
 								} else {
 									Toast.makeText(NotiMe.this,
 											R.string.error_login,
@@ -107,7 +115,6 @@ public class NotiMe extends Activity {
 							}
 
 						} else {
-							System.out.println("MISSING USER/PASSWORD");
 							Toast.makeText(NotiMe.this,
 									R.string.error_login_details,
 									Toast.LENGTH_SHORT).show();
@@ -122,13 +129,22 @@ public class NotiMe extends Activity {
 					}
 
 				} else {
-					System.out.println("TOGGLE BUTTON UNCHECKED");
+					if (com.NotiMe.NotiMe.DEBUG_LOG) {
+						Log.d(com.NotiMe.NotiMe.TAG, NotiMe.CLASS_TAG
+								+ "toggle button unchecked");
+					}
 					if (!pm.isRemember()) {
-						System.out.println("CLEAR!");
+						if (com.NotiMe.NotiMe.DEBUG_LOG) {
+							Log.d(com.NotiMe.NotiMe.TAG, NotiMe.CLASS_TAG
+									+ "clear preferences");
+						}
 						pm.clearPreferences();
 					}
 					pm.setRunning(false);
-					System.out.println("NOT RUNNING!");
+					if (com.NotiMe.NotiMe.DEBUG_LOG) {
+						Log.d(com.NotiMe.NotiMe.TAG, NotiMe.CLASS_TAG
+								+ "not running");
+					}
 					stopService(new Intent(NotiMe.this, NotifyingService.class));
 				}
 			}

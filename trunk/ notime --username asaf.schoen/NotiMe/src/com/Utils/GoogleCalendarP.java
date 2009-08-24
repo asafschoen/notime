@@ -36,7 +36,7 @@ public final class GoogleCalendarP {
 	};
 
 	/** The authentication token. */
-	public static String mAuthToken = null;// "DQAAAHUAAAA4FdYPFHGBAnCXT_-6UlZswMlrOWhdf9X0GeVIxWi5Cmxm-9Z2Hl7eVFNQ6coRTFbv63Rzxe45gPARaqeHpyEsrOyJA3_fWkwSUzzQ_q6Tp9rs2oiX-4YlOTf7Kkl7XLzhdrXdWcHLJEMqj9c8kPvhzzQs_QrTWAMBvecqBU4yTw";;
+	public static String mAuthToken = null;
 
 	/** The last activity. */
 	private static long mLastActivity = 0;
@@ -196,32 +196,6 @@ public final class GoogleCalendarP {
 		}
 		Collections.sort(events);
 		return events;
-	}
-
-	/**
-	 * Usage example. Just for testing.
-	 * 
-	 * @param args
-	 *            the arguments
-	 * 
-	 * @throws MalformedURLException
-	 *             the malformed url exception
-	 * @throws IOException
-	 *             Signals that an I/O exception has occurred.
-	 */
-	public static void main(final String[] args) throws MalformedURLException,
-			IOException {
-		GoogleCalendarP.setLogin("noti.me.android", "notimeand");
-		// GoogleCalendarP.authenticate(false);
-		// System.out.println(mAuthToken);
-		GoogleCalendarP.mAuthToken = "DQAAAHUAAAA4FdYPFHGBAnCXT_-6UlZswMlrOWhdf9X0GeVIxWi5Cmxm-9Z2Hl7eVFNQ6coRTFbv63Rzxe45gPARaqeHpyEsrOyJA3_fWkwSUzzQ_q6Tp9rs2oiX-4YlOTf7Kkl7XLzhdrXdWcHLJEMqj9c8kPvhzzQs_QrTWAMBvecqBU4yTw";
-		try {
-			final LinkedList<NotiCalendar> parsedDataList = GoogleCalendarP
-					.getAllCals();
-			System.out.println(GoogleCalendarP.getEvents(parsedDataList));
-		} catch (final Exception e) {
-			e.printStackTrace();
-		}
 	}
 
 	/**

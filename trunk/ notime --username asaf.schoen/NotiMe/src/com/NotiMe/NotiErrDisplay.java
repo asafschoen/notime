@@ -54,7 +54,6 @@ public class NotiErrDisplay extends Activity {
 					// longt1 = Double.toString(address.getLongitude());
 					final int max = address.getMaxAddressLineIndex();
 					for (int i = 0; i < max; i++) {
-						System.out.println(address.getAddressLine(i));
 						if (index == 1) {
 							l1Str += address.getAddressLine(i) + '\n';
 						} else if (index == 2) {

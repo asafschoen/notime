@@ -85,7 +85,7 @@ public class GMap {
 		final URL url = new URL("http://maps.google.com/maps?saddr="
 				+ URLEncoder.encode(placeA, "UTF-8") + "&daddr="
 				+ URLEncoder.encode(placeB, "UTF-8"));
-		System.out.println("URL: " + url);
+		// System.out.println("URL: " + url);
 		final URLConnection uc = url.openConnection();
 
 		final InputStreamReader input = new InputStreamReader(uc
