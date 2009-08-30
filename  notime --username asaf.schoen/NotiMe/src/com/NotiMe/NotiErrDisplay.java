@@ -13,15 +13,20 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
+/**
+ * The Class NotiErrDisplay. The screen that shows the possibilities when the
+ * event location not found
+ */
 public class NotiErrDisplay extends Activity {
 
+	/** The counter. */
 	private Integer _counter = 10;
 
-	//
-	// String location = null;
-	// String event = null;
-	//
-
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.app.Activity#onCreate(android.os.Bundle)
+	 */
 	@Override
 	protected void onCreate(final Bundle icicle) {
 		// Be sure to call the super class.
@@ -34,24 +39,20 @@ public class NotiErrDisplay extends Activity {
 		final NotiDetails event = NotifyingService.eventsDetails.get(id);
 
 		final String origLocation = event.get_origEvent().get_where();
-		// latt = NotifyingService.firstEvent.get_latitude();
-		// longt = NotifyingService.firstEvent.get_longitude();
 
 		final Geocoder g = new Geocoder(NotiErrDisplay.this);
 		String l1Str = "", l2Str = "";
 		Address address;
-		// String latt1, longt1;
+
 		if ((origLocation != null) && !isHideDots) {
 			try {
-				// location = "uzi narcis, tel aviv, israel";
 
 				int index = 1;
+				// get the corrections
 				final List<Address> addressList = g.getFromLocationName(
 						origLocation, 2);
 				for (final Address address2 : addressList) {
 					address = address2;
-					// latt1 = Double.toString(address.getLatitude());
-					// longt1 = Double.toString(address.getLongitude());
 					final int max = address.getMaxAddressLineIndex();
 					for (int i = 0; i < max; i++) {
 						if (index == 1) {
@@ -100,9 +101,6 @@ public class NotiErrDisplay extends Activity {
 		}
 
 		final RadioButton timeAlertRBtn = (RadioButton) findViewById(R.id.timebefore);
-		if (timeAlertRBtn.isChecked()) {
-			// TODO do something
-		}
 
 		final EditText et = (EditText) findViewById(R.id.Minutes);
 		et.setEnabled(false);
@@ -110,7 +108,6 @@ public class NotiErrDisplay extends Activity {
 		final Button plusBtn = (Button) findViewById(R.id.errPlus);
 		plusBtn.setOnClickListener(new Button.OnClickListener() {
 			public void onClick(final View v) {
-
 				_counter++;
 				timeAlertRBtn.setChecked(true);
 				et.setText(_counter.toString());
@@ -132,10 +129,8 @@ public class NotiErrDisplay extends Activity {
 
 		final RadioButton dismissRBtn = (RadioButton) findViewById(R.id.dismiss);
 		dismissRBtn.setChecked(true);
-		if (dismissRBtn.isChecked()) {
-			// TODO do something
-		}
 
+		// check the selections when OK button is clicked
 		final Button button = (Button) findViewById(R.id.errnotifyok);
 		try {
 			button.setOnClickListener(new Button.OnClickListener() {

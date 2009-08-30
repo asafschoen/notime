@@ -24,19 +24,41 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 
 import com.Utils.GoogleCalendarP;
 
+/**
+ * The main class.
+ */
 public class NotiMe extends Activity {
+
+	/** The Constant ABOUT_ID. */
 	private static final int ABOUT_ID = Menu.FIRST + 1;
+
+	/** The Constant CLASS_TAG for debugging. */
 	private final static String CLASS_TAG = "NotiMe: ";
+
+	/** The Constant DEBUG_LOG. */
 	static final boolean DEBUG_LOG = false;
 
+	/** The Constant PREFERENCES_ID. */
 	private static final int PREFERENCES_ID = Menu.FIRST;
+
+	/** The Constant TAG. */
 	static final String TAG = "NotiMe!";
 
+	/** The password text. */
 	EditText passText;
+
+	/** The Preference Manager. */
 	final PreferenceManager pm = new PreferenceManager(this);
+
+	/** The user name text. */
 	EditText userText;
 
-	/** Called when the activity is first created. */
+	/**
+	 * Called when the activity is first created.
+	 * 
+	 * @param savedInstanceState
+	 *            the saved instance state
+	 */
 	@Override
 	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -64,17 +86,12 @@ public class NotiMe extends Activity {
 								+ "toggle button checked");
 					}
 
-					// final PreferenceReader pr = new PreferenceReader(
-					// PreferenceReader._activity);
-
 					final ConnectivityManager connec = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 
 					if (connec.getNetworkInfo(0).isConnectedOrConnecting()
 							|| connec.getNetworkInfo(1)
 									.isConnectedOrConnecting()) {
 
-						// final String user = pr.getUser().trim();
-						// final String pass = pr.getPass().trim();
 						final String user = userText.getText().toString()
 								.trim();
 						final String pass = passText.getText().toString()
@@ -155,7 +172,6 @@ public class NotiMe extends Activity {
 		rememberCheckBox
 				.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
-					// @Override
 					public void onCheckedChanged(
 							final CompoundButton buttonView,
 							final boolean isChecked) {
@@ -166,7 +182,6 @@ public class NotiMe extends Activity {
 
 		userText.setOnKeyListener(new OnKeyListener() {
 
-			// @Override
 			public boolean onKey(final View v, final int keyCode,
 					final KeyEvent event) {
 				pm.setUser(userText.getText().toString());
@@ -176,7 +191,6 @@ public class NotiMe extends Activity {
 
 		passText.setOnKeyListener(new OnKeyListener() {
 
-			// @Override
 			public boolean onKey(final View v, final int keyCode,
 					final KeyEvent event) {
 				pm.setPass(passText.getText().toString());
@@ -186,6 +200,11 @@ public class NotiMe extends Activity {
 
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.app.Activity#onCreateOptionsMenu(android.view.Menu)
+	 */
 	@Override
 	public boolean onCreateOptionsMenu(final Menu menu) {
 		super.onCreateOptionsMenu(menu);
@@ -197,6 +216,11 @@ public class NotiMe extends Activity {
 		return true;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.app.Activity#onDestroy()
+	 */
 	@Override
 	protected void onDestroy() {
 		if (!pm.isRemember() && !pm.isRunning()) {
@@ -205,6 +229,11 @@ public class NotiMe extends Activity {
 		super.onDestroy();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.app.Activity#onOptionsItemSelected(android.view.MenuItem)
+	 */
 	@Override
 	public boolean onOptionsItemSelected(final MenuItem item) {
 
@@ -222,6 +251,11 @@ public class NotiMe extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.app.Activity#onPrepareOptionsMenu(android.view.Menu)
+	 */
 	@Override
 	public boolean onPrepareOptionsMenu(final Menu menu) {
 		super.onPrepareOptionsMenu(menu);

@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * The Class JavaCalendarUtils.
+ * 
  * @author Aaron Gadberry
  */
 
@@ -19,38 +21,42 @@ public class JavaCalendarUtils {
 	 * utilized by a series of difference methods within this class.
 	 */
 	public enum Unit {
-		/**
-		 * Represents a unit of time defined by Calendar.DAY_OF_MONTH
-		 */
+
+		/** Represents a unit of time defined by Calendar.DAY_OF_MONTH */
 		DAY(Calendar.DAY_OF_MONTH, 1000l * 60 * 60 * 24),
-		/**
-		 * Represents a unit of time defined by Calendar.HOUR_OF_DAY
-		 */
+
+		/** Represents a unit of time defined by Calendar.HOUR_OF_DAY */
 		HOUR(Calendar.HOUR_OF_DAY, 1000l * 60 * 60),
-		/**
-		 * Represents a unit of time defined by Calendar.MILLISECOND
-		 */
+
+		/** Represents a unit of time defined by Calendar.MILLISECOND */
 		MILLISECOND(Calendar.MILLISECOND, 1),
-		/**
-		 * Represents a unit of time defined by Calendar.MINUTE
-		 */
+
+		/** Represents a unit of time defined by Calendar.MINUTE */
 		MINUTE(Calendar.MINUTE, 1000l * 60),
-		/**
-		 * Represents a unit of time defined by Calendar.MONTH
-		 */
+
+		/** Represents a unit of time defined by Calendar.MONTH */
 		MONTH(Calendar.MONTH, 1000l * 60 * 60 * 24 * 30),
-		/**
-		 * Represents a unit of time defined by Calendar.SECOND
-		 */
+
+		/** Represents a unit of time defined by Calendar.SECOND */
 		SECOND(Calendar.SECOND, 1000l),
-		/**
-		 * Represents a unit of time defined by Calendar.YEAR
-		 */
+
+		/** Represents a unit of time defined by Calendar.YEAR */
 		YEAR(Calendar.YEAR, 1000l * 60 * 60 * 24 * 365);
 
+		/** The calendar unit. */
 		private final int calendarUnit;
+
+		/** The estimate. */
 		private final long estimate;
 
+		/**
+		 * Instantiates a new unit.
+		 * 
+		 * @param calendarUnit
+		 *            the calendar unit
+		 * @param estimate
+		 *            the estimate
+		 */
 		Unit(final int calendarUnit, final long estimate) {
 			this.calendarUnit = calendarUnit;
 			this.estimate = estimate;
@@ -63,10 +69,8 @@ public class JavaCalendarUtils {
 	 * 
 	 * @param c
 	 *            the calendar
-	 * 
 	 * @param unit
 	 *            the unit to increment
-	 * 
 	 * @param increment
 	 *            the amount to increment
 	 */
@@ -83,10 +87,8 @@ public class JavaCalendarUtils {
 	 * 
 	 * @param c1
 	 *            The first occurring {@link Calendar}
-	 * 
 	 * @param c2
 	 *            The later occurring {@link Calendar}
-	 * 
 	 * @param unit
 	 *            The unit to calculate the difference in
 	 * 
@@ -124,10 +126,8 @@ public class JavaCalendarUtils {
 	 * 
 	 * @param d1
 	 *            The first occurring {@link Date}
-	 * 
 	 * @param d2
 	 *            The later occurring {@link Date}
-	 * 
 	 * @param unit
 	 *            The unit to calculate the difference in
 	 * 
@@ -149,10 +149,8 @@ public class JavaCalendarUtils {
 	 * 
 	 * @param c1
 	 *            The first occurring {@link Calendar}
-	 * 
 	 * @param c2
 	 *            The later occurring {@link Calendar}
-	 * 
 	 * @param unit
 	 *            The unit to calculate the difference in
 	 * 
@@ -186,7 +184,6 @@ public class JavaCalendarUtils {
 	 * 
 	 * @param c1
 	 *            The first occurring {@link Calendar}
-	 * 
 	 * @param c2
 	 *            The later occurring {@link Calendar}
 	 * 
@@ -204,10 +201,8 @@ public class JavaCalendarUtils {
 	 * 
 	 * @param c1
 	 *            The first occurring {@link Calendar}
-	 * 
 	 * @param c2
 	 *            The later occurring {@link Calendar}
-	 * 
 	 * @param units
 	 *            The list of units to calculate the difference in
 	 * 

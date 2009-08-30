@@ -6,24 +6,60 @@ import android.location.Address;
 
 import com.Utils.NotiEvent;
 
+/**
+ * The Class NotiDetails. An object that represents a notification and store its
+ * real-time state
+ */
 public class NotiDetails {
+
+	/** The address. */
 	private Address _address;
+
+	/** The directions url. */
 	private String _directionsURL;
+
+	/** The dissmissed flag. */
 	private boolean _dissmissed = false;
+
+	/** The location fixed flag. */
 	private boolean _locationFixed = false;
+
+	/** The no route published flag. */
 	private boolean _noRoutePublished = false;
+
+	/** The notification id. */
 	private int _notificationID = 0; // for snooze or time alert
+
+	/** The notification text. */
 	private String _notificationText;
+
+	/** The original event. */
 	private NotiEvent _origEvent;
+
+	/** The published flag. */
 	private boolean _published = false;
+
+	/** The snooze flag. */
 	private boolean _snooze = false;
+
+	/** The snooze published flag. */
 	private boolean _snoozePublished = false;
+
+	/** The snooze time. */
 	private Calendar _snoozeTime;
+
+	/** The time alert flag. */
 	private boolean _timeAlert = false;
+
+	/** The time alert in minutes. */
 	private int _timeAlertInMin = 0;
+
+	/** The time alert published flag. */
 	private boolean _timeAlertPublished = false;
 
 	/**
+	 * Get the address.
+	 * 
 	 * @return the _address
 	 */
 	protected Address get_address() {
@@ -31,6 +67,8 @@ public class NotiDetails {
 	}
 
 	/**
+	 * Get the directions URL.
+	 * 
 	 * @return the _directionURL
 	 */
 	protected String get_directionsURL() {
@@ -38,6 +76,8 @@ public class NotiDetails {
 	}
 
 	/**
+	 * Get the notification id.
+	 * 
 	 * @return the _notificationID
 	 */
 	protected int get_notificationID() {
@@ -45,6 +85,8 @@ public class NotiDetails {
 	}
 
 	/**
+	 * Get the notification text.
+	 * 
 	 * @return the _notificationText
 	 */
 	protected String get_notificationText() {
@@ -52,6 +94,8 @@ public class NotiDetails {
 	}
 
 	/**
+	 * Get original event.
+	 * 
 	 * @return the _origEvent
 	 */
 	protected NotiEvent get_origEvent() {
@@ -59,6 +103,8 @@ public class NotiDetails {
 	}
 
 	/**
+	 * Get the snooze time.
+	 * 
 	 * @return the _snoozeTime
 	 */
 	protected Calendar get_snoozeTime() {
@@ -66,6 +112,8 @@ public class NotiDetails {
 	}
 
 	/**
+	 * Get the time alert in minutes.
+	 * 
 	 * @return the _timeAlertInMin
 	 */
 	protected int get_timeAlertInMin() {
@@ -73,6 +121,8 @@ public class NotiDetails {
 	}
 
 	/**
+	 * is dissmissed.
+	 * 
 	 * @return the _dissmissed
 	 */
 	protected boolean is_dissmissed() {
@@ -80,6 +130,8 @@ public class NotiDetails {
 	}
 
 	/**
+	 * Is location fixed.
+	 * 
 	 * @return the _locationFixed
 	 */
 	protected boolean is_locationFixed() {
@@ -87,6 +139,8 @@ public class NotiDetails {
 	}
 
 	/**
+	 * Is no route published.
+	 * 
 	 * @return the _noRoute
 	 */
 	protected boolean is_noRoutePublished() {
@@ -94,6 +148,8 @@ public class NotiDetails {
 	}
 
 	/**
+	 * Is published.
+	 * 
 	 * @return the _published
 	 */
 	protected boolean is_published() {
@@ -101,6 +157,8 @@ public class NotiDetails {
 	}
 
 	/**
+	 * Is snooze.
+	 * 
 	 * @return the _snooze
 	 */
 	protected boolean is_snooze() {
@@ -108,6 +166,8 @@ public class NotiDetails {
 	}
 
 	/**
+	 * Is snooze published.
+	 * 
 	 * @return the _snoozePublished
 	 */
 	protected boolean is_snoozePublished() {
@@ -115,6 +175,8 @@ public class NotiDetails {
 	}
 
 	/**
+	 * Is time alert.
+	 * 
 	 * @return the _timeAlert
 	 */
 	protected boolean is_timeAlert() {
@@ -122,6 +184,8 @@ public class NotiDetails {
 	}
 
 	/**
+	 * Is time alert published.
+	 * 
 	 * @return the _timeAlertPublished
 	 */
 	protected boolean is_timeAlertPublished() {
@@ -129,6 +193,8 @@ public class NotiDetails {
 	}
 
 	/**
+	 * Set address.
+	 * 
 	 * @param address
 	 *            the _address to set
 	 */
@@ -137,6 +203,8 @@ public class NotiDetails {
 	}
 
 	/**
+	 * Set directions URL.
+	 * 
 	 * @param directionURL
 	 *            the _directionURL to set
 	 */
@@ -145,6 +213,8 @@ public class NotiDetails {
 	}
 
 	/**
+	 * Set dissmissed.
+	 * 
 	 * @param dissmissed
 	 *            the _dissmissed to set
 	 */
@@ -153,6 +223,8 @@ public class NotiDetails {
 	}
 
 	/**
+	 * Set location fixed.
+	 * 
 	 * @param locationFixed
 	 *            the _locationFixed to set
 	 */
@@ -161,14 +233,18 @@ public class NotiDetails {
 	}
 
 	/**
-	 * @param noRoute
-	 *            the _noRoute to set
+	 * Set no route published.
+	 * 
+	 * @param noRoutePublished
+	 *            the no route published
 	 */
 	protected void set_noRoutePublished(final boolean noRoutePublished) {
 		_noRoutePublished = noRoutePublished;
 	}
 
 	/**
+	 * Set notification id.
+	 * 
 	 * @param notificationID
 	 *            the _notificationID to set
 	 */
@@ -177,6 +253,8 @@ public class NotiDetails {
 	}
 
 	/**
+	 * Set notification text.
+	 * 
 	 * @param notificationText
 	 *            the _notificationText to set
 	 */
@@ -185,6 +263,8 @@ public class NotiDetails {
 	}
 
 	/**
+	 * Set original event.
+	 * 
 	 * @param origEvent
 	 *            the _origEvent to set
 	 */
@@ -193,6 +273,8 @@ public class NotiDetails {
 	}
 
 	/**
+	 * Set published.
+	 * 
 	 * @param published
 	 *            the _published to set
 	 */
@@ -201,6 +283,8 @@ public class NotiDetails {
 	}
 
 	/**
+	 * Set snooze.
+	 * 
 	 * @param snooze
 	 *            the _snooze to set
 	 */
@@ -209,6 +293,8 @@ public class NotiDetails {
 	}
 
 	/**
+	 * Set snooze published.
+	 * 
 	 * @param snoozePublished
 	 *            the _snoozePublished to set
 	 */
@@ -217,6 +303,8 @@ public class NotiDetails {
 	}
 
 	/**
+	 * Set snooze time.
+	 * 
 	 * @param snoozeTime
 	 *            the _snoozeTime to set
 	 */
@@ -225,6 +313,8 @@ public class NotiDetails {
 	}
 
 	/**
+	 * Set time alert.
+	 * 
 	 * @param timeAlert
 	 *            the _timeAlert to set
 	 */
@@ -233,6 +323,8 @@ public class NotiDetails {
 	}
 
 	/**
+	 * Set time alert in minutes.
+	 * 
 	 * @param timeAlertInMin
 	 *            the _timeAlertInMin to set
 	 */
@@ -241,6 +333,8 @@ public class NotiDetails {
 	}
 
 	/**
+	 * Set time alert published.
+	 * 
 	 * @param timeAlertPublished
 	 *            the _timeAlertPublished to set
 	 */

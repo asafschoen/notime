@@ -11,10 +11,20 @@ import android.preference.PreferenceActivity;
 import android.preference.TimePickerPreference;
 import android.preference.Preference.OnPreferenceChangeListener;
 
+/**
+ * The Class Preferences.
+ */
 public class Preferences extends PreferenceActivity {
+
+	/** The Preference Manager. */
 	final PreferenceManager pm = new PreferenceManager(
 			PreferenceManager._activity);
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.preference.PreferenceActivity#onCreate(android.os.Bundle)
+	 */
 	@Override
 	protected void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -31,7 +41,7 @@ public class Preferences extends PreferenceActivity {
 						final CheckBoxPreference cbp = (CheckBoxPreference) preference;
 						// update the new state
 						cbp.setChecked((Boolean) newValue);
-						// save the new state in the pref file
+						// save the new state in the preference file
 						pm.setSoundNotification((Boolean) newValue);
 						return false;
 					}
@@ -70,7 +80,7 @@ public class Preferences extends PreferenceActivity {
 					}
 				});
 
-		// timepicker listener(on preference change custom made callback OMG!!)
+		// time picker listener
 		final TimePickerPreference timePref = (TimePickerPreference) findPreference("time1");
 		timePref
 				.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {

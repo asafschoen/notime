@@ -34,51 +34,83 @@ import com.Utils.NotiCalendar;
 import com.Utils.NotiEvent;
 
 /**
- * This is an example of service that will update its status bar balloon every 5
- * seconds for a minute.
- * 
+ * This is the NotiMe service. Runs in the background, checks periodically for
+ * new notifications and responsible to show them
  */
 public class NotifyingService extends Service implements LocationListener {
+
+	/** The Constant CLASS_TAG for debug. */
 	private final static String CLASS_TAG = "NotifyingService: ";
+
+	/** The events details hash map. */
 	static HashMap<String, NotiDetails> eventsDetails = new HashMap<String, NotiDetails>();
 
+	/** The Notification Manager. */
 	static NotificationManager nNM;
 
+	/** The notification id. */
 	private static int notificationID = 1;
 
+	/** The Constant NOTIFY_ERR_LOCATION. */
 	static final int NOTIFY_ERR_LOCATION = 2;
 
+	/** The Constant NOTIFY_NO_ROUTE. */
 	static final int NOTIFY_NO_ROUTE = 3;
 
+	/** The Constant NOTIFY_REG_TIME_PASSED. */
 	static final int NOTIFY_REG_TIME_PASSED = 1;
+
+	/** The Constant NOTIFY_REGULAR. */
 	static final int NOTIFY_REGULAR = 0;
+
+	/** The Constant NOTIFY_SNOOZE. */
 	static final int NOTIFY_SNOOZE = 4;
+
+	/** The Constant NOTIFY_TIME_ALERT. */
 	static final int NOTIFY_TIME_ALERT = 5;
 
+	/** The default notification ID. */
 	static int NOTIME_NOTIFICATIONS = 100;
+
+	/** The request code. */
 	private static int reqCode = 0;
 
+	/**
+	 * Gets the minutes to go.
+	 * 
+	 * @param getInCarTime
+	 *            the get in car time
+	 * 
+	 * @return the minutes to go
+	 */
 	static int getMinutesToGo(final Calendar getInCarTime) {
 		final Calendar currentTime = Calendar.getInstance();
 		return (int) JavaCalendarUtils.difference(currentTime, getInCarTime,
 				JavaCalendarUtils.Unit.MINUTE);
 	}
 
+	/** The first event. */
 	NotiEvent firstEvent;
 
+	/** The Google maps object. */
 	GMap gMap = new GMap();
 
+	/** The flag if is connected. */
 	private boolean isConnection = true;
 
+	/** The flag if the connection problem was already notified. */
 	private boolean isProblemNotified = false;
+
+	/** The user's longitude and latitude values. */
 	private double latitude, longitude;
 
+	/** The Location Manager. */
 	private LocationManager lm;
 
+	/** The thread's task. */
 	private final Runnable mTask = new Runnable() {
 
 		public void run() {
-
 			// wait the 30 seconds.
 			// here we should enter the logic of notification (time and place)
 			while (run) {
@@ -92,8 +124,6 @@ public class NotifyingService extends Service implements LocationListener {
 					break;
 				}
 
-				// nCondition.close();
-
 			}
 			// code to stop the service!
 			NotifyingService.this.stopSelf();
@@ -102,6 +132,7 @@ public class NotifyingService extends Service implements LocationListener {
 
 	// This is the object that receives interactions from clients. See
 	// RemoteService for a more complete example.
+	/** The n binder. */
 	private final IBinder nBinder = new Binder() {
 		@Override
 		protected boolean onTransact(final int code, final Parcel data,
@@ -110,22 +141,34 @@ public class NotifyingService extends Service implements LocationListener {
 		}
 	};
 
-	// private ConditionVariable nCondition;
+	/** The notification max time condition. */
 	private ConditionVariable nMaxTimeCondition;
 
+	/** The notification time. */
 	private int notificationTime;
 
 	// Start up the thread running the service. Note that we create a
 	// separate thread because the service normally runs in the process's
 	// main thread, which we don't want to block.
+	/** The notifying thread. */
 	final Thread notifyingThread = new Thread(null, mTask, "NotifyingService");
 
+	/** The parsed calendars list. */
 	LinkedList<NotiCalendar> parsedCalendarsList = null;
+
+	/** The parsed events list. */
 	LinkedList<NotiEvent> parsedEventsList = null;
 
+	/** The Preference Manager. */
 	PreferenceManager pm = new PreferenceManager(PreferenceManager._activity);
+
+	/** The run flag. */
 	private boolean run = true;
 
+	/**
+	 * Check events. This is the logic of the service. The method checks the
+	 * calendars for the up-coming event.
+	 */
 	private void checkEvents() {
 		final ConnectivityManager connec = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 
@@ -139,7 +182,7 @@ public class NotifyingService extends Service implements LocationListener {
 		}
 
 		final String selectedCals = pm.getSelectedCalendarList();
-		// splits it from the ,
+		// splits it by the ,
 		final StringTokenizer selectedIDsTokenizer = new StringTokenizer(
 				selectedCals, ",");
 		final LinkedList<String> cIDs = new LinkedList<String>();
@@ -248,6 +291,8 @@ public class NotifyingService extends Service implements LocationListener {
 			Log.d(com.NotiMe.NotiMe.TAG, NotifyingService.CLASS_TAG
 					+ "before independent check");
 		}
+
+		// The independent check for snoozed and time alerted events
 		final Collection<NotiDetails> e = NotifyingService.eventsDetails
 				.values();
 		for (final NotiDetails notiDetails : e) {
@@ -319,12 +364,35 @@ public class NotifyingService extends Service implements LocationListener {
 
 	}
 
+	/**
+	 * Gets the driving time in minutes.
+	 * 
+	 * @param eventLatitude
+	 *            the event latitude
+	 * @param eventLongitude
+	 *            the event longitude
+	 * 
+	 * @return the driving time in minutes
+	 * 
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 */
 	private Integer getDrivingTimeInMin(final String eventLatitude,
 			final String eventLongitude) throws IOException {
 		return gMap.getTime(latitude + "," + longitude, eventLatitude + ","
 				+ eventLongitude);
 	}
 
+	/**
+	 * Gets the time to set out.
+	 * 
+	 * @param event
+	 *            the event
+	 * @param drivingTimeInMin
+	 *            the driving time in minutes
+	 * 
+	 * @return the time to set out
+	 */
 	private Calendar getGetInCarTime(final NotiEvent event,
 			final Integer drivingTimeInMin) {
 		if (drivingTimeInMin == null) {
@@ -339,6 +407,14 @@ public class NotifyingService extends Service implements LocationListener {
 		return getInCarTime;
 	}
 
+	/**
+	 * Gets the time in text format.
+	 * 
+	 * @param time
+	 *            the time
+	 * 
+	 * @return the time text
+	 */
 	CharSequence getTimeText(final int time) {
 		if (time > 0) {
 			final int hours = Math.abs(time / 60);
@@ -363,11 +439,23 @@ public class NotifyingService extends Service implements LocationListener {
 			}
 			return t;
 		} else {
-			// return "notiMe can't locate your next appointment!";
 			return getString(R.string.notifyingService_beenOnYourWay);
 		}
 	}
 
+	/**
+	 * Handle known location.
+	 * 
+	 * @param eventLatitude
+	 *            the event latitude
+	 * @param eventLongitude
+	 *            the event longitude
+	 * @param eventDet
+	 *            the event details
+	 * 
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 */
 	private void handleKnownLocation(final String eventLatitude,
 			final String eventLongitude, final NotiDetails eventDet)
 			throws IOException {
@@ -448,6 +536,15 @@ public class NotifyingService extends Service implements LocationListener {
 		}
 	}
 
+	/**
+	 * Handle snooze or time alert.
+	 * 
+	 * @param eventDet
+	 *            the event details
+	 * 
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 */
 	private void handleSnoozeOrTimeAlert(final NotiDetails eventDet)
 			throws IOException {
 		if (com.NotiMe.NotiMe.DEBUG_LOG) {
@@ -497,6 +594,18 @@ public class NotifyingService extends Service implements LocationListener {
 
 	}
 
+	/**
+	 * Make NotiMe intent.
+	 * 
+	 * @param getInCarTime
+	 *            the time to set out
+	 * @param eventDet
+	 *            the event details
+	 * @param notificationType
+	 *            the notification type
+	 * 
+	 * @return the pending intent
+	 */
 	private PendingIntent makeNotiMeIntent(final Calendar getInCarTime,
 			final NotiDetails eventDet, final int notificationType) {
 		// The PendingIntent to launch our activity if the user selects this
@@ -504,7 +613,6 @@ public class NotifyingService extends Service implements LocationListener {
 		// is already an active matching pending intent, we will update its
 		// extras to be the ones passed in here.
 
-		// PendingIntent contentIntent = null;
 		final String id = eventDet.get_origEvent().get_id();
 
 		switch (notificationType) {
@@ -563,11 +671,21 @@ public class NotifyingService extends Service implements LocationListener {
 		return null;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.app.Service#onBind(android.content.Intent)
+	 */
 	@Override
 	public IBinder onBind(final Intent intent) {
 		return nBinder;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.app.Service#onCreate()
+	 */
 	@Override
 	public void onCreate() {
 
@@ -577,7 +695,6 @@ public class NotifyingService extends Service implements LocationListener {
 
 		NotifyingService.nNM = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-		// nCondition = new ConditionVariable(false);
 		nMaxTimeCondition = new ConditionVariable(false);
 		notifyingThread.start();
 
@@ -596,6 +713,11 @@ public class NotifyingService extends Service implements LocationListener {
 		startListening();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.app.Service#onDestroy()
+	 */
 	@Override
 	public void onDestroy() {
 		pm.setRunning(false);
@@ -622,9 +744,14 @@ public class NotifyingService extends Service implements LocationListener {
 		super.onDestroy();
 	}
 
-	/**********************************************************************
+	/**
+	 * ********************************************************************
 	 * LocationListener overrides below
-	 **********************************************************************/
+	 * ********************************************************************.
+	 * 
+	 * @param location
+	 *            the location
+	 */
 	// @Override
 	public void onLocationChanged(final Location location) {
 		// this code tricks the emulator to work...
@@ -634,7 +761,6 @@ public class NotifyingService extends Service implements LocationListener {
 		latitude = location.getLatitude();
 		longitude = location.getLongitude();
 
-		// Toast.makeText(NotifyingService.this, s, Toast.LENGTH_LONG).show();
 		if (com.NotiMe.NotiMe.DEBUG_LOG) {
 			String s = "";
 			s += "Time: " + location.getTime() + "\n";
@@ -649,23 +775,46 @@ public class NotifyingService extends Service implements LocationListener {
 	}
 
 	// @Override
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * android.location.LocationListener#onProviderDisabled(java.lang.String)
+	 */
 	public void onProviderDisabled(final String provider) {
 	}
 
 	// @Override
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * android.location.LocationListener#onProviderEnabled(java.lang.String)
+	 */
 	public void onProviderEnabled(final String provider) {
 	}
 
 	// @Override
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.location.LocationListener#onStatusChanged(java.lang.String,
+	 * int, android.os.Bundle)
+	 */
 	public void onStatusChanged(final String provider, final int status,
 			final Bundle extras) {
 	}
 
+	/**
+	 * Prints the event. Used for debugging only
+	 * 
+	 * @param drivingTimeInMin
+	 *            the driving time in min
+	 * @param getInCarTime
+	 *            the get in car time
+	 */
 	private void printEvent(final int drivingTimeInMin,
-			final Calendar getInCarTime) {// temp
-		// -
-		// for
-		// debug
+			final Calendar getInCarTime) {
 
 		if (com.NotiMe.NotiMe.DEBUG_LOG) {
 
@@ -695,6 +844,9 @@ public class NotifyingService extends Service implements LocationListener {
 		}
 	}
 
+	/**
+	 * Sets the calendars.
+	 */
 	private void setCalendars() {
 		LinkedList<NotiCalendar> calendarList = null;
 		try {
@@ -717,6 +869,16 @@ public class NotifyingService extends Service implements LocationListener {
 		pm.setCalendarListIDs(cIDs);
 	}
 
+	/**
+	 * Show notification.
+	 * 
+	 * @param eventID
+	 *            the event id
+	 * @param getInCarTime
+	 *            the time to set out
+	 * @param notificationType
+	 *            the notification type
+	 */
 	private void showNotification(final String eventID,
 			final Calendar getInCarTime, final int notificationType) {
 		Log.d(com.NotiMe.NotiMe.TAG, NotifyingService.CLASS_TAG
@@ -781,14 +943,9 @@ public class NotifyingService extends Service implements LocationListener {
 			effects |= Notification.DEFAULT_VIBRATE;
 		}
 		if (pm.isSoundNotification()) {
-			// if (pr.getSoundURI() != "") {
-			// notification.sound = Uri.parse(pr.getSoundURI());
-			// } else {
 			effects |= Notification.DEFAULT_SOUND;
-			// }
 		}
 		if (pm.isLightNotification()) {
-			// effects |= Notification.DEFAULT_LIGHTS;
 			notification.flags = Notification.FLAG_SHOW_LIGHTS;
 			notification.ledOnMS = 500;
 			notification.ledOffMS = 500;
@@ -805,8 +962,6 @@ public class NotifyingService extends Service implements LocationListener {
 				contentIntent);
 
 		// Send the notification.
-		// We use a layout id because it is a unique number. We use it later to
-		// cancel.
 		if (eventDet.get_notificationID() == 0) {
 			NotifyingService.nNM.notify(NotifyingService.NOTIME_NOTIFICATIONS,
 					notification);
@@ -816,6 +971,12 @@ public class NotifyingService extends Service implements LocationListener {
 		}
 	}
 
+	/**
+	 * Show short notification.
+	 * 
+	 * @param text
+	 *            the text
+	 */
 	private void showShortNotification(final String text) {
 		Log.d(com.NotiMe.NotiMe.TAG, NotifyingService.CLASS_TAG
 				+ "in showShortNotification");
@@ -830,14 +991,9 @@ public class NotifyingService extends Service implements LocationListener {
 			effects |= Notification.DEFAULT_VIBRATE;
 		}
 		if (pm.isSoundNotification()) {
-			// if (pr.getSoundURI() != "") {
-			// notification.sound = Uri.parse(pr.getSoundURI());
-			// } else {
 			effects |= Notification.DEFAULT_SOUND;
-			// }
 		}
 		if (pm.isLightNotification()) {
-			// effects |= Notification.DEFAULT_LIGHTS;
 			notification.flags = Notification.FLAG_SHOW_LIGHTS;
 			notification.ledOnMS = 500;
 			notification.ledOffMS = 500;
@@ -862,9 +1018,9 @@ public class NotifyingService extends Service implements LocationListener {
 
 	}
 
-	/**********************************************************************
-	 * helpers for starting/stopping monitoring of GPS changes below
-	 **********************************************************************/
+	/**
+	 * start listening for location changes
+	 */
 	private void startListening() {
 
 		final Criteria criteria = new Criteria();
@@ -882,12 +1038,21 @@ public class NotifyingService extends Service implements LocationListener {
 				, this);
 	}
 
+	/**
+	 * Stop listening for location changes.
+	 */
 	private void stopListening() {
 		if (lm != null) {
 			lm.removeUpdates(this);
 		}
 	}
 
+	/**
+	 * Update details event. to get the up to date event from the calendar
+	 * 
+	 * @param eventID
+	 *            the event id
+	 */
 	private void updateDetEvent(final String eventID) {
 		if (parsedEventsList == null) {
 			return;
