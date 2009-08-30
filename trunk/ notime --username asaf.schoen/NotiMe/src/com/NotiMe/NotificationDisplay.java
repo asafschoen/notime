@@ -11,12 +11,19 @@ import android.widget.Button;
 import android.widget.TextView;
 
 /**
- * Activity used by to show the notification to the user.
+ * Activity used to show the notification to the user.
  */
 public class NotificationDisplay extends Activity {
 
+	/** The default snooze time. */
 	final int SNOOZE_TIME = 5;
 
+	/**
+	 * Cancel the notification.
+	 * 
+	 * @param event
+	 *            the event
+	 */
 	private void cancelNotification(final NotiDetails event) {
 		if (event.get_notificationID() == 0) {
 			NotifyingService.nNM.cancel(NotifyingService.NOTIME_NOTIFICATIONS);
@@ -25,6 +32,14 @@ public class NotificationDisplay extends Activity {
 		}
 	}
 
+	/**
+	 * Gets the time in text format.
+	 * 
+	 * @param time
+	 *            the time
+	 * 
+	 * @return the time text
+	 */
 	CharSequence getTimeText(final int time) {
 		if (time > 0) {
 			final int hours = Math.abs(time / 60);
@@ -52,6 +67,11 @@ public class NotificationDisplay extends Activity {
 		return "";
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.app.Activity#onCreate(android.os.Bundle)
+	 */
 	@Override
 	protected void onCreate(final Bundle icicle) {
 		// Be sure to call the super class.
@@ -89,6 +109,7 @@ public class NotificationDisplay extends Activity {
 
 		tv.setText(event.get_notificationText());
 
+		// Google map option
 		final Button mapBtn = (Button) findViewById(R.id.map);
 
 		if (isAfterTimeAlert) {
@@ -106,6 +127,7 @@ public class NotificationDisplay extends Activity {
 		});
 		;
 
+		// Google calendar event option
 		final Button eventBtn = (Button) findViewById(R.id.event);
 		eventBtn.setOnClickListener(new Button.OnClickListener() {
 			public void onClick(final View v) {
@@ -119,6 +141,7 @@ public class NotificationDisplay extends Activity {
 		});
 		;
 
+		// dismiss option
 		final Button dismissBtn = (Button) findViewById(R.id.dismiss);
 		dismissBtn.setOnClickListener(new Button.OnClickListener() {
 			public void onClick(final View v) {
@@ -130,6 +153,7 @@ public class NotificationDisplay extends Activity {
 		});
 		;
 
+		// snooze option
 		final Button snoozeBtn = (Button) findViewById(R.id.snooze);
 		snoozeBtn.setOnClickListener(new Button.OnClickListener() {
 			public void onClick(final View v) {

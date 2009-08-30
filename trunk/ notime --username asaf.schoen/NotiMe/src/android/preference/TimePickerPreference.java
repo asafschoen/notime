@@ -16,32 +16,49 @@ import com.NotiMe.PreferenceManager;
 import com.NotiMe.R;
 
 /**
- * A preference type that allows a user to choose a time
+ * A preference type that allows a user to choose a time.
  */
 public class TimePickerPreference extends DialogPreference implements
 		TimePicker.OnTimeChangedListener {
 
+	/** The Constant Default Time */
 	public static final int NOTI_TIME = 15;
-	/**
-	 * The validation expression for this preference
-	 */
+
+	/** The validation expression for this preference. */
 	private static final String VALIDATION_EXPRESSION = "[0-2]*[0-9]:[0-5]*[0-9]";
 
+	/** The add minute button. */
 	private Button addMinute;
+
+	/** The listener. */
 	OnPreferenceChangeListener listener;
+
+	/** The minutes. */
 	private Integer minutes;
+
+	/** The minutes advance caption. */
 	private TextView minutesAdvanceCaption;
+
+	/** The noti me caption. */
 	private TextView notiMeCaption;
+
+	/** The Preference Manager. */
 	final PreferenceManager pm = new PreferenceManager(
 			PreferenceManager._activity);
-	// String sharedPrefFile;
+
+	/** The sub minute button. */
 	private Button subMinute;
 
+	/** The time text. */
 	public EditText timeText;
 
 	/**
+	 * The Constructor.
+	 * 
 	 * @param context
+	 *            the context
 	 * @param attrs
+	 *            the attrs
 	 */
 	public TimePickerPreference(final Context context, final AttributeSet attrs) {
 		super(context, attrs);
@@ -49,9 +66,14 @@ public class TimePickerPreference extends DialogPreference implements
 	}
 
 	/**
+	 * The Constructor.
+	 * 
 	 * @param context
+	 *            the context
 	 * @param attrs
+	 *            the attrs
 	 * @param defStyle
+	 *            the def style
 	 */
 	public TimePickerPreference(final Context context,
 			final AttributeSet attrs, final int defStyle) {
@@ -59,12 +81,17 @@ public class TimePickerPreference extends DialogPreference implements
 		initialize();
 	}
 
+	/**
+	 * Gets the time.
+	 * 
+	 * @return the time
+	 */
 	private int getTime() {
 		return pm.getNotificationTimeInt();
 	}
 
 	/**
-	 * Initialize this preference
+	 * Initialize this preference.
 	 */
 	private void initialize() {
 		setPersistent(true);
@@ -169,10 +196,12 @@ public class TimePickerPreference extends DialogPreference implements
 		persistString(hour + ":" + minute);
 	}
 
+	/**
+	 * Save time.
+	 */
 	private void saveTime() {
 		pm.setNotificationTime(minutes);
 		listener.onPreferenceChange(this, minutes);
-
 	}
 
 	/*
@@ -182,7 +211,7 @@ public class TimePickerPreference extends DialogPreference implements
 	 */
 	@Override
 	public void setDefaultValue(final Object defaultValue) {
-		// BUG this method is never called if you use the 'android:defaultValue'
+		// this method is never called if you use the 'android:defaultValue'
 		// attribute in your XML preference file, not sure why it isn't
 
 		super.setDefaultValue(defaultValue);
@@ -198,6 +227,12 @@ public class TimePickerPreference extends DialogPreference implements
 
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @seeandroid.preference.Preference#setOnPreferenceChangeListener(android.
+	 * preference.Preference.OnPreferenceChangeListener)
+	 */
 	@Override
 	public void setOnPreferenceChangeListener(final OnPreferenceChangeListener n) {
 		listener = n;

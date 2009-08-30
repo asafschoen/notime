@@ -25,7 +25,7 @@ public class GMap {
 	 */
 	public static void main(final String[] args) throws IOException {
 		// final GMap gm = new GMap();
-		// int d = gm.getTime("бшегцчй 3, ъм абйб", "шоъ двемп, йщшам");
+		// int d = gm.getTime("пїЅпїЅпїЅпїЅпїЅпїЅпїЅ 3, пїЅпїЅ пїЅпїЅпїЅпїЅ", "пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅ");
 		// System.out.println("hours: " + Math.abs(d / 60) + " mins: " + d %
 		// 60);
 		// d = gm.getTime("32.066157,34.777821", "31.768318,35.213711");
@@ -126,6 +126,21 @@ public class GMap {
 		return null;
 	}
 
+	/**
+	 * Gets the uRL.
+	 * 
+	 * @param placeA
+	 *            the place a
+	 * @param placeB
+	 *            the place b
+	 * 
+	 * @return the uRL
+	 * 
+	 * @throws MalformedURLException
+	 *             the malformed url exception
+	 * @throws UnsupportedEncodingException
+	 *             the unsupported encoding exception
+	 */
 	public URL getURL(final String placeA, final String placeB)
 			throws MalformedURLException, UnsupportedEncodingException {
 		return new URL("http://maps.google.com/maps?saddr="

@@ -21,9 +21,6 @@ public class EventsParseHandler extends DefaultHandler {
 	/** The in content flag. */
 	private boolean in_content = false;
 
-	// ===========================================================
-	// Fields
-	// ===========================================================
 	/** The in entry flag. */
 	private boolean in_entry = false;
 
@@ -33,19 +30,11 @@ public class EventsParseHandler extends DefaultHandler {
 	/** The in id flag. */
 	private boolean in_id = false;
 
-	// /** Indicates if the current event is valid (has time and location). */
-	// private boolean has_location = true;
-	// private boolean has_time = true;
-
 	/** The in title flag. */
 	private boolean in_title = false;
 
 	/** The list of events. */
 	private LinkedList<NotiEvent> myEventsList;
-
-	// ===========================================================
-	// Getter & Setter
-	// ===========================================================
 
 	/**
 	 * Gets called on the following structure: <tag>characters</tag>.
@@ -114,8 +103,7 @@ public class EventsParseHandler extends DefaultHandler {
 			} else {
 				// System.out.println("not valid event - missing time/location");
 			}
-			// has_location = true;
-			// has_time = true;
+
 			in_entry = false;
 		} else if (localName.equals("id")) {
 			in_id = false;
@@ -137,9 +125,6 @@ public class EventsParseHandler extends DefaultHandler {
 		return myEventsList;
 	}
 
-	// ===========================================================
-	// Methods
-	// ===========================================================
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -171,8 +156,6 @@ public class EventsParseHandler extends DefaultHandler {
 			final String qName, final Attributes atts) throws SAXException {
 		if (localName.equals("entry")) {
 			in_entry = true;
-			// has_location = true;
-			// has_time = true;
 			curEvent = new NotiEvent();
 		} else if (localName.equals("id")) {
 			in_id = true;
@@ -196,9 +179,8 @@ public class EventsParseHandler extends DefaultHandler {
 				try {
 					date = df.parse(attrValue.replace('T', ' ').replace(".000",
 							" ").replaceAll(":", ""));
-					// has_time = true;
+
 				} catch (final ParseException e) {
-					// has_time = false;
 					// e.printStackTrace();
 				}
 				if (date != null) {
@@ -212,9 +194,9 @@ public class EventsParseHandler extends DefaultHandler {
 				final String attrValue = atts.getValue("valueString");
 				if (attrValue != null) {
 					curEvent.set_where(attrValue);
-					// has_location = true;
+
 				} else {
-					// has_location = false;
+
 				}
 			}
 		} else if (localName.equals("pos")) {

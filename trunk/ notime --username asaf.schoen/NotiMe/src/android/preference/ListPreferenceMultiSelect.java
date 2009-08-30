@@ -21,8 +21,17 @@ public class ListPreferenceMultiSelect extends ListPreference {
 	// doesn't match one of the entries.
 	// Not using any fancy symbols because this is interpreted as a regex for
 	// splitting strings.
+	/** The Constant SEPARATOR. */
 	private static final String SEPARATOR = ",";
 
+	/**
+	 * Parses the stored value.
+	 * 
+	 * @param val
+	 *            the val
+	 * 
+	 * @return the string[]
+	 */
 	public static String[] parseStoredValue(final CharSequence val) {
 		if (val == null) {
 			return null;
@@ -33,24 +42,43 @@ public class ListPreferenceMultiSelect extends ListPreference {
 		}
 	}
 
+	/** The clicked dialog entry indices. */
 	private boolean[] mClickedDialogEntryIndices;
 
+	/**
+	 * Instantiates a new list preference multi select.
+	 * 
+	 * @param context
+	 *            the context
+	 */
 	public ListPreferenceMultiSelect(final Context context) {
 		this(context, null);
 	}
 
+	/**
+	 * Instantiates a new list preference multi select.
+	 * 
+	 * @param context
+	 *            the context
+	 * @param attrs
+	 *            the attrs
+	 */
 	public ListPreferenceMultiSelect(final Context context,
 			final AttributeSet attrs) {
 		super(context, attrs);
 
 		mClickedDialogEntryIndices = new boolean[getEntries().length];
-		// java.util.Arrays.fill(mClickedDialogEntryIndices, true);
-
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.preference.ListPreference#onDialogClosed(boolean)
+	 */
 	@Override
 	protected void onDialogClosed(final boolean positiveResult) {
 		// super.onDialogClosed(positiveResult);
+		// Update the Calendar list according to the user selections
 		final CharSequence[] entryValues = getEntryValues();
 		if (positiveResult && (entryValues != null)) {
 			final StringBuffer value = new StringBuffer();
@@ -73,6 +101,13 @@ public class ListPreferenceMultiSelect extends ListPreference {
 		restoreCheckedEntries();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * android.preference.ListPreference#onPrepareDialogBuilder(android.app.
+	 * AlertDialog.Builder)
+	 */
 	@Override
 	protected void onPrepareDialogBuilder(final Builder builder) {
 		final CharSequence[] entries = getEntries();
@@ -86,8 +121,9 @@ public class ListPreferenceMultiSelect extends ListPreference {
 
 		final PreferenceManager pm = new PreferenceManager(
 				PreferenceManager._activity);
+		// first time the application started. all calendars are checked
 		if (!pm.isCalendarsSet()) {
-			if (!entries[0].equals("Please start NotiMe and come back!")) {
+			if (!entries[0].equals("Please start NotiMe! first")) {
 				pm.setCalendarSet(true);
 			}
 
@@ -118,6 +154,9 @@ public class ListPreferenceMultiSelect extends ListPreference {
 				});
 	}
 
+	/**
+	 * Restore checked entries.
+	 */
 	private void restoreCheckedEntries() {
 		final CharSequence[] entryValues = getEntryValues();
 
@@ -137,12 +176,16 @@ public class ListPreferenceMultiSelect extends ListPreference {
 		}
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * android.preference.ListPreference#setEntries(java.lang.CharSequence[])
+	 */
 	@Override
 	public void setEntries(final CharSequence[] entries) {
 		super.setEntries(entries);
 		mClickedDialogEntryIndices = new boolean[entries.length];
-
-		// restoreCheckedEntries();
 	}
 
 }

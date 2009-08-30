@@ -14,9 +14,6 @@ public class CalendarsParseHandler extends DefaultHandler {
 	/** The current calendar. */
 	private NotiCalendar curCal;
 
-	// ===========================================================
-	// Fields
-	// ===========================================================
 	/** The in entry flag. */
 	private boolean in_entry = false;
 
@@ -28,10 +25,6 @@ public class CalendarsParseHandler extends DefaultHandler {
 
 	/** The calendars list. */
 	private LinkedList<NotiCalendar> myCalendarsList;
-
-	// ===========================================================
-	// Getter & Setter
-	// ===========================================================
 
 	/**
 	 * Gets be called on the following structure: <tag>characters</tag>.
@@ -102,9 +95,6 @@ public class CalendarsParseHandler extends DefaultHandler {
 		return myCalendarsList;
 	}
 
-	// ===========================================================
-	// Methods
-	// ===========================================================
 	/*
 	 * (non-Javadoc)
 	 * 
