@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+	<string name="app_name">NotiMe!</string>
+	<string name="ok">确认</string>
+	<string name="cancel">取消</string>
+	<string name="welcome">请输入您的谷歌帐户信息	</string>
+	<string name="username">用户名</string>
+	<string name="password">密码</string>
+	<string name="google_suffix">'@'gmail.com</string>
+	<string name="remember_me">记住我</string>
+	<string name="about_title">NotiMe!</string>
+	<string name="about_text"><b>NotiMe!</b> 是一个基于位置的谷歌日历的通知服务!\n\n它是开源的，所以你可以帮助我们改进在:\n<i>http://code.google.com/p/notime/</i>\n\n或者给我们发邮件:\n<i>noti.me.android@gmail.com</i></string>
+	<string name="exit">退出</string>
+
+	<string name="error_login_details">请填写您的登录信息</string>
+	<string name="error_login">无法为您登陆!\n检查您的登录信息和您的连接状态</string>
+	<string name="error_connection">无法连接到Internet :(</string>
+
+	<string name="timerPickerPreference_NotiMe">NotiMe!</string>
+	<string name="timerPickerPreference_minutesBefore">分钟之前</string>
+	<string name="timerPickerPreference_plus">+</string>
+	<string name="timerPickerPreference_minus">-</string>
+	<string name="timerPickerPreference_colon">:</string>
+
+	<string name="notificationDisplay_in">" 在 "</string>
+	<string name="notificationDisplay_now">" 现在!"</string>
+	<string name="notificationDisplay_getOnYourWay">&quot;您应设置为 &quot;</string>
+	<string name="notificationDisplay_at">" 在 "</string>
+
+
+	<string name="notifyingService_check">请检查您的网络/GPS</string>
+	<string name="notifyingService_hours">" 小时"</string>
+	<string name="notifyingService_hour">" 小时"</string>
+	<string name="notifyingService_minutes">" 分钟"</string>
+	<string name="notifyingService_minute">" 分钟"</string>
+	<string name="notifyingService_and">" "</string>
+	<string name="notifyingService_beenOnYourWay">您应该现在离开!</string>
+	<string name="notifyingService_problem">问题</string>
+	<string name="notifyingService_error">事件位置未找到</string>
+	<string name="notifyingService_snoozed">&quot;打盹: &quot;</string>
+	<string name="notifyingService_timealert">"时间提醒: "</string>
+	<string name="notifyingService_startin">" 始于 "</string>
+	<string name="notifyingService_noroute">无法为事件位置计算方向</string>
+	<string name="notifyingService_minus">" - "</string>
+	<string name="notifyingService_toGo">&quot;离开 &quot;</string>
+
+	<string name="preference_signalpref_title">始于</string>
+	<string name="preference_sound_title">声音</string>
+	<string name="preference_sound_sum">使用声音提醒我</string>
+	<string name="preference_vibration_title">震动</string>
+	<string name="preference_vibration_sum">使用振动提醒我</string>
+	<string name="preference_ringtone_title">铃声设置</string>
+	<string name="preference_ringtone_sum">选择一个铃声</string>
+	<string name="preference_light_title">闪光</string>
+	<string name="preference_light_sum">使用LED提醒我</string>
+	<string name="preference_timepref_title">通知时间设置</string>
+	<string name="preference_time_title">通知时间</string>
+	<string name="preference_time_sum">在您需要去之前的通知时间</string>
+	<string name="preference_calendarpref_title">日历设置</string>
+	<string name="preference_calendar_title">日历</string>
+	<string name="preference_calendar_sum">NotiMe! 将要读取的日历</string>
+
+	<string name="notifdisplay_showEvent">显示事件</string>
+	<string name="notifdisplay_showDirection">显示方向</string>
+	<string name="notifdisplay_snooze">打盹</string>
+	<string name="notifdisplay_dismiss">解除</string>
+
+	<string name="notierrdisplay_cantFindLocation"><b>NotiMe!</b> 无法找到以下事件的位置:</string>
+	<string name="notierrdisplay_locprovided">"位置提供: "</string>
+	<string name="notierrdisplay_suggestions">建议:</string>
+	<string name="notierrdisplay_corrections">建议的替代方案:</string>
+	<string name="notierrdisplay_notime"><b>NotiMe!</b> (分钟之前)</string>
+	<string name="notierrdisplay_ten">10</string>
+	<string name="notierrdisplay_plus">+</string>
+	<string name="notierrdisplay_minus">-</string>
+	<string name="notierrdisplay_dismiss">为此事件解除 <b>NotiMe!</b> </string>
+
+	<string name="main_loginhint">您的谷歌登录</string>
+	<string name="main_passwordhint">您的密码</string>
+	<string name="main_rememberme">记住我</string>
+
+</resources>

@@ -8,7 +8,7 @@
 	</string>
 	<string name="username">User Name</string>
 	<string name="password">Password</string>
-	<string name="google_suffix">'@'google.com</string>
+	<string name="google_suffix">'@'gmail.com</string>
 	<string name="remember_me">remember me</string>
 	<string name="about_title">NotiMe!</string>
 	<string name="about_text"><b>NotiMe!</b> is a Location based Notification
