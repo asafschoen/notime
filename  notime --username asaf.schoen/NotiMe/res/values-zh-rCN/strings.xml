@@ -7,7 +7,7 @@
 	<string name="welcome">请输入您的谷歌帐户信息	</string>
 	<string name="username">用户名</string>
 	<string name="password">密码</string>
-	<string name="google_suffix">'@'gmail.com</string>
+	<string name="google_suffix">"@"gmail.com</string>
 	<string name="remember_me">记住我</string>
 	<string name="about_title">NotiMe!</string>
 	<string name="about_text"><b>NotiMe!</b> 是一个基于位置的谷歌日历的通知服务!\n\n它是开源的，所以你可以帮助我们改进在:\n<i>http://code.google.com/p/notime/</i>\n\n或者给我们发邮件:\n<i>noti.me.android@gmail.com</i></string>

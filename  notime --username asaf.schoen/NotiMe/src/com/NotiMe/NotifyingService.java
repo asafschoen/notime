@@ -528,12 +528,14 @@ public class NotifyingService extends Service implements LocationListener {
 
 			}
 
-		} else {// no route was found
-			if (com.NotiMe.NotiMe.DEBUG_LOG) {
-				Log.d(com.NotiMe.NotiMe.TAG, NotifyingService.CLASS_TAG
-						+ "no route was found - todo?");
-			}
-		}
+		} 
+//		else 
+//		{// no route was found
+//			if (com.NotiMe.NotiMe.DEBUG_LOG) {
+//				Log.d(com.NotiMe.NotiMe.TAG, NotifyingService.CLASS_TAG
+//						+ "no route was found - todo?");
+//			}
+//		}
 	}
 
 	/**

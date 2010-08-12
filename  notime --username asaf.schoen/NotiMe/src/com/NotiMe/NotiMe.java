@@ -36,7 +36,7 @@ public class NotiMe extends Activity {
 	private final static String CLASS_TAG = "NotiMe: ";
 
 	/** The Constant DEBUG_LOG. */
-	static final boolean DEBUG_LOG = false;
+	static final boolean DEBUG_LOG = true;
 
 	/** The Constant PREFERENCES_ID. */
 	private static final int PREFERENCES_ID = Menu.FIRST;
